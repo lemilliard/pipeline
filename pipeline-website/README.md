@@ -1,4 +1,4 @@
-# pipeline-website
+# Pipeline Web Site
 
 > Site internet pour le projet Pipeline
 
