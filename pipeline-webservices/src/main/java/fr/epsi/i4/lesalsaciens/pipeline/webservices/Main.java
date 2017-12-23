@@ -1,12 +1,12 @@
-package fr.epsi.i4.lesalsaciens.pipelinewebservices;
+package fr.epsi.i4.lesalsaciens.pipeline.webservices;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PipelineWebservicesApplication {
+public class Main {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PipelineWebservicesApplication.class, args);
+		SpringApplication.run(Main.class, args);
 	}
 }
