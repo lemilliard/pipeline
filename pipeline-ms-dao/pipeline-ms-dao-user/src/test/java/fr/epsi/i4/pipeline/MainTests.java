@@ -1,4 +1,4 @@
-package fr.epsi.i4;
+package fr.epsi.i4.pipeline;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
