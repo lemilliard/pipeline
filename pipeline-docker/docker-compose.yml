@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  proxy:
+    image: traefik
+    command: --api --docker --docker.domain=api.pipeline.com --logLevel=DEBUG
+    networks:
+      - webgateway
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+
+  pipeline-ms-dao-user:
+    image: pipeline-ms-dao-user
+    networks:
+      - web
+    expose:
+      - "8080"
+    labels:
+      - "traefik.frontend.rule=PathPrefixStrip:/ms-dao-user"
+
+networks:
+  webgateway:
+    driver: bridge
+  web:
+    external:
+      name: traefik_webgateway
