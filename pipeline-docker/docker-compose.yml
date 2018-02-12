@@ -3,12 +3,12 @@ version: '2'
 services:
   proxy:
     image: traefik
-    command: --api --docker --docker.domain=api.pipeline.com --logLevel=DEBUG
+    command: --web --rancher --rancher.exposedbydefault=false --rancher.metadata=true --constraints=tag==pipeline --logLevel=DEBUG
     networks:
       - webgateway
     ports:
       - "80:80"
-      - "8080:8080"
+      - "8081:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
@@ -21,6 +21,9 @@ services:
       - "8080"
     labels:
       - "traefik.frontend.rule=PathPrefixStrip:/ms-dao-user"
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.tags=pipeline"
 
 networks:
   webgateway:
