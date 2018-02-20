@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  bdd:
+    image: alexeiled/docker-oracle-xe-11g
+    shm_size: "1gb"
+    volumes:
+      - /scripts:/etc/entrypoint-initdb.d
+    ports:
+      - "1521:1521"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tags=pipeline"
+      - "traefik.port=8080"
+      - "traefik.frontend.rule=PathPrefixStrip:/bdd"
+ 
