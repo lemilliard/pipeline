@@ -2,6 +2,8 @@
   "name": "email-node",
   "version": "1.0.0",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "latest",
     "nodemailer": "0.7.1"
   }
 }

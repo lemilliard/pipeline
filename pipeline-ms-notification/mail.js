@@ -1,31 +1,51 @@
 var mailer = require("nodemailer");
+var express = require('express');
+var app = express();
+var router = express.Router();
+var parser = require('body-parser');
 
-var smtpTransport = mailer.createTransport("SMTP",{
-    service: "Gmail",
-    auth: {
-        user: "lesalsaciens.contact@gmail.com",
-        pass: "pastressecure"
-    }
+app.listen(3000,function(){
+    console.log("Express Started on Port 3000");
 });
 
-var mail = {
-    from: "lesalsaciens.contact@gmail.com",
-    to: "ludovic.bouvier.pro@gmail.com",
-    subject: "Pipeline Email",
-    html: "C'est Pipeline",
-    attachments: [
-        {
-          filePath: 'leCheminDuFichierAEnvoyer'
-        },
-    ]
-}
+app.use(router);
+app.use(parser.json())
+app.use(parser.urlencoded({ extended: true }));
 
-smtpTransport.sendMail(mail, function(error, response){
-    if(error){
-        console.log("Erreur lors de l'envoie du mail!");
-        console.log(error);
-    }else{
-        console.log("Mail envoyé avec succès!")
+app.post("/mail", function(request, res){
+    var smtpTransport = mailer.createTransport("SMTP",{
+        service: "Gmail",
+        auth: {
+            user: "lesalsaciens.contact@gmail.com",
+            pass: "pastressecure"
+        }
+    });
+
+    var mail = {
+        from: "lesalsaciens.contact@gmail.com",
+        to: request.body.to,
+        subject: request.body.subject,
+        html: request.body.body,
     }
-    smtpTransport.close();
+    if (request.body.attachments != null) {
+        mail = {
+            attachments: [
+                {
+                    filePath: request.body.attachments
+                },
+            ]
+        }
+    }
+
+    smtpTransport.sendMail(mail, function(error, response){
+        if(error){
+            console.log("Erreur lors de l'envoie du mail!");
+            console.log(error);
+            res.sendStatus(400);
+        }else{
+            console.log("Mail envoyé avec succès!")
+            res.sendStatus(200);
+        }
+        smtpTransport.close();
+    });
 });
