@@ -9,12 +9,11 @@ import javax.websocket.server.ServerEndpoint;
 /**
  * Created by tkint on 21/02/2018.
  */
-@ServerEndpoint(value = "/pipeline")
+@ServerEndpoint(value = "/user")
 public class UserEndpoint {
 
 	@OnMessage
 	public String onMessage(String message, Session session) {
-		Demand demand = Demand.fromMessage(message);
-		return demand.toString();
+		return "user";
 	}
 }

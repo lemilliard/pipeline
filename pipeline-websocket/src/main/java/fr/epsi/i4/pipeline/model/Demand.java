@@ -22,11 +22,11 @@ public class Demand {
 		return entityId;
 	}
 
-	public static Demand fromMessage(String message) {
-		String[] textArray = message.split(";");
-		String entity = textArray[0];
-		String entityId = textArray[1];
-		Demand demand = new Demand(entity, entityId);
-		return demand;
+	public static String fromMessage(String message) {
+//		String[] textArray = message.split(";");
+//		String entity = textArray[0];
+//		String entityId = textArray[1];
+//		Demand demand = new Demand(entity, entityId);
+		return message;
 	}
 }

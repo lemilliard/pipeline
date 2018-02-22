@@ -2,7 +2,7 @@
 
 La dockerisation des services passe simplement par docker-compose.
 
-Il suffit d'utiliser le docker-compose.yml avec la commande "docker-compose up -d" afin de créer le conteneur Traefik et les conteneures des micro services dans le même temps.
+Il suffit d'utiliser le docker-compose.yml avec la commande "docker-compose up -d" afin de créer le conteneur Traefik et les conteneurs des micro services dans le même temps.
 
 Une fois cela fait, il faut vérifier que les conteneurs sont bien lancés avec "docker ps", puis visiter l'interface graphique de Traefik sur le port 8080.
 

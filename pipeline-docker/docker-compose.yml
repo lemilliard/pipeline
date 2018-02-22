@@ -12,7 +12,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
-
+      
   pipeline-ms-dao-user:
     image: pipeline-ms-dao-user
     networks:
@@ -23,6 +23,18 @@ services:
       - "traefik.frontend.rule=PathPrefixStrip:/ms-dao-user"
       - "traefik.enable=true"
       - "traefik.port=8080"
+      - "traefik.tags=pipeline"
+      
+  pipeline-notification:
+    image: pipeline-notification
+    networks:
+      - web
+    expose:
+      - "3000"
+    labels:
+      - "traefik.frontend.rule=PathPrefixStrip:/ms-notification"
+      - "traefik.enable=true"
+      - "traefik.port=3000"
       - "traefik.tags=pipeline"
 
 networks:
