@@ -13,11 +13,8 @@ http://home.thomaskint.com:2223 (22)
 
 ##### Oracle
 
-```
-yum -y update
-
-
-```
+Voir tuto suivant:
+https://www.howtoforge.com/tutorial/how-to-install-oracle-database-12c-on-centos-7/
 
 ### Server
 
