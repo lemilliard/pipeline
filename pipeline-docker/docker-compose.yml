@@ -37,8 +37,8 @@ services:
       - "traefik.port=8080"
       - "traefik.tags=pipeline"
       
-  pipeline-notification:
-    image: pipeline-notification
+  pipeline-ms-notification:
+    image: pipeline-ms-notification
     networks:
       - web
     expose:
