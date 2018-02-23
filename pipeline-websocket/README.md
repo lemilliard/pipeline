@@ -1,5 +1,12 @@
 # Pipeline Socket
 
+## Build
+
+Attention, pour build ce projet, utiliser la commande ci-dessous:
+```
+mvn clean compile assembly:single
+```
+
 ## Endpoint
 
 Un endpoint correspond à une logique métier. Celui-ci peut faire appel à différents micro-services.
