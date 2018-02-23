@@ -13,6 +13,18 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
       
+  pipeline-websocket:
+    image: pipeline-websocket
+    networks:
+      - web
+    expose:
+      - "8080"
+    labels:
+      - "traefik.frontend.rule=PathPrefixStrip:/websocket"
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.tags=pipeline"
+
   pipeline-ms-dao-user:
     image: pipeline-ms-dao-user
     networks:
