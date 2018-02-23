@@ -1,6 +1,7 @@
 package fr.epsi.i4.pipeline.endpoint;
 
-import fr.epsi.i4.pipeline.model.Demand;
+import fr.epsi.i4.pipeline.ms.MicroServiceClient;
+import fr.epsi.i4.pipeline.ms.client.UserMicroService;
 
 import javax.websocket.OnMessage;
 import javax.websocket.Session;
@@ -13,7 +14,8 @@ import javax.websocket.server.ServerEndpoint;
 public class UserEndpoint {
 
 	@OnMessage
-	public String onMessage(String message, Session session) {
-		return "user";
+	public String onMessage(String message, Session session) throws Exception {
+		MicroServiceClient client = new MicroServiceClient();
+		return client.processMessage(UserMicroService.name, message);
 	}
 }

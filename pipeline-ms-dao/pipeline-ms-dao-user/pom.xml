@@ -66,6 +66,30 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<echo>ANT TASK - copying files....</echo>
+								<copy todir="${basedir}/../pipeline-docker/pipeline-ms-dao/pipeline-ms-dao-user" overwrite="true" flatten="true">
+									<fileset dir="${basedir}">
+										<include name="target/*.jar"/>
+										<include name="dockerfile"/>
+									</fileset>
+								</copy>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

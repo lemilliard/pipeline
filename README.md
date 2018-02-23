@@ -81,3 +81,26 @@ Les différents parties de l'application sont accessibles aux adresses suivantes
 * Rancher: http://home.thomaskint.com:8086 (8080)
 * Traefik: http://home.thomaskint.com:8087 (8081)
 * BDD: http://home.thomaskint.com:1521 (1521)
+
+### Mis à jour des images
+
+Pour mettre à jour les images docker sur le serveur sans casser traefik, il faut suivre les étapes suivantes.
+
+* Aller dans Rancher
+* Arrêter le service ciblé
+* Se connecter en SSH sur le serveur Rancher
+* Supprimer le/les conteneur(s)
+```
+docker rm {container_id}
+```
+* Supprimer l'image
+```
+docker rmi {image_id}
+```
+* Se placer dans le répertoire du dockerfile
+* Build la nouvelle image
+```
+docker build -t {image_name} .
+```
+* Aller dans Rancher
+* Redémarrer le service

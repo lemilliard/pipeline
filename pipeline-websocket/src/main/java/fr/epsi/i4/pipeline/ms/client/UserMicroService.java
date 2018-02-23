@@ -1,15 +1,12 @@
-# Pipeline Socket
+package fr.epsi.i4.pipeline.ms.client;
 
-## Endpoint
+import fr.epsi.i4.pipeline.ms.MicroService;
+import fr.epsi.i4.pipeline.ms.Resource;
+import fr.epsi.i4.pipeline.ms.ResourceType;
 
-Un endpoint correspond à une logique métier. Celui-ci peut faire appel à différents micro-services.
-
-## Micro-service
-
-Pour créer un point d'accès à un micro-service, il faut hériter de la classe MicroService.
-
-Exemple:
-```java
+/**
+ * Created by tkint on 23/02/2018.
+ */
 public class UserMicroService extends MicroService {
 
 	public static final String name = "ms-dao-user";
@@ -26,5 +23,3 @@ public class UserMicroService extends MicroService {
 		super(name, resources);
 	}
 }
-```
-
