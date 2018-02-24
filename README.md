@@ -51,18 +51,17 @@ docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:stable
 * Copier la commande donnée à l'étape 5
 * Exécuter la commande sur l'hôte hébergeant Rancher (hôte distant possible)
 * Retourner dans Infrastructure -> Hosts
-* Attendre que tous les service de l'hôte soient lancés
+* Vérifier que les services de l'hôte sont bien lancés
 
-##### Installation Traefik
+##### Installation Traefik & Pipeline
 
 * Aller sur Rancher
 * Dans Stacks -> All
 * Cliquer sur "Add Stack"
 * Donner un nom au Stack (ici Pipeline)
 * Importer un docker-compose.yml (ici sous /pipeline-docker/)
-* Renseigner un tag (ici pipeline)
 * Cliquer sur "Create"
-* Vérifier que les services du Stack soient bien lancés
+* Vérifier que les services du Stack sont bien lancés
 
 ## Adresses
 
@@ -82,7 +81,7 @@ Les différents parties de l'application sont accessibles aux adresses suivantes
 * Traefik: http://home.thomaskint.com:8087 (8081)
 * BDD: http://home.thomaskint.com:1521 (1521)
 
-### Mis à jour des images
+### Mise à jour des images
 
 Pour mettre à jour les images docker sur le serveur sans casser traefik, il faut suivre les étapes suivantes.
 
