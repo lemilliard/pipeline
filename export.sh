@@ -5,6 +5,9 @@ DOCKER_DIR="$BASE_DIR/pipeline-docker"
 
 MVN_DIRS=(
 	"pipeline-websocket"
+	"pipeline-ms-dao/pipeline-ms-dao-event"
+	"pipeline-ms-dao/pipeline-ms-dao-match"
+	"pipeline-ms-dao/pipeline-ms-dao-tournament"
 	"pipeline-ms-dao/pipeline-ms-dao-user"
 )
 
