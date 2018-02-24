@@ -55,6 +55,9 @@ docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:stable
 
 ##### Installation Traefik & Pipeline
 
+Avant cette étape, voir:
+[Pipeline Docker](https://github.com/tkint/Pipeline/tree/master/pipeline-docker#pipeline-docker)
+
 * Aller sur Rancher
 * Dans Stacks -> All
 * Cliquer sur "Add Stack"
@@ -67,7 +70,7 @@ docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:stable
 
 Les différents parties de l'application sont accessibles aux adresses suivantes:
 
-* Socket: http://home.thomaskint.com:8084 (80)
+* Socket: http://home.thomaskint.com:8085/websocket (80)
 * Micro Services: http://home.thomaskint.com:8085 (80)
   * MS DAO:
     * EVENT: /ms-dao-event
