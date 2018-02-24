@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+  <meta charset="utf-8" />
+  <title>WebSocket Test</title>
+  <input id="uri"/>
+  <br />
+  <button onclick="connect()">CONNECT</button>
+  <button onclick="disconnect()">DISCONNECT</button>
+  <br />
+  Corps de la requête:
+  <br />
+  {"method":"[GET|POST|PUT|DELETE]", "resource":"[resource_name]/[params...]", "params":{"[name]":"[value]"}, "body":"[object_to_send]}
+  <br />
+  <br />
+  Exemple:
+  <br />
+  {"method":"GET", "resource":"user/{id_user}", "params":{"id_user":"1"}}
+  <br />
+  <br />
+  <textarea id="content" style="width: 300px; height: 100px"></textarea>
+  <br />
+  <button onclick="send()" style="width: 310px">SEND</button>
+  <script language="javascript" type="text/javascript">
+  
+  var uri;
+  var wsUri;
+  var content;
+  var output;
+
+  function init() {
+    uri = document.getElementById("uri");
+	content = document.getElementById("content");
+	output = document.getElementById("output");
+	if (!uri.innerHTML) {
+		uri.value = "ws://home.thomaskint.com:8085/websocket/pipeline-websocket/user";
+	}
+	wsUri = uri.value;
+  }
+  
+  function connect()
+  {
+    websocket = new WebSocket(wsUri);
+    websocket.onopen = function(evt) { onOpen(evt) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+  }
+  
+  function disconnect()
+  {
+	websocket.close();
+  }
+  
+  function send()
+  {
+	output.innerHTML = content.value;
+	doSend(content.value);
+  }
+
+  function onOpen(evt)
+  {
+    writeToScreen("CONNECTED");
+  }
+
+  function onClose(evt)
+  {
+    writeToScreen("DISCONNECTED");
+  }
+
+  function onMessage(evt)
+  {
+    writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+  }
+
+  function onError(evt)
+  {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+  }
+
+  function doSend(message)
+  {
+    writeToScreen("SENT: " + message);
+    websocket.send(message);
+  }
+
+  function writeToScreen(message)
+  {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+  }
+
+  window.addEventListener("load", init, false);
+
+  </script>
+
+  <h2>WebSocket Test</h2>
+
+  <div id="output"></div>

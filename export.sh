@@ -21,7 +21,11 @@ for i in ${MVN_DIRS[@]}; do
 	cd "$BASE_DIR/${i}"
 	
 	echo "Building ${i}"
-	mvn clean package
+	if [ "$i" = "pipeline-websocket" ]; then
+		mvn clean compile assembly:single
+	else
+		mvn clean package
+	fi
 	
 	echo "Creating docker folder"
 	mkdir -p "$DOCKER_DIR/${i}"
