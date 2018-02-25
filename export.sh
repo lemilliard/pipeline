@@ -21,6 +21,12 @@ NODE_PROJECTS=(
 	"pipeline-ms-notification"
 )
 
+PYTHON_PROJECTS=(
+	"pipeline-ms-resource"
+)
+
+ERROR_MISSING_FILES="Required files does not exist"
+
 function go_to_base_folder() {
 	cd "$BASE_DIR/$1"
 }
@@ -106,6 +112,19 @@ function copy_projects() {
 		fi
 	done
 	
+	echo "Copying python projects"
+	for i in ${PYTHON_PROJECTS[@]}; do
+		echo " -> Copying $i"
+		go_to_base_folder $i
+		if [ ! -f "main.py" ]; then
+			echo "   -> Main does not exist"
+		else
+			create_docker_folder $i
+			cp "main.py" "$DOCKER_DIR/${i}/"
+			cp "requirements.txt" "$DOCKER_DIR/${i}/"
+		fi
+	done
+	
 	echo
 }
 
@@ -120,31 +139,53 @@ function generate_dockerfiles() {
 		go_to_docker_folder $i
 		files=("*.jar")
 		jar=${files[0]}
-		filename=$(basename $jar)
-		echo "FROM openjdk:8-jdk-alpine" > $DOCKERFILE
-		echo "ADD /$filename /$filename" >> $DOCKERFILE
-		echo "CMD java -jar $filename" >> $DOCKERFILE
+		if [ ! -f $jar ]; then
+			echo "   -> $ERROR_MISSING_FILES"
+		else
+			filename=$(basename $jar)
+			echo "FROM openjdk:8-jdk-alpine" > $DOCKERFILE
+			echo "ADD /$filename /$filename" >> $DOCKERFILE
+			echo "CMD java -jar $filename" >> $DOCKERFILE
+		fi
 	done
 	
 	echo "Generating for node projects"
-	for i in ${MAVEN_PROJECTS[@]}; do
+	for i in ${NODE_PROJECTS[@]}; do
 		echo " -> Generating $i"
 		go_to_docker_folder $i
 		files=("*.js")
 		server=${files[0]}
-		filename=$(basename $server)
-		echo "FROM node:6" > $DOCKERFILE
-		echo "ADD /$filename /$filename " >> $DOCKERFILE
-		echo "ADD /package.json  /package.json " >> $DOCKERFILE
-		echo "ADD /node_modules  /node_modules " >> $DOCKERFILE
-		echo "CMD node $filename" >> $DOCKERFILE
+		if [ ! -f $server ]; then
+			echo "   -> $ERROR_MISSING_FILES"
+		else
+			filename=$(basename $server)
+			echo "FROM node:6" > $DOCKERFILE
+			echo "ADD /$filename /$filename " >> $DOCKERFILE
+			echo "ADD /package.json  /package.json " >> $DOCKERFILE
+			echo "ADD /node_modules  /node_modules " >> $DOCKERFILE
+			echo "CMD node $filename" >> $DOCKERFILE
+		fi
+	done
+	
+	echo "Generating for python projects"
+	for i in ${PYTHON_PROJECTS[@]}; do
+		echo " -> Generating $i"
+		go_to_docker_folder $i
+		if [ ! -f "main.py" ]; then
+			echo "   -> $ERROR_MISSING_FILES"
+		else
+			echo "FROM python:3" > $DOCKERFILE
+			echo "ADD /main.py /main.py " >> $DOCKERFILE
+			echo "ADD /requirements.txt  /requirements.txt " >> $DOCKERFILE
+			echo "RUN pip install --no-cache-dir -r requirements.txt" >> $DOCKERFILE
+			echo "CMD python main.py" >> $DOCKERFILE
+		fi
 	done
 	
 	echo
 }
 
 function add_to_docker_compose() {
-	echo " -> Adding $1 with port $2"
 	echo >> $DOCKER_COMPOSE_FILE
 	echo "  $1:" >> $DOCKER_COMPOSE_FILE
 	echo "    image: $1" >> $DOCKER_COMPOSE_FILE
@@ -192,14 +233,34 @@ EOF
 	
 	echo "Adding maven projects"
 	for i in ${MAVEN_PROJECTS[@]}; do
-		IFS='/' read -r -a array <<< "${i}"
-		last_dir=${array[-1]}
-		add_to_docker_compose $last_dir "8080"
+		echo " -> Adding $i"
+		files=("$i/*.jar")
+		jar=${files[0]}
+		if [ ! -f $jar ]; then
+			echo "   -> $ERROR_MISSING_FILES"
+		else
+			IFS='/' read -r -a array <<< "${i}"
+			last_dir=${array[-1]}
+			add_to_docker_compose $last_dir "8080"
+		fi
 	done
 	
 	echo "Adding node projects"
 	for i in ${NODE_PROJECTS[@]}; do
-		add_to_docker_compose $i "3000"
+		echo " -> Adding $i"
+		files=("$i/*.js")
+		server=${files[0]}
+		if [ ! -f $server ]; then
+			echo "   -> $ERROR_MISSING_FILES"
+		else
+			add_to_docker_compose $i "3000"
+		fi
+	done
+	
+	echo "Adding python projects"
+	for i in ${PYTHON_PROJECTS[@]}; do
+		echo " -> Adding $i"
+		add_to_docker_compose $i "8080"
 	done
 	
 	echo "Adding footer"
@@ -229,6 +290,7 @@ function generate_dockerize() {
 	
 	echo "Adding header"
 	echo "#!bin/bash" > $DOCKERIZE_FILE
+	echo "docker rmi \$(docker images --format '{{.Repository}}' | grep 'pipeline')" >> $DOCKERIZE_FILE
 	
 	echo "Adding maven projects"
 	for i in ${MAVEN_PROJECTS[@]}; do
@@ -239,6 +301,11 @@ function generate_dockerize() {
 	
 	echo "Adding node projects"
 	for i in ${NODE_PROJECTS[@]}; do
+		add_to_dockerize $i $i
+	done
+	
+	echo "Adding python projects"
+	for i in ${PYTHON_PROJECTS[@]}; do
 		add_to_dockerize $i $i
 	done
 	
