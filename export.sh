@@ -27,6 +27,13 @@ PYTHON_PROJECTS=(
 
 ERROR_MISSING_FILES="Required files does not exist"
 
+function install_dependencies() {
+	echo "------------------------------"
+	echo "Installing dependencies"
+	echo "------------------------------"
+	pip install pipreqs
+}
+
 function go_to_base_folder() {
 	cd "$BASE_DIR/$1"
 }
@@ -72,6 +79,13 @@ function build_projects() {
 		else
 			npm install
 		fi
+	done
+	
+	echo "Building python projects"
+	for i in ${PYTHON_PROJECTS[@]}; do
+		echo " -> Building $i"
+		go_to_base_folder $i
+		pipreqs --force .
 	done
 	
 	echo
@@ -278,6 +292,7 @@ EOF
 
 function add_to_dockerize() {
 	echo " -> Adding $1"
+	echo "echo \"Building $1\"" >> $DOCKERIZE_FILE
 	echo "docker build -t ${1} ./${2}" >> $DOCKERIZE_FILE
 }
 
@@ -290,7 +305,14 @@ function generate_dockerize() {
 	
 	echo "Adding header"
 	echo "#!bin/bash" > $DOCKERIZE_FILE
+	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
+	echo "echo \"Removing old images\"" >> $DOCKERIZE_FILE
+	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
 	echo "docker rmi \$(docker images --format '{{.Repository}}' | grep 'pipeline')" >> $DOCKERIZE_FILE
+	
+	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
+	echo "echo \"Generating new images\"" >> $DOCKERIZE_FILE
+	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
 	
 	echo "Adding maven projects"
 	for i in ${MAVEN_PROJECTS[@]}; do
@@ -313,6 +335,8 @@ function generate_dockerize() {
 }
 
 function main(){
+	install_dependencies
+
 	build_projects
 
 	copy_projects
