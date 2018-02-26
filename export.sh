@@ -27,6 +27,16 @@ PYTHON_PROJECTS=(
 
 ERROR_MISSING_FILES="Required files does not exist"
 
+RANCHER_URL=home.thomaskint.com
+
+RANCHER_PORT=8086
+
+RANCHER_ACCESS_KEY="1FD3E962C8A011454F0F"
+
+RANCHER_SECRET_KEY="8G8MucFc6QzqgYsg9iopoXEjyXLaTWodxNUqMDWV"
+
+RANCHER_PROJECT_ID="1a5"
+
 function install_dependencies() {
 	echo "------------------------------"
 	echo "Installing dependencies"
@@ -343,18 +353,35 @@ function generate_dockerize() {
 	echo
 }
 
+function export_to_remote_host() {
+	go_to_base_folder
+	scp -P 2222 -r $DOCKER_DIR root@home.thomaskint.com:/opt/
+}
+
+function delete_stack_on_rancher() {
+	curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
+		-X DELETE \
+		'http://${RANCHER_URL}:${RANCHER_PORT}/v2-beta/projects/${RANCHER_PROJECT_ID}/stacks/${1}'
+}
+
+function create_stack_on_rancher() {
+
+}
+
 function main(){
-	install_dependencies
+	#install_dependencies
 
-	build_projects
+	#build_projects
 
-	copy_projects
+	#copy_projects
 	
-	generate_dockerfiles
+	#generate_dockerfiles
 
-	generate_docker_compose
+	#generate_docker_compose
 
-	generate_dockerize
+	#generate_dockerize
+	
+	#export_to_remote_host
 }
 
 main
