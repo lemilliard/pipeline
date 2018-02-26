@@ -1,7 +1,9 @@
 #!bin/bash
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-DOCKER_DIR="$BASE_DIR/pipeline-docker"
+DOCKER_DIR="pipeline-docker"
+
+DOCKER_FULL_DIR="$BASE_DIR/$DOCKER_DIR"
 
 DOCKER_COMPOSE_FILE="docker-compose-generated.yml"
 
@@ -27,13 +29,15 @@ PYTHON_PROJECTS=(
 
 ERROR_MISSING_FILES="Required files does not exist"
 
-RANCHER_URL=home.thomaskint.com
+RANCHER_URL="home.thomaskint.com"
 
-RANCHER_PORT=8086
+RANCHER_PORT="8086"
 
 RANCHER_ACCESS_KEY="1FD3E962C8A011454F0F"
 
 RANCHER_SECRET_KEY="8G8MucFc6QzqgYsg9iopoXEjyXLaTWodxNUqMDWV"
+
+RANCHER_STACK_NAME="pipeline"
 
 RANCHER_PROJECT_ID="1a5"
 
@@ -58,15 +62,15 @@ function go_to_base_folder() {
 }
 
 function create_docker_folder() {
-	if [ ! -d "$DOCKER_DIR/$1" ]; then
+	if [ ! -d "$DOCKER_FULL_DIR/$1" ]; then
 		echo " -> Creating docker folder $1"
-		mkdir -p "$DOCKER_DIR/$1"
+		mkdir -p "$DOCKER_FULL_DIR/$1"
 	fi
 }
 
 function go_to_docker_folder() {
 	create_docker_folder $i
-	cd "$DOCKER_DIR/$1"
+	cd "$DOCKER_FULL_DIR/$1"
 }
 
 function build_projects() {
@@ -125,7 +129,7 @@ function copy_projects() {
 			echo "   -> Jar does not exist"
 		else
 			create_docker_folder $i
-			cp $jar "$DOCKER_DIR/${i}/"
+			cp $jar "$DOCKER_FULL_DIR/${i}/"
 		fi
 	done
 	
@@ -139,9 +143,9 @@ function copy_projects() {
 			echo "   -> Server does not exist"
 		else
 			create_docker_folder $i
-			cp $server "$DOCKER_DIR/${i}/"
-			cp "package.json" "$DOCKER_DIR/${i}/"
-			cp -R "node_modules" "$DOCKER_DIR/${i}/"
+			cp $server "$DOCKER_FULL_DIR/${i}/"
+			cp "package.json" "$DOCKER_FULL_DIR/${i}/"
+			cp -R "node_modules" "$DOCKER_FULL_DIR/${i}/"
 		fi
 	done
 	
@@ -153,8 +157,8 @@ function copy_projects() {
 			echo "   -> Main does not exist"
 		else
 			create_docker_folder $i
-			cp "main.py" "$DOCKER_DIR/${i}/"
-			cp "requirements.txt" "$DOCKER_DIR/${i}/"
+			cp "main.py" "$DOCKER_FULL_DIR/${i}/"
+			cp "requirements.txt" "$DOCKER_FULL_DIR/${i}/"
 		fi
 	done
 	
@@ -355,17 +359,42 @@ function generate_dockerize() {
 
 function export_to_remote_host() {
 	go_to_base_folder
-	scp -P 2222 -r $DOCKER_DIR root@home.thomaskint.com:/opt/
+	scp -P 2222 -r $DOCKER_FULL_DIR root@home.thomaskint.com:/opt/
 }
 
-function delete_stack_on_rancher() {
+function execute_dockerize() {
+	ssh -p 2222 root@home.thomaskint.com "cd /opt/${DOCKER_DIR} && sh ${DOCKERIZE_FILE}"
+}
+
+function get_stack_id() {
+	req=$(curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
+		"http://${RANCHER_URL}:${RANCHER_PORT}/v2-beta/stacks?name=${RANCHER_STACK_NAME}")
+	data=(`echo $req| sed -e 's/[{}]/''/g'| awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | sed 's/:/ /1'| awk -F" " '{ print $2 }'`)
+	self=${data[5]}
+	url=${self:8:-1}
+	id=${url:52}
+	echo $id
+	
+}
+
+function delete_stack() {
 	curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 		-X DELETE \
-		'http://${RANCHER_URL}:${RANCHER_PORT}/v2-beta/projects/${RANCHER_PROJECT_ID}/stacks/${1}'
+		"http://${RANCHER_URL}:${RANCHER_PORT}/v2-beta/projects/${RANCHER_PROJECT_ID}/stacks/${1}"
 }
 
-function create_stack_on_rancher() {
-
+function create_stack() {
+	dockercompose=$(sed "y/\'/\`/" "${DOCKER_FULL_DIR}/${DOCKER_COMPOSE_FILE}")
+	#dockercompose=$(sed "y/\'/\`/" <<< $dockercompose)
+	echo $dockercompose
+	curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
+		-X POST \
+		-H "Content-Type: application/json" \
+		-d "{
+			\"name\": \"pipeline\",
+			\"dockerCompose\": \"${dockercompose}\"
+		}" \
+		"http://${RANCHER_URL}:${RANCHER_PORT}/v2-beta/projects/${RANCHER_PROJECT_ID}/stacks/"
 }
 
 function main(){
@@ -382,6 +411,12 @@ function main(){
 	#generate_dockerize
 	
 	#export_to_remote_host
+	
+	delete_stack $(get_stack_id)
+	
+	#execute_dockerize
+	
+	create_stack
 }
 
 main
