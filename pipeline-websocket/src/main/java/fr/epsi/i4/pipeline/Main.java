@@ -1,5 +1,6 @@
 package fr.epsi.i4.pipeline;
 
+import fr.epsi.i4.pipeline.endpoint.ChatEndpoint;
 import fr.epsi.i4.pipeline.endpoint.UserEndpoint;
 import org.glassfish.tyrus.server.Server;
 
@@ -9,7 +10,7 @@ import org.glassfish.tyrus.server.Server;
 public class Main {
 
 	public static void main(String[] args) {
-		Class[] endpoints = new Class[]{
+		Class[] endpoints = new Class[] { ChatEndpoint.class,
 				UserEndpoint.class
 		};
 		Server server = new Server("localhost", 8080, "/pipeline-websocket", null, endpoints);

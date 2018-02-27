@@ -31,7 +31,7 @@
 	content = document.getElementById("content");
 	output = document.getElementById("output");
 	if (!uri.innerHTML) {
-		uri.value = "ws://home.thomaskint.com:8085/websocket/pipeline-websocket/user";
+		uri.value = "ws://localhost:8080/pipeline-websocket/chat";
 	}
 	wsUri = uri.value;
   }
@@ -52,12 +52,12 @@
   
   function send()
   {
-	output.innerHTML = content.value;
 	doSend(content.value);
   }
 
   function onOpen(evt)
   {
+	console.log(evt);
     writeToScreen("CONNECTED");
   }
 
@@ -68,7 +68,8 @@
 
   function onMessage(evt)
   {
-    writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+	console.log(evt);
+    writeToScreen('<span style="color: blue;">' + evt.data+'</span>');
   }
 
   function onError(evt)
@@ -78,7 +79,6 @@
 
   function doSend(message)
   {
-    writeToScreen("SENT: " + message);
     websocket.send(message);
   }
 
