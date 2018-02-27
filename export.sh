@@ -7,6 +7,8 @@ DOCKER_FULL_DIR="$BASE_DIR/$DOCKER_DIR"
 
 DOCKER_COMPOSE_FILE="docker-compose-generated.yml"
 
+RANCHER_COMPOSE_FILE="rancher-compose-generated.yml"
+
 DOCKERIZE_FILE="dockerize.sh"
 
 DOCKERFILE="dockerfile"
@@ -55,6 +57,8 @@ function install_dependencies() {
 	mvn clean install
 	go_to_base_folder
 	rm -rf MiniDao/
+	
+	echo
 }
 
 function go_to_base_folder() {
@@ -234,12 +238,12 @@ function add_to_docker_compose() {
     networks:
       - web
     expose:
-      - "$2"
+      - \"$2\"
     labels:
-      - "traefik.frontend.rule=PathPrefixStrip:/$path_without_prefix"
-      - "traefik.enable=true"
-      - "traefik.port=$2"
-      - "traefik.tags=pipeline"
+      - \"traefik.frontend.rule=PathPrefixStrip:/$path_without_prefix\"
+      - \"traefik.enable=true\"
+      - \"traefik.port=$2\"
+      - \"traefik.tags=pipeline\"
 EOF
 }
 
@@ -261,8 +265,8 @@ services:
     networks:
       - webgateway
     ports:
-      - "80:80"
-      - "8081:8080"
+      - \"80:80\"
+      - \"8081:8080\"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
@@ -310,6 +314,52 @@ networks:
     external:
       name: traefik_webgateway
 EOF
+
+	echo
+}
+
+function add_to_rancher_compose() {
+	echo "  $1:" >> $RANCHER_COMPOSE_FILE
+	echo "    scale: $2" >> $RANCHER_COMPOSE_FILE
+	echo "    start_on_create: true" >> $RANCHER_COMPOSE_FILE
+}
+
+function generate_rancher_compose() {
+	echo "------------------------------"
+	echo "Generating $RANCHER_COMPOSE_FILE"
+	echo "------------------------------"
+	
+	go_to_docker_folder
+	
+	echo "Adding header and traefik"
+	cat > $RANCHER_COMPOSE_FILE << EOF
+version: '2'
+services:
+  proxy:
+    scale: $1
+    start_on_create: true
+EOF
+	
+	echo "Adding maven projects"
+	for i in ${MAVEN_PROJECTS[@]}; do
+		echo " -> Adding $i"
+		IFS='/' read -r -a array <<< "${i}"
+		last_dir=${array[-1]}
+		add_to_rancher_compose $last_dir $1
+	done
+	
+	echo "Adding node projects"
+	for i in ${NODE_PROJECTS[@]}; do
+		echo " -> Adding $i"
+		add_to_rancher_compose $i $1
+	done
+	
+	echo "Adding python projects"
+	for i in ${PYTHON_PROJECTS[@]}; do
+		echo " -> Adding $i"
+		add_to_rancher_compose $i $1
+	done
+	
 	echo
 }
 
@@ -384,37 +434,43 @@ function delete_stack() {
 }
 
 function create_stack() {
-	dockercompose=$(sed "y/\'/\`/" "${DOCKER_FULL_DIR}/${DOCKER_COMPOSE_FILE}")
-	#dockercompose=$(sed "y/\'/\`/" <<< $dockercompose)
-	echo $dockercompose
+	ranchercompose=$(sed "y/\"/\\\"/" "${DOCKER_FULL_DIR}/rancher-compose.yml")
+	ranchercompose=$(sed "y/\'/\\\'/" <<< $ranchercompose)
+	dockercompose=$(cat "${DOCKER_FULL_DIR}/${DOCKER_COMPOSE_FILE}")
+	dockercompose=$(sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' <<< $dockercompose)
+	#dockercompose="version: '2'\n\nservices:\n  pipeline-ms-dao-user:\n    image: pipeline-ms-dao-user"
 	curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 		-X POST \
 		-H "Content-Type: application/json" \
 		-d "{
 			\"name\": \"pipeline\",
-			\"dockerCompose\": \"${dockercompose}\"
+			\"rancherCompose\": \"${ranchercompose}\",
+			\"dockerCompose\": \"${dockercompose}\",
+			\"startOnCreate\": \"true\"
 		}" \
 		"http://${RANCHER_URL}:${RANCHER_PORT}/v2-beta/projects/${RANCHER_PROJECT_ID}/stacks/"
 }
 
-function main(){
-	#install_dependencies
+function main() {
+	install_dependencies
 
-	#build_projects
+	build_projects
 
-	#copy_projects
+	copy_projects
 	
-	#generate_dockerfiles
+	generate_dockerfiles
 
-	#generate_docker_compose
-
-	#generate_dockerize
+	generate_docker_compose
 	
-	#export_to_remote_host
+	generate_rancher_compose 1
+
+	generate_dockerize
+	
+	export_to_remote_host
 	
 	delete_stack $(get_stack_id)
 	
-	#execute_dockerize
+	execute_dockerize
 	
 	create_stack
 }
