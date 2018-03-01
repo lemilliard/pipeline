@@ -19,9 +19,9 @@ Exemple:
 ```java
 public class UserMicroService extends MicroService {
 
-	public static final String name = "ms-dao-user";
+	public static final String name = microservice;
 
-	private static final Resource[] resources = new Resource[]{
+	private static final Resource[] microServiceResources = new Resource[]{
 			new Resource("user", ResourceType.GET, ResourceType.POST, ResourceType.PUT),
 			new Resource("user/{id_user}", ResourceType.GET, ResourceType.DELETE),
 			new Resource("connect", ResourceType.POST),
@@ -30,7 +30,7 @@ public class UserMicroService extends MicroService {
 	};
 
 	public UserMicroService() {
-		super(name, resources);
+		super(name, microServiceResources);
 	}
 }
 ```

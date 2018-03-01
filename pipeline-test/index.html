@@ -1,6 +1,12 @@
 <!DOCTYPE html>
   <meta charset="utf-8" />
   <title>WebSocket Test</title>
+  URL:
+  <ul>
+	<li>ws://home.thomaskint.com:8085/websocket/pipeline-websocket/chat</li>
+	<li>ws://localhost:8080/pipeline-websocket/chat</li>
+  </ul>
+  <br />
   <input id="uri"/>
   <br />
   <button onclick="connect()">CONNECT</button>
@@ -14,6 +20,8 @@
   Exemple:
   <br />
   {"method":"GET", "resource":"user/{id_user}", "params":{"id_user":"1"}}
+  <br />
+  {"username":"Tom", "content":"Yo!"}
   <br />
   <br />
   <textarea id="content" style="width: 300px; height: 100px"></textarea>
@@ -31,7 +39,7 @@
 	content = document.getElementById("content");
 	output = document.getElementById("output");
 	if (!uri.innerHTML) {
-		uri.value = "ws://localhost:8080/pipeline-websocket/chat";
+		uri.value = "ws://localhost:8085/pipeline-websocket/user";
 	}
 	wsUri = uri.value;
   }
