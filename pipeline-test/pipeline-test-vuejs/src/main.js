@@ -4,6 +4,10 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 
+import WebSocketPlugin from './plugins/websocket';
+
+Vue.use(WebSocketPlugin, 'ws://home.thomaskint.com:8085/websocket/pipeline-websocket/chat');
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
