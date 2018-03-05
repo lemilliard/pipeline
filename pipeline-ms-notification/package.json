@@ -1,6 +1,9 @@
 {
   "name": "email-node",
   "version": "1.0.0",
+  "scripts": {
+	"start": "node mail.js"
+  },
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "latest",

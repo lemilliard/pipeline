@@ -38,14 +38,14 @@
     uri = document.getElementById("uri");
 	content = document.getElementById("content");
 	output = document.getElementById("output");
-	if (!uri.innerHTML) {
+	if (!uri.value) {
 		uri.value = "ws://localhost:8085/pipeline-websocket/user";
 	}
-	wsUri = uri.value;
   }
   
   function connect()
   {
+	wsUri = uri.value;
     websocket = new WebSocket(wsUri);
     websocket.onopen = function(evt) { onOpen(evt) };
     websocket.onclose = function(evt) { onClose(evt) };

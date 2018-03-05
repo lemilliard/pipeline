@@ -1,26 +1,25 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    {{ user }}
   </div>
 </template>
 
 <script>
+/* eslint-disable no-console */
+
 export default {
   name: 'HelloWorld',
   data() {
     return {
       msg: null,
+      user: null,
     };
   },
   created() {
-    this.$websocket.addDatum('user', {
-      id_user: 1,
-    });
-    this.$websocket.addDatum('user', {
-      id_user: 2,
-    });
-    this.msg = this.$websocket.getData();
-    this.$websocket.getDatum('user', 'id_user', 1);
+    this.msg = this.$websocket.getRepo();
+    this.$websocket.getFromRepo('user', 'id_user', 1);
+    this.$websocket.get('user');
   },
 };
 </script>

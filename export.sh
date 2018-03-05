@@ -43,6 +43,8 @@ RANCHER_STACK_NAME="pipeline"
 
 RANCHER_PROJECT_ID="1a5"
 
+shopt -s extglob
+
 function install_dependencies() {
 	echo "------------------------------"
 	echo "Installing dependencies"
@@ -54,7 +56,7 @@ function install_dependencies() {
 	rm -rf MiniDao/
 	git clone https://github.com/tkint/MiniDao.git MiniDao
 	cd MiniDao
-	mvn clean install
+	mvn clean install -s settings.xml
 	go_to_base_folder
 	rm -rf MiniDao/
 	
@@ -97,17 +99,6 @@ function build_projects() {
 		fi
 	done
 	
-	echo "Building node projects"
-	for i in ${NODE_PROJECTS[@]}; do
-		echo " -> Building $i"
-		go_to_base_folder $i
-		if [ ! -f "package.json" ]; then
-			echo "   -> Not a node project"
-		else
-			npm install
-		fi
-	done
-	
 	echo "Building python projects"
 	for i in ${PYTHON_PROJECTS[@]}; do
 		echo " -> Building $i"
@@ -133,7 +124,7 @@ function copy_projects() {
 			echo "   -> Jar does not exist"
 		else
 			create_docker_folder $i
-			cp $jar "$DOCKER_FULL_DIR/${i}/"
+			cp $jar "$DOCKER_FULL_DIR/${i}"
 		fi
 	done
 	
@@ -141,15 +132,13 @@ function copy_projects() {
 	for i in ${NODE_PROJECTS[@]}; do
 		echo " -> Copying $i"
 		go_to_base_folder $i
-		files=("*.js")
-		server=${files[0]}
-		if [ ! -f $server ]; then
-			echo "   -> Server does not exist"
+		files=("package.json")
+		package=${files[0]}
+		if [ ! -f $package ]; then
+			echo "   -> Package.json does not exist"
 		else
 			create_docker_folder $i
-			cp $server "$DOCKER_FULL_DIR/${i}/"
-			cp "package.json" "$DOCKER_FULL_DIR/${i}/"
-			cp -R "node_modules" "$DOCKER_FULL_DIR/${i}/"
+			cp -R !(node_modules|.idea|.|..|.gitignore) "$DOCKER_FULL_DIR/${i}"
 		fi
 	done
 	
@@ -161,8 +150,8 @@ function copy_projects() {
 			echo "   -> Main does not exist"
 		else
 			create_docker_folder $i
-			cp "main.py" "$DOCKER_FULL_DIR/${i}/"
-			cp "requirements.txt" "$DOCKER_FULL_DIR/${i}/"
+			cp "main.py" "$DOCKER_FULL_DIR/${i}"
+			cp "requirements.txt" "$DOCKER_FULL_DIR/${i}"
 		fi
 	done
 	
@@ -194,18 +183,10 @@ function generate_dockerfiles() {
 	for i in ${NODE_PROJECTS[@]}; do
 		echo " -> Generating $i"
 		go_to_docker_folder $i
-		files=("*.js")
-		server=${files[0]}
-		if [ ! -f $server ]; then
-			echo "   -> $ERROR_MISSING_FILES"
-		else
-			filename=$(basename $server)
-			echo "FROM node:6" > $DOCKERFILE
-			echo "ADD /$filename /$filename " >> $DOCKERFILE
-			echo "ADD /package.json  /package.json " >> $DOCKERFILE
-			echo "ADD /node_modules  /node_modules " >> $DOCKERFILE
-			echo "CMD node $filename" >> $DOCKERFILE
-		fi
+		echo "FROM node:6" > $DOCKERFILE
+		echo "ADD . /app" >> $DOCKERFILE
+		echo "RUN cd /app && npm install" >> $DOCKERFILE
+		echo "CMD cd /app && npm start" >> $DOCKERFILE
 	done
 	
 	echo "Generating for python projects"
@@ -289,12 +270,14 @@ EOF
 	echo "Adding node projects"
 	for i in ${NODE_PROJECTS[@]}; do
 		echo " -> Adding $i"
-		files=("$i/*.js")
-		server=${files[0]}
-		if [ ! -f $server ]; then
-			echo "   -> $ERROR_MISSING_FILES"
+		files=("$i/package.json")
+		package=${files[0]}
+		if [ ! -f $package ]; then
+			echo "   -> Package.json does not exist"
 		else
-			add_to_docker_compose $i "3000"
+			IFS='/' read -r -a array <<< "${i}"
+			last_dir=${array[-1]}
+			add_to_docker_compose $last_dir "8080"
 		fi
 	done
 	
@@ -351,7 +334,9 @@ EOF
 	echo "Adding node projects"
 	for i in ${NODE_PROJECTS[@]}; do
 		echo " -> Adding $i"
-		add_to_rancher_compose $i $1
+		IFS='/' read -r -a array <<< "${i}"
+		last_dir=${array[-1]}
+		add_to_rancher_compose $last_dir $1
 	done
 	
 	echo "Adding python projects"
@@ -396,7 +381,9 @@ function generate_dockerize() {
 	
 	echo "Adding node projects"
 	for i in ${NODE_PROJECTS[@]}; do
-		add_to_dockerize $i $i
+		IFS='/' read -r -a array <<< "${i}"
+		last_dir=${array[-1]}
+		add_to_dockerize $last_dir $i
 	done
 	
 	echo "Adding python projects"
