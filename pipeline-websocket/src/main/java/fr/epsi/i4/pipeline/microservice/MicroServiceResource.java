@@ -7,15 +7,22 @@ public class MicroServiceResource {
 
 	private String name;
 
+	private String entity;
+
 	private Method[] methods;
 
-	public MicroServiceResource(String name, Method... methods) {
+	public MicroServiceResource(String name, String entity, Method... methods) {
 		this.name = name;
+		this.entity = entity;
 		this.methods = methods;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public String getEntity() {
+		return entity;
 	}
 
 	public Method[] getMethods() {

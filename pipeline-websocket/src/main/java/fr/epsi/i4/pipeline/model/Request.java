@@ -10,9 +10,27 @@ public class Request {
 
 	private String resource;
 
-	private Map<String, Object> params;
+	private Map<String, String> params;
 
 	private Object body;
+
+	public Request(String method, String resource) {
+		this.method = method;
+		this.resource = resource;
+	}
+
+	public Request(String method, String resource, Map<String, String> params) {
+		this.method = method;
+		this.resource = resource;
+		this.params = params;
+	}
+
+	public Request(String method, String resource, Map<String, String> params, Object body) {
+		this.method = method;
+		this.resource = resource;
+		this.params = params;
+		this.body = body;
+	}
 
 	public Method getMethod() {
 		Method method = Method.INVALID;
@@ -26,11 +44,15 @@ public class Request {
 		return resource;
 	}
 
-	public Map<String, Object> getParams() {
+	public Map<String, String> getParams() {
 		return params;
 	}
 
 	public Object getBody() {
 		return body;
+	}
+
+	public void setParams(Map<String, String> params) {
+		this.params = params;
 	}
 }

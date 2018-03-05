@@ -9,20 +9,24 @@ import fr.epsi.i4.pipeline.model.Request;
 
 public class RequestDecoder implements Decoder.Text<Request> {
 
-	@Override public Request decode(String s) throws DecodeException {
+	@Override
+	public Request decode(String s) throws DecodeException {
 		Gson gson = new Gson();
 		return gson.fromJson(s, Request.class);
 	}
 
-	@Override public boolean willDecode(String s) {
+	@Override
+	public boolean willDecode(String s) {
 		return true;
 	}
 
-	@Override public void init(EndpointConfig endpointConfig) {
+	@Override
+	public void init(EndpointConfig endpointConfig) {
 
 	}
 
-	@Override public void destroy() {
+	@Override
+	public void destroy() {
 
 	}
 }

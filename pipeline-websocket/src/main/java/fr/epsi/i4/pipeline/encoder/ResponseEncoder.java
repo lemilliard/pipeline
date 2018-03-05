@@ -9,16 +9,19 @@ import fr.epsi.i4.pipeline.model.Response;
 
 public class ResponseEncoder implements Encoder.Text<Response> {
 
-	@Override public String encode(Response response) throws EncodeException {
+	@Override
+	public String encode(Response response) {
 		Gson gson = new Gson();
 		return gson.toJson(response);
 	}
 
-	@Override public void init(EndpointConfig endpointConfig) {
+	@Override
+	public void init(EndpointConfig endpointConfig) {
 
 	}
 
-	@Override public void destroy() {
+	@Override
+	public void destroy() {
 
 	}
 }
