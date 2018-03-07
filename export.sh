@@ -52,14 +52,6 @@ function install_dependencies() {
 	echo "Installing pipreqs"
 	pip install pipreqs
 	
-	echo "Installing MiniDao"
-	rm -rf MiniDao/
-	git clone https://github.com/tkint/MiniDao.git MiniDao
-	cd MiniDao
-	mvn clean install -s settings.xml
-	go_to_base_folder
-	rm -rf MiniDao/
-	
 	echo
 }
 
