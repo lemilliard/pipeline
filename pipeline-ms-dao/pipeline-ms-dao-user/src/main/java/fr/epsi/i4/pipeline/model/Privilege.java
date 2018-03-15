@@ -1,12 +1,10 @@
 package fr.epsi.i4.pipeline.model;
 
-import com.thomaskint.minidao.annotations.MDEntity;
-import com.thomaskint.minidao.annotations.MDField;
-import com.thomaskint.minidao.annotations.MDId;
+import com.thomaskint.minidao.annotation.MDEntity;
+import com.thomaskint.minidao.annotation.MDField;
+import com.thomaskint.minidao.annotation.MDId;
 
-import java.math.BigDecimal;
-
-import static com.thomaskint.minidao.enumeration.MDParam.SELECT;
+import static com.thomaskint.minidao.enumeration.MDVerb.SELECT;
 
 /**
  * Created by tkint on 25/01/2018.
@@ -15,6 +13,6 @@ import static com.thomaskint.minidao.enumeration.MDParam.SELECT;
 public class Privilege {
 
 	@MDId
-	@MDField(name = "valeur", params = SELECT)
+	@MDField(name = "valeur", verbs = SELECT)
 	public String value;
 }

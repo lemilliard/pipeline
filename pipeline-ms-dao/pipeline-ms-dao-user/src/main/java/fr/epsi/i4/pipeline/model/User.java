@@ -1,12 +1,12 @@
 package fr.epsi.i4.pipeline.model;
 
-import com.thomaskint.minidao.annotations.MDEntity;
-import com.thomaskint.minidao.annotations.MDField;
-import com.thomaskint.minidao.annotations.MDId;
+import com.thomaskint.minidao.annotation.MDEntity;
+import com.thomaskint.minidao.annotation.MDField;
+import com.thomaskint.minidao.annotation.MDId;
 
 import java.math.BigDecimal;
 
-import static com.thomaskint.minidao.enumeration.MDParam.SELECT;
+import static com.thomaskint.minidao.enumeration.MDVerb.SELECT;
 
 /**
  * Created by tkint on 25/01/2018.
@@ -19,7 +19,7 @@ public class User {
 	public static final String passwordField = "password";
 
 	@MDId
-	@MDField(name = "id_utilisateur", params = SELECT)
+	@MDField(name = "id_utilisateur", verbs = SELECT)
 	public BigDecimal id_user;
 
 	@MDField(name = emailField)
