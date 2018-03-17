@@ -1,12 +1,12 @@
 package fr.epsi.i4.pipeline.model;
 
-import com.thomaskint.minidao.annotations.MDEntity;
-import com.thomaskint.minidao.annotations.MDField;
-import com.thomaskint.minidao.annotations.MDId;
+import com.thomaskint.minidao.annotation.MDEntity;
+import com.thomaskint.minidao.annotation.MDField;
+import com.thomaskint.minidao.annotation.MDId;
 
 import java.math.BigDecimal;
 
-import static com.thomaskint.minidao.enumeration.MDParam.SELECT;
+import static com.thomaskint.minidao.enumeration.MDVerb.SELECT;
 
 /**
  * Created by tkint on 25/01/2018.
@@ -15,7 +15,7 @@ import static com.thomaskint.minidao.enumeration.MDParam.SELECT;
 public class Right {
 
 	@MDId
-	@MDField(name = "id_droit", params = SELECT)
+	@MDField(name = "id_droit", verbs = SELECT)
 	public BigDecimal id_right;
 
 	@MDField(name = "table_droit")

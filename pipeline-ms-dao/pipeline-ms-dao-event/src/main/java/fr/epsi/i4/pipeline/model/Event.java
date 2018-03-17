@@ -1,8 +1,8 @@
 package fr.epsi.i4.pipeline.model;
 
-import com.thomaskint.minidao.annotations.MDEntity;
-import com.thomaskint.minidao.annotations.MDField;
-import com.thomaskint.minidao.annotations.MDId;
+import com.thomaskint.minidao.annotation.MDEntity;
+import com.thomaskint.minidao.annotation.MDField;
+import com.thomaskint.minidao.annotation.MDId;
 
 import java.math.BigDecimal;
 
