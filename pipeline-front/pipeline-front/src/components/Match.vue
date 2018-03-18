@@ -10,7 +10,10 @@
         </v-flex>
         <v-flex order-md7>
           <v-card dark tile flat color="red darken-1">
-            <v-card-text><iframe width="100%" height="315" src="https://www.youtube.com/embed/CtH_iPgKzAk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></v-card-text>
+            <v-card-text>
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/CtH_iPgKzAk" frameborder="0"
+                      allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </v-card-text>
           </v-card>
         </v-flex>
       </v-layout>
@@ -108,47 +111,47 @@
 </template>
 
 <script>
-  export default {
-    name: 'Match',
-    data() {
-      return {
-        msg: 'Match',
-        headers: [
-          {
-            text: 'Joueurs',
-            align: 'left',
-            sortable: false,
-            value: 'name',
-          },
-          { text: 'Set 1', value: 'Set1', },
-          { text: 'Set 2', value: 'Set2', },
-          { text: 'Set 3', value: 'Set3', },
-          { text: 'Set 4', value: 'Set4', },
-          { text: 'Set 5', value: 'Set5', },
-        ],
-        items: [
-          {
-            value: false,
-            name: 'Novak Djokovic [2]',
-            Set1: 6,
-            Set2: 4,
-            Set3: 6,
-            Set4: 3,
-            Set5: 4,
-          },
-          {
-            value: false,
-            name: 'Rafael Nadal [1]',
-            Set1: 2,
-            Set2: 6,
-            Set3: 3,
-            Set4: 6,
-            Set5: 3,
-          },
-        ]
-      };
-    },
-  };
+export default {
+  name: 'Match',
+  data() {
+    return {
+      msg: 'Match',
+      headers: [
+        {
+          text: 'Joueurs',
+          align: 'left',
+          sortable: false,
+          value: 'name',
+        },
+        { text: 'Set 1', value: 'Set1' },
+        { text: 'Set 2', value: 'Set2' },
+        { text: 'Set 3', value: 'Set3' },
+        { text: 'Set 4', value: 'Set4' },
+        { text: 'Set 5', value: 'Set5' },
+      ],
+      items: [
+        {
+          value: false,
+          name: 'Novak Djokovic [2]',
+          Set1: 6,
+          Set2: 4,
+          Set3: 6,
+          Set4: 3,
+          Set5: 4,
+        },
+        {
+          value: false,
+          name: 'Rafael Nadal [1]',
+          Set1: 2,
+          Set2: 6,
+          Set3: 3,
+          Set4: 6,
+          Set5: 3,
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -156,17 +159,21 @@
   h1, h2 {
     font-weight: normal;
   }
+
   .match {
     width: 100%;
   }
+
   ul {
     list-style-type: none;
     padding: 0;
   }
+
   li {
     display: inline-block;
     margin: 0 10px;
   }
+
   a {
     color: #42b983;
   }

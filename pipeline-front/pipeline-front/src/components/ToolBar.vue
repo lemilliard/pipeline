@@ -23,18 +23,16 @@
 </template>
 
 <script>
-  import atpLogin from './Login';
+import atpLogin from './Login';
 
-  export default {
-    components: { atpLogin },
-    name: 'atpToolBar',
-    props: ['drawer'],
-    data() {
-      return {
-        drawer: null,
-      };
-    },
-  };
+export default {
+  components: { atpLogin },
+  name: 'atpToolBar',
+  props: ['drawer'],
+  data() {
+    return {};
+  },
+};
 
 
 </script>

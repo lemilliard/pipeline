@@ -33,14 +33,14 @@
 
 <script>
 
-  export default {
-    name: 'atpRegister',
-    data() {
-      return {
-        dialogRegister: false,
-      };
-    },
-    mounted() {
-    },
-  }
+export default {
+  name: 'atpRegister',
+  data() {
+    return {
+      dialogRegister: false,
+    };
+  },
+  mounted() {
+  },
+};
 </script>

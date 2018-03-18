@@ -16,20 +16,20 @@
 </template>
 
 <script>
-  import atpHeader from './components/Header';
-  import atpFooter from './components/Footer';
-  import atpBreadcrumbs from './components/Breadcrumbs';
+import atpHeader from './components/Header';
+import atpFooter from './components/Footer';
+import atpBreadcrumbs from './components/Breadcrumbs';
 
 
-  require('vuetify/dist/vuetify.min.css');
+require('vuetify/dist/vuetify.min.css');
 
-  export default {
-    components: { atpHeader, atpFooter, atpBreadcrumbs },
-    data: () => ({
-      message: 'ATP Live',
-    }),
-    props: {
-      source: String,
-    }
-  }
+export default {
+  components: { atpHeader, atpFooter, atpBreadcrumbs },
+  data: () => ({
+    message: 'ATP Live',
+  }),
+  props: {
+    source: String,
+  },
+};
 </script>

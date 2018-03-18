@@ -8,7 +8,7 @@
     >
       <v-list>
         <template v-for="(item, index) in items">
-          <v-list-tile :href="item.href" :to="{name: item.href}" exact>
+          <v-list-tile :key="index" :href="item.href" :to="{name: item.href}" exact>
             <v-list-tile-action>
               <v-icon light v-html="item.icon"></v-icon>
             </v-list-tile-action>
@@ -21,7 +21,7 @@
       <v-divider></v-divider>
       <v-list>
         <template v-for="(item, index) in itemsMenuArbitre">
-          <v-list-tile :href="item.href" :to="{name: item.href}" exact>
+          <v-list-tile :key="index" :href="item.href" :to="{name: item.href}" exact>
             <v-list-tile-action>
               <v-icon light v-html="item.icon"></v-icon>
             </v-list-tile-action>
@@ -36,47 +36,46 @@
 </template>
 
 <script>
-  export default {
-    name: 'atpPrimaryMenu',
-    props: ['drawer'],
-    data() {
-      return {
-        drawer: null,
-        items: [{
-          href: 'Home',
-          router: true,
-          title: 'Home',
-          icon: 'home',
-        }, {
-          href: 'Settings',
-          router: true,
-          title: 'Settings',
-          icon: 'settings',
-        }, {
-          href: 'About',
-          router: true,
-          title: 'About',
-          icon: 'domain',
-        }],
-        itemsMenuArbitre: [{
-          href: 'Matchs',
-          router: true,
-          title: 'Matchs en direct',
-          icon: 'gamepad',
-        }, {
-          href: 'Classement',
-          router: true,
-          title: 'Classement',
-          icon: 'settings',
-        }, {
-          href: 'Calendrier',
-          router: true,
-          title: 'Calendrier',
-          icon: 'settings',
-        }],
-      };
-    },
-  };
+export default {
+  name: 'atpPrimaryMenu',
+  props: ['drawer'],
+  data() {
+    return {
+      items: [{
+        href: 'Home',
+        router: true,
+        title: 'Home',
+        icon: 'home',
+      }, {
+        href: 'Settings',
+        router: true,
+        title: 'Settings',
+        icon: 'settings',
+      }, {
+        href: 'About',
+        router: true,
+        title: 'About',
+        icon: 'domain',
+      }],
+      itemsMenuArbitre: [{
+        href: 'Matchs',
+        router: true,
+        title: 'Matchs en direct',
+        icon: 'gamepad',
+      }, {
+        href: 'Classement',
+        router: true,
+        title: 'Classement',
+        icon: 'settings',
+      }, {
+        href: 'Calendrier',
+        router: true,
+        title: 'Calendrier',
+        icon: 'settings',
+      }],
+    };
+  },
+};
 
 
 </script>

@@ -26,21 +26,21 @@
 </template>
 
 <script>
-  import atpToolBar from './ToolBar';
-  import atpPrimaryMenu from './PrimaryMenu';
-  import atpLogin from './Login';
-  import atpRegister from './Register';
-  import atpAccountMenu from './AccountMenu';
+import atpToolBar from './ToolBar';
+import atpPrimaryMenu from './PrimaryMenu';
+import atpLogin from './Login';
+import atpRegister from './Register';
+import atpAccountMenu from './AccountMenu';
 
-  export default {
-    components: { atpToolBar, atpPrimaryMenu, atpLogin, atpRegister, atpAccountMenu },
-    name: 'atpHeader',
-    data() {
-      return {
-        drawer: false,
-        isLogin: false,
-      };
-    },
-  };
+export default {
+  components: { atpToolBar, atpPrimaryMenu, atpLogin, atpRegister, atpAccountMenu },
+  name: 'atpHeader',
+  data() {
+    return {
+      drawer: false,
+      isLogin: false,
+    };
+  },
+};
 </script>
 

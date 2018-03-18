@@ -5,7 +5,7 @@
         <v-icon>more_vert</v-icon>
       </v-btn>
       <v-list>
-        <v-list-tile v-for="(item, i) in items" :key="i" @click="">
+        <v-list-tile v-for="(item, i) in items" :key="i">
           <v-list-tile-title>{{ item.title }}</v-list-tile-title>
         </v-list-tile>
       </v-list>
@@ -14,19 +14,18 @@
 </template>
 
 <script>
-  export default {
-    name: 'atpAccountMenu',
-    props: ['isLogin'],
-    data() {
-      return {
-        isLogin: false,
-        items: [
-          { title: 'Account' },
-          { title: 'Parameter' },
-          { title: 'Preference' },
-          { title: 'Log out' }
-        ]
-      };
-    }
-  }
+export default {
+  name: 'atpAccountMenu',
+  props: ['isLogin'],
+  data() {
+    return {
+      items: [
+        { title: 'Account' },
+        { title: 'Parameter' },
+        { title: 'Preference' },
+        { title: 'Log out' },
+      ],
+    };
+  },
+};
 </script>
