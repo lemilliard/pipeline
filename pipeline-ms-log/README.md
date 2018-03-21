@@ -2,7 +2,7 @@
 
 ## Installation
 
-You neeed Ruby v2.3.3 installed.
+You neeed Ruby v2.3.1 installed.
 
 ```
 bundle install
