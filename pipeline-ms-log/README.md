@@ -7,5 +7,7 @@ You neeed Ruby v2.3.3 installed.
 ```
 bundle install
 
+cd src
+
 ruby log.rb
 ```
