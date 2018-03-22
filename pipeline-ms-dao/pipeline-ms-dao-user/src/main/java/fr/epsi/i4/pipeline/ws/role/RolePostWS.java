@@ -1,7 +1,7 @@
 package fr.epsi.i4.pipeline.ws.role;
 
 import com.thomaskint.minidao.exception.MDException;
-import fr.epsi.i4.pipeline.model.Role;
+import fr.epsi.i4.pipeline.model.bdd.Role;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

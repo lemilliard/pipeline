@@ -1,18 +1,19 @@
-package fr.epsi.i4.pipeline.model;
+package fr.epsi.i4.pipeline.model.bdd;
+
 
 import com.thomaskint.minidao.annotation.MDEntity;
 import com.thomaskint.minidao.annotation.MDField;
 import com.thomaskint.minidao.annotation.MDId;
 
-import static com.thomaskint.minidao.enumeration.MDVerb.SELECT;
+import static com.thomaskint.minidao.enumeration.MDSQLAction.SELECT;
 
 /**
  * Created by tkint on 25/01/2018.
  */
-@MDEntity(name = "privilege")
-public class Privilege {
+@MDEntity(tableName = "role")
+public class Role {
 
 	@MDId
-	@MDField(name = "valeur", verbs = SELECT)
+	@MDField(fieldName = "valeur", allowedSQLActions = SELECT)
 	public String value;
 }

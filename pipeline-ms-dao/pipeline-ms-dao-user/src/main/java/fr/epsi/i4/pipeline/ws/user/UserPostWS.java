@@ -3,7 +3,7 @@ package fr.epsi.i4.pipeline.ws.user;
 import com.thomaskint.minidao.exception.MDException;
 import com.thomaskint.minidao.querybuilder.MDCondition;
 import fr.epsi.i4.pipeline.model.Connector;
-import fr.epsi.i4.pipeline.model.User;
+import fr.epsi.i4.pipeline.model.bdd.User;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

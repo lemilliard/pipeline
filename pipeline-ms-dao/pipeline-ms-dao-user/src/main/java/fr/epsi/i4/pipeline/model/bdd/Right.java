@@ -1,4 +1,4 @@
-package fr.epsi.i4.pipeline.model;
+package fr.epsi.i4.pipeline.model.bdd;
 
 import com.thomaskint.minidao.annotation.MDEntity;
 import com.thomaskint.minidao.annotation.MDField;
@@ -6,21 +6,21 @@ import com.thomaskint.minidao.annotation.MDId;
 
 import java.math.BigDecimal;
 
-import static com.thomaskint.minidao.enumeration.MDVerb.SELECT;
+import static com.thomaskint.minidao.enumeration.MDSQLAction.SELECT;
 
 /**
  * Created by tkint on 25/01/2018.
  */
-@MDEntity(name = "droit")
+@MDEntity(tableName = "droit")
 public class Right {
 
 	@MDId
-	@MDField(name = "id_droit", verbs = SELECT)
+	@MDField(fieldName = "id_droit", allowedSQLActions = SELECT)
 	public BigDecimal id_right;
 
-	@MDField(name = "table_droit")
+	@MDField(fieldName = "table_droit")
 	public String tableRight;
 
-	@MDField(name = "privilege")
+	@MDField(fieldName = "privilege")
 	public String privilege;
 }
