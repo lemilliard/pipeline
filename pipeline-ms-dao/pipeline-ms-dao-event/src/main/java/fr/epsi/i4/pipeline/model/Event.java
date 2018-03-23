@@ -6,22 +6,22 @@ import com.thomaskint.minidao.annotation.MDId;
 
 import java.math.BigDecimal;
 
-@MDEntity(name = "evenement")
+@MDEntity(tableName = "evenement")
 public class Event {
 
 	@MDId
-	@MDField(name = "id_evenement")
+	@MDField(fieldName = "id_evenement")
 	public BigDecimal idEvent;
 
-	@MDField(name = "id_joueur")
+	@MDField(fieldName = "id_joueur")
 	public BigDecimal idPlayer;
 
-	@MDField(name = "type")
+	@MDField(fieldName = "type")
 	public String type;
 
-	@MDField(name = "reussis")
+	@MDField(fieldName = "reussis")
 	public boolean state;
 
-	@MDField(name = "score")
+	@MDField(fieldName = "score")
 	public int score;
 }

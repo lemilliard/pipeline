@@ -29,6 +29,10 @@ PYTHON_PROJECTS=(
 	"pipeline-ms-resource"
 )
 
+RUBY_PROJECTS=(
+	"pipeline-ms-log"
+)
+
 ERROR_MISSING_FILES="Required files does not exist"
 
 RANCHER_URL="home.thomaskint.com"
@@ -147,6 +151,15 @@ function copy_projects() {
 		fi
 	done
 	
+	echo "Copying ruby projects"
+	for i in ${RUBY_PROJECTS[@]}; do
+		echo " -> Copying $i"
+		go_to_base_folder $i
+		create_docker_folder $i
+		cp -r "src/" "$DOCKER_FULL_DIR/${i}"
+		cp "Gemfile" "$DOCKER_FULL_DIR/${i}"
+	done
+	
 	echo
 }
 
@@ -194,6 +207,16 @@ function generate_dockerfiles() {
 			echo "RUN pip install --no-cache-dir -r requirements.txt" >> $DOCKERFILE
 			echo "CMD python main.py" >> $DOCKERFILE
 		fi
+	done
+	
+	echo "Generating for ruby projects"
+	for i in ${RUBY_PROJECTS[@]}; do
+		echo " -> Generating $i"
+		go_to_docker_folder $i
+		echo "FROM ruby:2.5" > $DOCKERFILE
+		echo "ADD . /app " >> $DOCKERFILE
+		echo "RUN cd /app && bundle install" >> $DOCKERFILE
+		echo "CMD cd /app && ruby src/main.rb -p 8080" >> $DOCKERFILE
 	done
 	
 	echo
@@ -279,6 +302,12 @@ EOF
 		add_to_docker_compose $i "8080"
 	done
 	
+	echo "Adding ruby projects"
+	for i in ${RUBY_PROJECTS[@]}; do
+		echo " -> Adding $i"
+		add_to_docker_compose $i "8080"
+	done
+	
 	echo "Adding footer"
 	cat >> $DOCKER_COMPOSE_FILE << EOF
 
@@ -337,6 +366,12 @@ EOF
 		add_to_rancher_compose $i $1
 	done
 	
+	echo "Adding ruby projects"
+	for i in ${RUBY_PROJECTS[@]}; do
+		echo " -> Adding $i"
+		add_to_rancher_compose $i $1
+	done
+	
 	echo
 }
 
@@ -380,6 +415,11 @@ function generate_dockerize() {
 	
 	echo "Adding python projects"
 	for i in ${PYTHON_PROJECTS[@]}; do
+		add_to_dockerize $i $i
+	done
+	
+	echo "Adding ruby projects"
+	for i in ${RUBY_PROJECTS[@]}; do
 		add_to_dockerize $i $i
 	done
 	
