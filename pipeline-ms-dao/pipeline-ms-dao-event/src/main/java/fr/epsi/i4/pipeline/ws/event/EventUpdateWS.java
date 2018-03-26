@@ -1,7 +1,7 @@
 package fr.epsi.i4.pipeline.ws.event;
 
 import com.thomaskint.minidao.exception.MDException;
-import fr.epsi.i4.pipeline.model.Event;
+import fr.epsi.i4.pipeline.model.bdd.Event;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;

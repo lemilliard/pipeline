@@ -5,6 +5,9 @@ import com.thomaskint.minidao.connection.MDConnectionConfig;
 
 import static com.thomaskint.minidao.connection.MDDriver.ORACLE;
 
+/**
+ * @author Thomas Kint
+ */
 public abstract class WebService {
 
 	private final MDConnectionConfig connectionConfig;

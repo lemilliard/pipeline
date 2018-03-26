@@ -1,19 +1,21 @@
-package fr.epsi.i4.pipeline.model.bdd;
+package fr.epsi.i4.pipeline.model.bdd.court;
 
 import com.thomaskint.minidao.annotation.MDEntity;
 import com.thomaskint.minidao.annotation.MDField;
 import com.thomaskint.minidao.annotation.MDId;
 import com.thomaskint.minidao.annotation.MDManyToOne;
+import com.thomaskint.minidao.enumeration.MDLoadPolicy;
+import fr.epsi.i4.pipeline.model.bdd.complexe.Complexe;
 
 import java.math.BigDecimal;
-
-import static com.thomaskint.minidao.enumeration.MDLoadPolicy.HEAVY;
 
 /**
  * @author Thomas Kint
  */
 @MDEntity(tableName = "court")
 public class Court {
+
+	public static final String idComplexeFieldName = "id_complexe";
 
 	@MDId
 	@MDField(fieldName = "id_court")
@@ -22,12 +24,12 @@ public class Court {
 	@MDField(fieldName = "nom")
 	public String nom;
 
-	@MDField(fieldName = "type")
-	public String type;
+	@MDManyToOne(fieldName = "type", target = TypeCourt.class)
+	public TypeCourt typeCourt;
 
-	@MDField(fieldName = "id_complexe")
+	@MDField(fieldName = Court.idComplexeFieldName)
 	public BigDecimal idComplexe;
 
-	@MDManyToOne(fieldName = "id_complexe", target = Complexe.class, loadPolicy = HEAVY)
+	@MDManyToOne(fieldName = Court.idComplexeFieldName, target = Complexe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Complexe complexe;
 }

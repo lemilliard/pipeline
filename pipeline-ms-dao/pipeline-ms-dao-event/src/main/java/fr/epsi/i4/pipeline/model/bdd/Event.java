@@ -1,10 +1,11 @@
-package fr.epsi.i4.pipeline.model;
+package fr.epsi.i4.pipeline.model.bdd;
 
 import com.thomaskint.minidao.annotation.MDEntity;
 import com.thomaskint.minidao.annotation.MDField;
 import com.thomaskint.minidao.annotation.MDId;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @MDEntity(tableName = "evenement")
 public class Event {
@@ -19,9 +20,12 @@ public class Event {
 	@MDField(fieldName = "type")
 	public String type;
 
-	@MDField(fieldName = "reussis")
-	public boolean state;
-
 	@MDField(fieldName = "score")
-	public int score;
+	public boolean score;
+
+	@MDField(fieldName = "reussis")
+	public int reussis;
+
+	@MDField(fieldName = "date_evenement")
+	public Date date;
 }
