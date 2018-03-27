@@ -3,6 +3,7 @@ package fr.epsi.i4.pipeline.ws.role;
 import com.thomaskint.minidao.exception.MDException;
 import fr.epsi.i4.pipeline.model.bdd.Role;
 import fr.epsi.i4.pipeline.ws.WebService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -26,7 +26,7 @@ public class Complexe {
 	@MDField(fieldName = idAdresseFieldName)
 	public BigDecimal idAdresse;
 
-	@MDManyToOne(fieldName = idAdresseFieldName, target = Adresse.class, loadPolicy = MDLoadPolicy.HEAVY)
+	@MDManyToOne(fieldName = Complexe.idAdresseFieldName, targetFieldName = Adresse.idAdresseFieldName, target = Adresse.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Adresse adresse;
 
 	@MDOneToMany(fieldName = Complexe.idComplexeFieldName, targetFieldName = Tournoi.idComplexeFieldName, target = Tournoi.class, loadPolicy = MDLoadPolicy.HEAVY)

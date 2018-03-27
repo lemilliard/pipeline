@@ -1,6 +1,9 @@
 package fr.epsi.i4.pipeline.model.bdd;
 
-import com.thomaskint.minidao.annotation.*;
+import com.thomaskint.minidao.annotation.MDEntity;
+import com.thomaskint.minidao.annotation.MDField;
+import com.thomaskint.minidao.annotation.MDId;
+import com.thomaskint.minidao.annotation.MDManyToOne;
 import com.thomaskint.minidao.enumeration.MDLoadPolicy;
 
 import java.math.BigDecimal;
@@ -26,12 +29,12 @@ public class Tournoi {
 	@MDField(fieldName = "date_tournoi")
 	public Date date;
 
-	@MDManyToOne(fieldName = Tournoi.niveauFieldName, target = Niveau.class, loadPolicy = MDLoadPolicy.HEAVY)
+	@MDManyToOne(fieldName = Tournoi.niveauFieldName, targetFieldName = Niveau.valueFieldName, target = Niveau.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Niveau niveau;
 
 	@MDField(fieldName = Tournoi.idComplexeFieldName)
 	public BigDecimal idComplexe;
 
-	@MDManyToOne(fieldName = Tournoi.idComplexeFieldName, target = Complexe.class, loadPolicy = MDLoadPolicy.HEAVY)
+	@MDManyToOne(fieldName = Tournoi.idComplexeFieldName, targetFieldName = Complexe.idComplexeFieldName, target = Complexe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Complexe complexe;
 }
