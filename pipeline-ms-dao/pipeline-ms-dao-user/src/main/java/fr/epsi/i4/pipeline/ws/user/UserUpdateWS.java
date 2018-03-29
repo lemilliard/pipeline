@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by tkint on 25/01/2018.
  */
-@RestController
-public class UserUpdateWS extends WebService {
+@RestController public class UserUpdateWS extends WebService {
 
-	@PutMapping("/user")
-	public boolean updateUser(@RequestBody User user) {
-		boolean updated = false;
+	@PutMapping("/user") public User updateUser(@RequestBody User user) {
+		User u = null;
 		try {
-			updated = getMiniDAO().update().updateEntity(user);
+			if (getMiniDAO().update().updateEntity(user)) {
+				u = user;
+			}
 		} catch (MDException e) {
 			e.printStackTrace();
 		}
-		return updated;
+		return u;
 	}
 }

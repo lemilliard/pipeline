@@ -5,9 +5,9 @@ DOCKER_DIR="pipeline-docker"
 
 DOCKER_FULL_DIR="$BASE_DIR/$DOCKER_DIR"
 
-DOCKER_COMPOSE_FILE="docker-compose-generated.yml"
+DOCKER_COMPOSE_FILE="docker-compose.yml"
 
-RANCHER_COMPOSE_FILE="rancher-compose-generated.yml"
+RANCHER_COMPOSE_FILE="rancher-compose.yml"
 
 DOCKERIZE_FILE="dockerize.sh"
 
@@ -453,11 +453,12 @@ function delete_stack() {
 }
 
 function create_stack() {
-	ranchercompose=$(sed "y/\"/\\\"/" "${DOCKER_FULL_DIR}/rancher-compose.yml")
+	echo "Rancher Compose"
+	ranchercompose=$(sed "y/\"/\\\"/" "${DOCKER_FULL_DIR}/${RANCHER_COMPOSE_FILE}")
 	ranchercompose=$(sed "y/\'/\\\'/" <<< $ranchercompose)
+	echo "Docker Compose"
 	dockercompose=$(cat "${DOCKER_FULL_DIR}/${DOCKER_COMPOSE_FILE}")
 	dockercompose=$(sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' <<< $dockercompose)
-	#dockercompose="version: '2'\n\nservices:\n  pipeline-ms-dao-user:\n    image: pipeline-ms-dao-user"
 	curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 		-X POST \
 		-H "Content-Type: application/json" \

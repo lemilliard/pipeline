@@ -10,7 +10,9 @@ import com.thomaskint.minidao.annotation.MDId;
 @MDEntity(tableName = "type_court")
 public class TypeCourt {
 
+	public static final String idFieldName = "valeur";
+
 	@MDId
-	@MDField(fieldName = "valeur")
+	@MDField(fieldName = idFieldName)
 	public String valeur;
 }

@@ -1,4 +1,4 @@
-package fr.epsi.i4.pipeline.model;
+package fr.epsi.i4.pipeline.model.registry;
 
 import javax.websocket.Session;
 

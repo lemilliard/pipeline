@@ -10,10 +10,7 @@ import org.glassfish.tyrus.server.Server;
 public class Main {
 
 	public static void main(String[] args) {
-		Class[] endpoints = new Class[]{
-				ChatEndpoint.class,
-				MainEndpoint.class
-		};
+		Class[] endpoints = new Class[] { ChatEndpoint.class, MainEndpoint.class };
 
 		Server server = new Server("localhost", 8080, "/", null, endpoints);
 

@@ -1,14 +1,14 @@
 package fr.epsi.i4.pipeline.model.bdd.tournoi;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 import com.thomaskint.minidao.annotation.MDEntity;
 import com.thomaskint.minidao.annotation.MDField;
 import com.thomaskint.minidao.annotation.MDId;
 import com.thomaskint.minidao.annotation.MDManyToOne;
 import com.thomaskint.minidao.enumeration.MDLoadPolicy;
 import fr.epsi.i4.pipeline.model.bdd.complexe.Complexe;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * @author Thomas Kint
@@ -34,6 +34,6 @@ public class Tournoi {
 	@MDField(fieldName = Tournoi.idComplexeFieldName)
 	public BigDecimal idComplexe;
 
-	@MDManyToOne(fieldName = Tournoi.idComplexeFieldName, target = Complexe.class, loadPolicy = MDLoadPolicy.HEAVY)
+	@MDManyToOne(fieldName = Tournoi.idComplexeFieldName, targetFieldName = Complexe.idComplexeFieldName, target = Complexe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Complexe complexe;
 }

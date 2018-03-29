@@ -1,33 +1,33 @@
-package fr.epsi.i4.pipeline.model;
+package fr.epsi.i4.pipeline.model.registry;
 
-import javax.websocket.Session;
 import java.util.ArrayList;
 import java.util.List;
+import javax.websocket.Session;
 
 public class Registry {
 
-	private String entity;
+	private Entity entity;
 
 	private String entityPK;
 
 	private List<Entry> entries;
 
-	public Registry(String entity) {
+	public Registry(Entity entity) {
 		this.entity = entity;
 		this.entries = new ArrayList<>();
 	}
 
-	public Registry(String entity, String entityPK) {
+	public Registry(Entity entity, String entityPK) {
 		this.entity = entity;
 		this.entityPK = entityPK;
 		this.entries = new ArrayList<>();
 	}
 
-	public String getEntity() {
+	public Entity getEntity() {
 		return entity;
 	}
 
-	public void setEntity(String entity) {
+	public void setEntity(Entity entity) {
 		this.entity = entity;
 	}
 
@@ -67,7 +67,7 @@ public class Registry {
 		Entry entry = null;
 		int i = 0;
 		while (i < entries.size() && entry == null) {
-			if (entries.get(i).getPkValue().equals(pkValue)
+			if ((entries.get(i).getPkValue() == null || entries.get(i).getPkValue().equals(pkValue))
 					&& entries.get(i).getSession().getId().equals(session.getId())) {
 				entry = entries.get(i);
 			}
