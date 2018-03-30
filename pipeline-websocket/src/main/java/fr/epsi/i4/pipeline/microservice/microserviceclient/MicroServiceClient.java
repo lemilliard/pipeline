@@ -20,7 +20,7 @@ public abstract class MicroServiceClient {
 		return basePath;
 	}
 
-	public String getResourcePath(MicroServiceResource resource, Map params) {
+	public String getResourcePath(MicroServiceResource resource, Map<String, Object> params) {
 		return "/" + basePath + "/" + mapResourceWithParams(resource, params);
 	}
 
@@ -36,7 +36,7 @@ public abstract class MicroServiceClient {
 		return resource;
 	}
 
-	private String mapResourceWithParams(MicroServiceResource resource, Map<String, Object> params) {
+	public String mapResourceWithParams(MicroServiceResource resource, Map<String, Object> params) {
 		String[] resourceArray = resource.getName().split("/");
 		StringBuilder resourcePath = new StringBuilder(resourceArray[0]);
 		String param;

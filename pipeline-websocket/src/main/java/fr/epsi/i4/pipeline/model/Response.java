@@ -6,7 +6,7 @@ public class Response {
 
 	private int httpCode;
 
-	private String content;
+	private Object content;
 
 	private String error;
 
@@ -22,11 +22,11 @@ public class Response {
 		this.httpCode = httpCode;
 	}
 
-	public String getContent() {
+	public Object getContent() {
 		return content;
 	}
 
-	public void setContent(String content) {
+	public void setContent(Object content) {
 		this.content = content;
 	}
 

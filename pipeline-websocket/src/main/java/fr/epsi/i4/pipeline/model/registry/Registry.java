@@ -6,29 +6,29 @@ import javax.websocket.Session;
 
 public class Registry {
 
-	private Entity entity;
+	private RegistryEntity registryEntity;
 
 	private String entityPK;
 
 	private List<Entry> entries;
 
-	public Registry(Entity entity) {
-		this.entity = entity;
+	public Registry(RegistryEntity registryEntity) {
+		this.registryEntity = registryEntity;
 		this.entries = new ArrayList<>();
 	}
 
-	public Registry(Entity entity, String entityPK) {
-		this.entity = entity;
+	public Registry(RegistryEntity registryEntity, String entityPK) {
+		this.registryEntity = registryEntity;
 		this.entityPK = entityPK;
 		this.entries = new ArrayList<>();
 	}
 
-	public Entity getEntity() {
-		return entity;
+	public RegistryEntity getRegistryEntity() {
+		return registryEntity;
 	}
 
-	public void setEntity(Entity entity) {
-		this.entity = entity;
+	public void setRegistryEntity(RegistryEntity registryEntity) {
+		this.registryEntity = registryEntity;
 	}
 
 	public String getEntityPK() {
@@ -49,7 +49,7 @@ public class Registry {
 		}
 	}
 
-	public List<Entry> getEntriesByPKalue(String pkValue) {
+	public List<Entry> getEntriesByPKalue(Object pkValue) {
 		List<Entry> entries = new ArrayList<>();
 		for (Entry entry : this.entries) {
 			if (entry.getPkValue().equals(pkValue)) {
@@ -63,7 +63,7 @@ public class Registry {
 		return getEntryByPkValueAndSession(entry.getPkValue(), entry.getSession()) != null;
 	}
 
-	private Entry getEntryByPkValueAndSession(String pkValue, Session session) {
+	private Entry getEntryByPkValueAndSession(Object pkValue, Session session) {
 		Entry entry = null;
 		int i = 0;
 		while (i < entries.size() && entry == null) {

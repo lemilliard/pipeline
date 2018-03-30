@@ -3,8 +3,8 @@
   <title>WebSocket Test</title>
   URL:
   <ul>
-	<li>ws://home.thomaskint.com:8085/websocket/pipeline-websocket/chat</li>
-	<li>ws://localhost:8080/pipeline-websocket/chat</li>
+	<li>ws://home.thomaskint.com:8085/websocket</li>
+	<li>ws://home.thomaskint.com:8085/websocket/chat</li>
   </ul>
   <br />
   <input id="uri"/>
@@ -14,12 +14,12 @@
   <br />
   Corps de la requête:
   <br />
-  {"method":"[GET|POST|PUT|DELETE]", "resource":"[resource_name]/[params...]", "params":{"[name]":"[value]"}, "body":"[object_to_send]}
+  {method:"[GET|POST|PUT|DELETE]", resource:"[resource_name]/[params...]", "params":{"[name]":"[value]"}, "body":"[object_to_send]}
   <br />
   <br />
   Exemple:
   <br />
-  {"method":"GET", "resource":"user/{id_user}", "params":{"id_user":"1"}}
+  {method:"GET", resource:"user/{id_user}", params:{id_user:"1"}}
   <br />
   {"username":"Tom", "content":"Yo!"}
   <br />
@@ -39,7 +39,7 @@
 	content = document.getElementById("content");
 	output = document.getElementById("output");
 	if (!uri.value) {
-		uri.value = "ws://localhost:8085/pipeline-websocket/user";
+		uri.value = "ws://home.thomaskint.com:8085/websocket";
 	}
   }
   

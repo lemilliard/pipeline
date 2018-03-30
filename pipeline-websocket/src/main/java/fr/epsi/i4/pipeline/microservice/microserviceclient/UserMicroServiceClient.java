@@ -1,7 +1,7 @@
 package fr.epsi.i4.pipeline.microservice.microserviceclient;
 
-import static fr.epsi.i4.pipeline.model.registry.Entity.ROLE;
-import static fr.epsi.i4.pipeline.model.registry.Entity.USER;
+import static fr.epsi.i4.pipeline.model.registry.RegistryEntity.ROLE;
+import static fr.epsi.i4.pipeline.model.registry.RegistryEntity.USER;
 
 /**
  * Created by tkint on 23/02/2018.

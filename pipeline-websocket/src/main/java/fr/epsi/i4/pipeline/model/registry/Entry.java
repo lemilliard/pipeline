@@ -4,7 +4,7 @@ import javax.websocket.Session;
 
 public class Entry {
 
-	private String pkValue;
+	private Object pkValue;
 
 	private Session session;
 
@@ -12,16 +12,16 @@ public class Entry {
 		this.session = session;
 	}
 
-	public Entry(String pkValue, Session session) {
+	public Entry(Object pkValue, Session session) {
 		this.pkValue = pkValue;
 		this.session = session;
 	}
 
-	public String getPkValue() {
+	public Object getPkValue() {
 		return pkValue;
 	}
 
-	public void setPkValue(String pkValue) {
+	public void setPkValue(Object pkValue) {
 		this.pkValue = pkValue;
 	}
 

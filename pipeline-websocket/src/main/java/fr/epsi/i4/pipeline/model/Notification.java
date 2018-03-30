@@ -1,17 +1,17 @@
 package fr.epsi.i4.pipeline.model;
 
-import fr.epsi.i4.pipeline.model.registry.Entity;
+import fr.epsi.i4.pipeline.model.registry.RegistryEntity;
 
 public class Notification {
 
-	private Entity entity;
+	private RegistryEntity registryEntity;
 
 	private String entityPk;
 
-	private String content;
+	private Object content;
 
-	public Notification(Entity entity, String entityPk, String content) {
-		this.entity = entity;
+	public Notification(RegistryEntity registryEntity, String entityPk, Object content) {
+		this.registryEntity = registryEntity;
 		this.entityPk = entityPk;
 		this.content = content;
 	}

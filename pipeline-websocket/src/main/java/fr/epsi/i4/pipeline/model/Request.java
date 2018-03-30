@@ -10,7 +10,7 @@ public class Request {
 
 	private String resource;
 
-	private Map<String, String> params;
+	private Map<String, Object> params;
 
 	private Object body;
 
@@ -26,7 +26,7 @@ public class Request {
 		return resource;
 	}
 
-	public Map<String, String> getParams() {
+	public Map<String, Object> getParams() {
 		return params;
 	}
 
@@ -34,7 +34,7 @@ public class Request {
 		return body;
 	}
 
-	public void setParams(Map<String, String> params) {
+	public void setParams(Map<String, Object> params) {
 		this.params = params;
 	}
 }

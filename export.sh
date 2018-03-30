@@ -490,6 +490,8 @@ function main() {
 	
 	delete_stack $(get_stack_id)
 	
+	sleep 30
+	
 	execute_dockerize
 	
 	create_stack
