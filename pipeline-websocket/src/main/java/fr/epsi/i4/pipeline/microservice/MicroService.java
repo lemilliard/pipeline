@@ -1,18 +1,5 @@
 package fr.epsi.i4.pipeline.microservice;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.websocket.EncodeException;
-import javax.websocket.Session;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
 import fr.epsi.i4.pipeline.microservice.microserviceclient.Method;
@@ -22,9 +9,18 @@ import fr.epsi.i4.pipeline.microservice.microserviceclient.UserMicroServiceClien
 import fr.epsi.i4.pipeline.model.Notification;
 import fr.epsi.i4.pipeline.model.Request;
 import fr.epsi.i4.pipeline.model.Response;
-import fr.epsi.i4.pipeline.model.registry.Entry;
+import fr.epsi.i4.pipeline.model.registry.RegistryEntry;
 import fr.epsi.i4.pipeline.model.registry.Registry;
-import fr.epsi.i4.pipeline.model.registry.RegistryEntity;
+import fr.epsi.i4.pipeline.model.registry.RegistryType;
+
+import javax.websocket.EncodeException;
+import javax.websocket.Session;
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tkint on 22/02/2018.
@@ -135,11 +131,11 @@ public class MicroService {
 		// SI on fait un PUT ou un DELETE
 		if (request.getMethod().equals(Method.PUT) || request.getMethod().equals(Method.DELETE)) {
 			// On récupère le registre
-			Registry registry = getRegistryByEntity(resource.getRegistryEntity());
+			Registry registry = getRegistryByEntity(resource.getRegistryType());
 			// On génère la notification
 			Notification notification =
-					new Notification(registry.getRegistryEntity(), registry.getEntityPK(), response.getContent());
-			List<Entry> entries;
+					new Notification(registry.getRegistryType(), registry.getEntityPK(), response.getContent());
+			List<RegistryEntry> entries;
 			Object pkValue = null;
 			// Si la clef primaire est dans les paramètres
 			if (request.getParams() != null && !request.getParams().isEmpty()) {
@@ -159,10 +155,10 @@ public class MicroService {
 				entries = registry.getEntries();
 			}
 			// On notifie toutes les entrées du registre
-			for (Entry entry : entries) {
-				if (!entry.getSession().getId().equals(session.getId())) {
+			for (RegistryEntry registryEntry : entries) {
+				if (!registryEntry.getSession().getId().equals(session.getId())) {
 					try {
-						entry.getSession().getBasicRemote().sendObject(new NotificationEncoder().encode(notification));
+						registryEntry.getSession().getBasicRemote().sendObject(new NotificationEncoder().encode(notification));
 					} catch (EncodeException | IOException e) {
 						e.printStackTrace();
 					}
@@ -180,23 +176,23 @@ public class MicroService {
 	 */
 	private void synchronizeRequest(Request request, Session session, MicroServiceResource resource) {
 		// On récupère le registre
-		Registry registry = getRegistryByEntity(resource.getRegistryEntity());
+		Registry registry = getRegistryByEntity(resource.getRegistryType());
 		// Si le registre n'existe pas
 		if (registry == null) {
 			// S'il n'y a pas de clef primaire, on créé un registre sur l'ensemble de l'entité
 			if (request.getParams() == null || request.getParams().isEmpty()) {
-				registry = new Registry(resource.getRegistryEntity());
+				registry = new Registry(resource.getRegistryType());
 			}
 			// Sinon, on défini le premier paramètre comme clef primaire et on créé le registre
 			else {
 				Map.Entry<String, Object> param = request.getParams().entrySet().iterator().next();
 				String pk = param.getKey();
-				registry = new Registry(resource.getRegistryEntity(), pk);
+				registry = new Registry(resource.getRegistryType(), pk);
 			}
 			// On enregistre le registre
 			registries.add(registry);
 		}
-		Entry entry;
+		RegistryEntry registryEntry;
 		Object pkValue = null;
 		// Si la clef primaire est dans les paramètres
 		if (request.getParams() != null && !request.getParams().isEmpty()) {
@@ -206,28 +202,28 @@ public class MicroService {
 		else if (request.getBody() != null && ((LinkedTreeMap) request.getBody()).containsKey(registry.getEntityPK())) {
 			pkValue = ((LinkedTreeMap) request.getBody()).get(registry.getEntityPK());
 		}
-		// S'il n'y a pas de valeur à la clef primaire, on génère l'entry basée uniquement sur la session
+		// S'il n'y a pas de valeur à la clef primaire, on génère l'registryEntry basée uniquement sur la session
 		if (pkValue == null) {
-			entry = new Entry(session);
+			registryEntry = new RegistryEntry(session);
 		}
-		// Sinon, on génère l'entry basée sur la session et la clef primaire
+		// Sinon, on génère l'registryEntry basée sur la session et la clef primaire
 		else {
-			entry = new Entry(pkValue, session);
+			registryEntry = new RegistryEntry(pkValue, session);
 		}
-		registry.addEntry(entry);
+		registry.addEntry(registryEntry);
 	}
 
 	/**
-	 * Récupère un registre basé sur son registryEntity
+	 * Récupère un registre basé sur son registryType
 	 *
-	 * @param registryEntity
+	 * @param registryType
 	 * @return
 	 */
-	private Registry getRegistryByEntity(RegistryEntity registryEntity) {
+	private Registry getRegistryByEntity(RegistryType registryType) {
 		Registry registry = null;
 		int i = 0;
 		while (i < registries.size() && registry == null) {
-			if (registries.get(i).getRegistryEntity().equals(registryEntity)) {
+			if (registries.get(i).getRegistryType().equals(registryType)) {
 				registry = registries.get(i);
 			}
 			i++;

@@ -1,15 +1,15 @@
 package fr.epsi.i4.pipeline.ws.user;
 
-import java.util.List;
-
 import com.thomaskint.minidao.exception.MDException;
 import com.thomaskint.minidao.querybuilder.MDCondition;
 import fr.epsi.i4.pipeline.model.Connector;
-import fr.epsi.i4.pipeline.model.bdd.User;
+import fr.epsi.i4.pipeline.model.bdd.user.User;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import static com.thomaskint.minidao.enumeration.MDConditionLink.AND;
 import static com.thomaskint.minidao.enumeration.MDConditionOperator.EQUAL;
@@ -24,8 +24,8 @@ public class UserPostWS extends WebService {
 	public User connectUser(@RequestBody Connector connector) {
 		User user = null;
 		try {
-			MDCondition subCondition = new MDCondition(User.passwordField, EQUAL, connector.password);
-			MDCondition condition = new MDCondition(User.emailField, EQUAL, connector.email, AND, subCondition);
+			MDCondition subCondition = new MDCondition(User.passwordFieldName, EQUAL, connector.password);
+			MDCondition condition = new MDCondition(User.emailFieldName, EQUAL, connector.email, AND, subCondition);
 
 			List<User> users = getMiniDAO().read().getEntities(User.class, condition);
 

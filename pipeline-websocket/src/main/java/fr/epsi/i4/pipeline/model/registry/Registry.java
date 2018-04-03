@@ -1,34 +1,34 @@
 package fr.epsi.i4.pipeline.model.registry;
 
+import javax.websocket.Session;
 import java.util.ArrayList;
 import java.util.List;
-import javax.websocket.Session;
 
 public class Registry {
 
-	private RegistryEntity registryEntity;
+	private RegistryType registryType;
 
 	private String entityPK;
 
-	private List<Entry> entries;
+	private List<RegistryEntry> entries;
 
-	public Registry(RegistryEntity registryEntity) {
-		this.registryEntity = registryEntity;
+	public Registry(RegistryType registryType) {
+		this.registryType = registryType;
 		this.entries = new ArrayList<>();
 	}
 
-	public Registry(RegistryEntity registryEntity, String entityPK) {
-		this.registryEntity = registryEntity;
+	public Registry(RegistryType registryType, String entityPK) {
+		this.registryType = registryType;
 		this.entityPK = entityPK;
 		this.entries = new ArrayList<>();
 	}
 
-	public RegistryEntity getRegistryEntity() {
-		return registryEntity;
+	public RegistryType getRegistryType() {
+		return registryType;
 	}
 
-	public void setRegistryEntity(RegistryEntity registryEntity) {
-		this.registryEntity = registryEntity;
+	public void setRegistryType(RegistryType registryType) {
+		this.registryType = registryType;
 	}
 
 	public String getEntityPK() {
@@ -39,40 +39,40 @@ public class Registry {
 		this.entityPK = entityPK;
 	}
 
-	public List<Entry> getEntries() {
+	public List<RegistryEntry> getEntries() {
 		return entries;
 	}
 
-	public void addEntry(Entry entry) {
-		if (!isEntryAlreadyRegistered(entry)) {
-			this.entries.add(entry);
+	public void addEntry(RegistryEntry registryEntry) {
+		if (!isEntryAlreadyRegistered(registryEntry)) {
+			this.entries.add(registryEntry);
 		}
 	}
 
-	public List<Entry> getEntriesByPKalue(Object pkValue) {
-		List<Entry> entries = new ArrayList<>();
-		for (Entry entry : this.entries) {
-			if (entry.getPkValue().equals(pkValue)) {
-				entries.add(entry);
+	public List<RegistryEntry> getEntriesByPKalue(Object pkValue) {
+		List<RegistryEntry> entries = new ArrayList<>();
+		for (RegistryEntry registryEntry : this.entries) {
+			if (registryEntry.getPkValue().equals(pkValue)) {
+				entries.add(registryEntry);
 			}
 		}
 		return entries;
 	}
 
-	private boolean isEntryAlreadyRegistered(Entry entry) {
-		return getEntryByPkValueAndSession(entry.getPkValue(), entry.getSession()) != null;
+	private boolean isEntryAlreadyRegistered(RegistryEntry registryEntry) {
+		return getEntryByPkValueAndSession(registryEntry.getPkValue(), registryEntry.getSession()) != null;
 	}
 
-	private Entry getEntryByPkValueAndSession(Object pkValue, Session session) {
-		Entry entry = null;
+	private RegistryEntry getEntryByPkValueAndSession(Object pkValue, Session session) {
+		RegistryEntry registryEntry = null;
 		int i = 0;
-		while (i < entries.size() && entry == null) {
+		while (i < entries.size() && registryEntry == null) {
 			if ((entries.get(i).getPkValue() == null || entries.get(i).getPkValue().equals(pkValue))
 					&& entries.get(i).getSession().getId().equals(session.getId())) {
-				entry = entries.get(i);
+				registryEntry = entries.get(i);
 			}
 			i++;
 		}
-		return entry;
+		return registryEntry;
 	}
 }

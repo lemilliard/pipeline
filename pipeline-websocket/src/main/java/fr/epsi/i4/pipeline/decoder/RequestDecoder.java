@@ -12,6 +12,7 @@ public class RequestDecoder implements Decoder.Text<Request> {
 	@Override
 	public Request decode(String s) throws DecodeException {
 		Gson gson = new Gson();
+		System.out.println(s);
 		return gson.fromJson(s, Request.class);
 	}
 

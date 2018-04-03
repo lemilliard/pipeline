@@ -1,7 +1,7 @@
 package fr.epsi.i4.pipeline.ws.user;
 
 import com.thomaskint.minidao.exception.MDException;
-import fr.epsi.i4.pipeline.model.bdd.User;
+import fr.epsi.i4.pipeline.model.bdd.user.User;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

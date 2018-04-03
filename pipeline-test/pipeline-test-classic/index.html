@@ -1,107 +1,180 @@
-<!DOCTYPE html>
-  <meta charset="utf-8" />
-  <title>WebSocket Test</title>
-  URL:
-  <ul>
-	<li>ws://home.thomaskint.com:8085/websocket</li>
-	<li>ws://home.thomaskint.com:8085/websocket/chat</li>
-  </ul>
-  <br />
-  <input id="uri"/>
-  <br />
-  <button onclick="connect()">CONNECT</button>
-  <button onclick="disconnect()">DISCONNECT</button>
-  <br />
-  Corps de la requête:
-  <br />
-  {method:"[GET|POST|PUT|DELETE]", resource:"[resource_name]/[params...]", "params":{"[name]":"[value]"}, "body":"[object_to_send]}
-  <br />
-  <br />
-  Exemple:
-  <br />
-  {method:"GET", resource:"user/{id_user}", params:{id_user:"1"}}
-  <br />
-  {"username":"Tom", "content":"Yo!"}
-  <br />
-  <br />
-  <textarea id="content" style="width: 300px; height: 100px"></textarea>
-  <br />
-  <button onclick="send()" style="width: 310px">SEND</button>
-  <script language="javascript" type="text/javascript">
-  
-  var uri;
-  var wsUri;
-  var content;
-  var output;
+<meta charset="utf-8"/>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
 
-  function init() {
-    uri = document.getElementById("uri");
-	content = document.getElementById("content");
-	output = document.getElementById("output");
-	if (!uri.value) {
-		uri.value = "ws://home.thomaskint.com:8085/websocket";
-	}
-  }
-  
-  function connect()
-  {
-	wsUri = uri.value;
-    websocket = new WebSocket(wsUri);
-    websocket.onopen = function(evt) { onOpen(evt) };
-    websocket.onclose = function(evt) { onClose(evt) };
-    websocket.onmessage = function(evt) { onMessage(evt) };
-    websocket.onerror = function(evt) { onError(evt) };
-  }
-  
-  function disconnect()
-  {
-	websocket.close();
-  }
-  
-  function send()
-  {
-	doSend(content.value);
-  }
+<body>
+URL:
+<ul>
+    <li>ws://localhost:8080</li>
+    <li>ws://home.thomaskint.com:8085/websocket</li>
+</ul>
 
-  function onOpen(evt)
-  {
-	console.log(evt);
-    writeToScreen("CONNECTED");
-  }
+<br/>
+<input id="uri"/>
+<br/>
+<button onclick="connect()">CONNECT</button>
+<button onclick="disconnect()">DISCONNECT</button>
 
-  function onClose(evt)
-  {
-    writeToScreen("DISCONNECTED");
-  }
+<br/>
+Corps de la requête:
+<br/>
+{method:"[GET|POST|PUT|DELETE]", resource:"[resource_name]/[params...]", "params":{"[name]":"[value]"},
+"body":"[object_to_send]}
+<br/>
 
-  function onMessage(evt)
-  {
-	console.log(evt);
-    writeToScreen('<span style="color: blue;">' + evt.data+'</span>');
-  }
+<br/>
+Exemple:
+<br/>
+{method:"GET", resource:"user/{id_user}", params:{id_user:"1"}}
+<br/>
+{"username":"Tom", "content":"Yo!"}
+<br/>
+<br/>
+<textarea id="content" style="width: 300px; height: 100px"></textarea>
+<br/>
+<button onclick="send()" style="width: 310px">SEND</button>
 
-  function onError(evt)
-  {
-    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-  }
+<br/>
+<br/>
+Method:
+<select id="method">
+    <option value="GET">GET</option>
+    <option value="POST">POST</option>
+    <option value="PUT">PUT</option>
+    <option value="DELETE">DELETE</option>
+</select>
 
-  function doSend(message)
-  {
-    websocket.send(message);
-  }
+<br/>
+<br/>
+Resource:
+<select id="resource">
+    <option value="user">user</option>
+    <option value="user/{id_user}">user/{id_user}</option>
+    <option value="role">role</option>
+    <option value="privilege">privilege</option>
+</select>
 
-  function writeToScreen(message)
-  {
-    var pre = document.createElement("p");
-    pre.style.wordWrap = "break-word";
-    pre.innerHTML = message;
-    output.appendChild(pre);
-  }
+<br/>
+<br/>
+Params:
+<textarea id="params" style="width: 300px; height: 100px"></textarea>
 
-  window.addEventListener("load", init, false);
+<br/>
+<br/>
+Body:
+<textarea id="body" style="width: 300px; height: 100px"></textarea>
 
-  </script>
+<br/>
+<br/>
+<button onclick="sendForm()" style="width: 310px">SEND</button>
 
-  <h2>WebSocket Test</h2>
+<h2>Results</h2>
+<button onclick="clearOutput()">CLEAR</button>
 
-  <div id="output"></div>
+<div id="output"></div>
+
+<script language="javascript" type="text/javascript">
+
+    var uri;
+    var wsUri;
+    var content;
+    var output;
+
+    function init() {
+        uri = document.getElementById("uri");
+        content = document.getElementById("content");
+        output = document.getElementById("output");
+        if (!uri.value) {
+            uri.value = "ws://localhost:8080";
+        }
+    }
+
+    function connect() {
+        wsUri = uri.value;
+        websocket = new WebSocket(wsUri);
+        websocket.onopen = function (evt) {
+            onOpen(evt)
+        };
+        websocket.onclose = function (evt) {
+            onClose(evt)
+        };
+        websocket.onmessage = function (evt) {
+            onMessage(evt)
+        };
+        websocket.onerror = function (evt) {
+            onError(evt)
+        };
+    }
+
+    function disconnect() {
+        websocket.close();
+    }
+
+    function send() {
+        doSend(content.value);
+    }
+
+    function sendForm() {
+        var method = document.getElementById("method");
+        var resource = document.getElementById("resource");
+        var params = document.getElementById("params");
+        var body = document.getElementById("body");
+        var request = {
+            method: method.value,
+            resource: resource.value,
+            params: null,
+            body: null
+        };
+        if (params.value) {
+            request.params = JSON.parse(params.value);
+        }
+        if (body.value) {
+            request.body = JSON.parse(body.value);
+        }
+        console.log(request);
+        doSend(JSON.stringify(request));
+    }
+
+    function onOpen(evt) {
+        console.log(evt);
+        writeToScreen("CONNECTED");
+    }
+
+    function onClose(evt) {
+        writeToScreen("DISCONNECTED");
+    }
+
+    function onMessage(evt) {
+        console.log(evt);
+        writeToScreen('<span style="color: blue;">' + evt.data + '</span>');
+    }
+
+    function onError(evt) {
+        writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+    }
+
+    function doSend(message) {
+        websocket.send(message);
+    }
+
+    function writeToScreen(message) {
+        var pre = document.createElement("p");
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        output.appendChild(pre);
+    }
+
+    function clearOutput() {
+        while (output.firstChild) {
+            output.removeChild(output.firstChild);
+        }
+    }
+
+    window.addEventListener("load", init, false);
+
+</script>
+
+</body>
+</html>

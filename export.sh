@@ -39,9 +39,11 @@ RANCHER_URL="home.thomaskint.com"
 
 RANCHER_PORT="8086"
 
-RANCHER_ACCESS_KEY="1FD3E962C8A011454F0F"
+#RANCHER_ACCESS_KEY="1FD3E962C8A011454F0F"
+RANCHER_ACCESS_KEY="7C4B086FFC806F62E989"
 
-RANCHER_SECRET_KEY="8G8MucFc6QzqgYsg9iopoXEjyXLaTWodxNUqMDWV"
+#RANCHER_SECRET_KEY="8G8MucFc6QzqgYsg9iopoXEjyXLaTWodxNUqMDWV"
+RANCHER_SECRET_KEY="HerHSCTcy2CUwjm5ot3gpNtkBViLced5JphcJToW"
 
 RANCHER_STACK_NAME="pipeline"
 
@@ -81,19 +83,8 @@ function build_projects() {
 	echo "------------------------------"
 	
 	echo "Building maven projects"
-	for i in ${MAVEN_PROJECTS[@]}; do
-		echo " -> Building $i"
-		go_to_base_folder $i
-		if [ ! -f "pom.xml" ]; then
-			echo "   -> Not a maven project"
-		else
-			if [ "$i" = "pipeline-websocket" ]; then
-				mvn clean compile assembly:single
-			else
-				mvn clean package
-			fi
-		fi
-	done
+	go_to_base_folder
+	mvn clean package
 	
 	echo "Building python projects"
 	for i in ${PYTHON_PROJECTS[@]}; do

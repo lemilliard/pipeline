@@ -1,0 +1,26 @@
+package fr.epsi.i4.pipeline.model.bdd.tournoi;
+
+import com.thomaskint.minidao.annotation.MDEntity;
+import com.thomaskint.minidao.annotation.MDField;
+import com.thomaskint.minidao.annotation.MDId;
+import com.thomaskint.minidao.annotation.MDOneToMany;
+import com.thomaskint.minidao.enumeration.MDLoadPolicy;
+import fr.epsi.i4.pipeline.model.bdd.Tournoi;
+
+import java.util.List;
+
+/**
+ * @author Thomas Kint
+ */
+@MDEntity(tableName = "niveau")
+public class Niveau {
+
+	public static final String valueFieldName = "valeur";
+
+	@MDId
+	@MDField(fieldName = valueFieldName)
+	public String valeur;
+
+	@MDOneToMany(fieldName = Niveau.valueFieldName, targetFieldName = Tournoi.niveauFieldName, target = Tournoi.class, loadPolicy = MDLoadPolicy.HEAVY)
+	public List<Tournoi> tournois;
+}

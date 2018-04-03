@@ -1,6 +1,6 @@
 package fr.epsi.i4.pipeline.microservice.microserviceclient;
 
-import fr.epsi.i4.pipeline.model.registry.RegistryEntity;
+import fr.epsi.i4.pipeline.model.registry.RegistryType;
 
 /**
  * Created by tkint on 23/02/2018.
@@ -9,13 +9,13 @@ public class MicroServiceResource {
 
 	private String name;
 
-	private RegistryEntity registryEntity;
+	private RegistryType registryType;
 
 	private Method[] methods;
 
-	public MicroServiceResource(String name, RegistryEntity registryEntity, Method... methods) {
+	public MicroServiceResource(String name, RegistryType registryType, Method... methods) {
 		this.name = name;
-		this.registryEntity = registryEntity;
+		this.registryType = registryType;
 		this.methods = methods;
 	}
 
@@ -23,8 +23,8 @@ public class MicroServiceResource {
 		return name;
 	}
 
-	public RegistryEntity getRegistryEntity() {
-		return registryEntity;
+	public RegistryType getRegistryType() {
+		return registryType;
 	}
 
 	public Method[] getMethods() {
