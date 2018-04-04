@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '@/components/Home';
-import Matchs from '@/components/Matchs';
-import Match from '@/components/Match';
-import Calendrier from '@/components/Calendrier';
-import Classement from '@/components/Classement';
-import Settings from '@/components/Settings';
-import About from '@/components/About';
+import Home from '@/components/page/Home';
+import Matchs from '@/components/page/match/Matchs';
+import Match from '@/components/page/match/Match';
+import Calendrier from '@/components/page/Calendrier';
+import Classement from '@/components/page/Classement';
+import Settings from '@/components/page/Settings';
+import About from '@/components/page/About';
 
 Vue.use(Router);
 

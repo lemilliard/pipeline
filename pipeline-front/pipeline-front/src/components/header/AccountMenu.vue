@@ -1,9 +1,6 @@
 <template>
   <div id="account">
-    <v-menu v-if="isLogin = true" offset-y>
-      <v-btn icon slot="activator" dark>
-        <v-icon>more_vert</v-icon>
-      </v-btn>
+    <v-menu v-if="isLogin" offset-y>
       <v-list>
         <v-list-tile v-for="(item, i) in items" :key="i">
           <v-list-tile-title>{{ item.title }}</v-list-tile-title>

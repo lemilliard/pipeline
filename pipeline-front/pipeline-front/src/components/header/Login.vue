@@ -2,8 +2,6 @@
   <div id="login">
     <v-layout row justify-center>
       <v-dialog v-model="dialog" persistent max-width="500px">
-        <v-btn flat outline color="warning" slot="activator" @click.native="isLogin = true">Sign in
-        </v-btn>
         <v-card>
           <v-card-title>
             <span class="headline">Register</span>

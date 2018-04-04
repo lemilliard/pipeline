@@ -17,7 +17,7 @@
         <v-icon>more_vert</v-icon>
       </v-btn>-->
       <atpAccountMenu :isLogin="isLogin"></atpAccountMenu>
-      <atpLogin :isLogin="isLogin"></atpLogin>
+      <atpLogin></atpLogin>
       <atpRegister></atpRegister>
     </v-toolbar>
     <!--<atpToolBar :drawer="drawer"></atpToolBar>-->

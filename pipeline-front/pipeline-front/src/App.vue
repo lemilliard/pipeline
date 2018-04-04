@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import atpHeader from './components/Header';
-import atpFooter from './components/Footer';
+import atpHeader from './components/header/Header';
+import atpFooter from './components/footer/Footer';
 import atpBreadcrumbs from './components/Breadcrumbs';
 
 

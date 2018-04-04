@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    <br>
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     Test
@@ -87,10 +86,10 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Login',
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App ATP Live',
+      msg: 'Welcome to settings page',
     };
   },
 };

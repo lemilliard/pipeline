@@ -19,11 +19,13 @@ import fr.epsi.i4.pipeline.model.Response;
 @ServerEndpoint(value = "/", decoders = RequestDecoder.class, encoders = ResponseEncoder.class)
 public class MainEndpoint {
 
-	@OnOpen public void onOpen(Session session) throws IOException {
+	@OnOpen
+	public void onOpen(Session session) throws IOException {
 		Data.sessions.add(session);
 	}
 
-	@OnMessage public Response onMessage(Request request, Session session) throws Exception {
+	@OnMessage
+	public Response onMessage(Request request, Session session) throws Exception {
 		MicroService client = new MicroService();
 		return client.processRequest(request, session);
 	}
