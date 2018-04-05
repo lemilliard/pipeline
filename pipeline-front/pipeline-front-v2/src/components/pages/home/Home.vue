@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    {{ user }}
     {{ users }}
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import DataActionsTypes from '@/store/data/actions/types';
+import DataResourcesMap from '@/store/data/resources-map';
 import DataResources from '@/store/data/resources';
 
 export default {
@@ -17,13 +17,12 @@ export default {
   },
   computed: {
     ...mapState({
-      user: state => state.DataStore[DataResources.USER],
-      users: state => state.DataStore[DataResources.USERS],
+      users: state => state.DataStore[DataResources.USER.name],
     }),
   },
   created() {
-    this.retrieveData({ resource: DataResources.USERS });
-    this.retrieveData({ resource: DataResources.USER, params: { id_user: 1 } });
+    this.retrieveData({ resource: DataResourcesMap.USERS.ws });
+    this.retrieveData({ resource: DataResourcesMap.USER.ws, params: { id_user: 1 } });
   },
   methods: {
     ...mapActions({

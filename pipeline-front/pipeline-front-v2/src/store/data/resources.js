@@ -1,4 +1,3 @@
 export default {
-  USER: 'user/{id_user}',
-  USERS: 'user',
+  USER: { name: 'USER', id: 'id_user' },
 };

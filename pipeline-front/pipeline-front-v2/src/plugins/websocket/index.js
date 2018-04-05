@@ -39,6 +39,7 @@ const websocketPlugin = {
        * @param event
        */
       const processOnMessage = (event) => {
+        console.log(event);
         if (event && event.data) {
           const data = JSON.parse(event.data);
           Store.commit(MutationsTypes.UPDATE_DATA, data);
@@ -110,6 +111,18 @@ const websocketPlugin = {
           request = constructRequest(Methods.GET, `${resource}`);
         }
         sendToWebSocket(request);
+      };
+
+      /**
+       *
+       * @param resource
+       * @param param
+       */
+      this.post = (resource, body) => {
+        if (body) {
+          const request = constructRequest(Methods.POST, `${resource}`, null, body);
+          sendToWebSocket(request);
+        }
       };
 
       /**

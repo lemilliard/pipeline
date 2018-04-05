@@ -15,8 +15,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-  import UserGetterTypes from '@/store/data/getters/types';
   import AdminMenu from './AdminMenu';
   import UserMenu from './UserMenu';
 
@@ -34,9 +32,6 @@
         set() {
         },
       },
-      ...mapGetters({
-        isAdmin: UserGetterTypes.IS_ADMIN,
-      }),
     },
   };
 </script>

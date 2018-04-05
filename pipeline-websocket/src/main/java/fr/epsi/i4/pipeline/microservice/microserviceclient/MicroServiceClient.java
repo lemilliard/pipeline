@@ -28,7 +28,7 @@ public abstract class MicroServiceClient {
 		MicroServiceResource resource = null;
 		int i = 0;
 		while (i < microServiceResources.length && resource == null) {
-			if (microServiceResources[i].getName().equals(resourceName)) {
+			if (microServiceResources[i].getResource().name().equals(resourceName)) {
 				resource = microServiceResources[i];
 			}
 			i++;
@@ -37,13 +37,18 @@ public abstract class MicroServiceClient {
 	}
 
 	public String mapResourceWithParams(MicroServiceResource resource, Map<String, Object> params) {
-		String[] resourceArray = resource.getName().split("/");
-		StringBuilder resourcePath = new StringBuilder(resourceArray[0]);
-		String param;
-		for (int i = 1; i < resourceArray.length; i++) {
-			param = resourceArray[i].replaceAll("[{}]", "");
-			if (params.containsKey(param)) {
-				resourcePath.append("/").append(params.get(param));
+		StringBuilder resourcePath = new StringBuilder();
+		if (params == null) {
+			resourcePath.append(resource.getResource().getValue());
+		} else {
+			String[] resourceArray = resource.getResource().getValue().split("/");
+			resourcePath.append(resourceArray[0]);
+			String param;
+			for (int i = 1; i < resourceArray.length; i++) {
+				param = resourceArray[i].replaceAll("[{}]", "");
+				if (params.containsKey(param)) {
+					resourcePath.append("/").append(params.get(param));
+				}
 			}
 		}
 		return resourcePath.toString();

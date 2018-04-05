@@ -102,12 +102,12 @@ public class MicroService {
 				break;
 			case POST:
 				if (object != null) {
-					clientResponse = invocationBuilder.post(object).getEntity();
+					clientResponse = invocationBuilder.post(object, Object.class);
 				}
 				break;
 			case PUT:
 				if (object != null) {
-					clientResponse = invocationBuilder.put(object).getEntity();
+					clientResponse = invocationBuilder.put(object, Object.class);
 				}
 				break;
 			case DELETE:

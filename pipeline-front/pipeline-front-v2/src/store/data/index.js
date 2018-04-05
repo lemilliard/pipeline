@@ -5,8 +5,7 @@ import Mutations from './mutations';
 
 const DataStore = {
   state: {
-    [Resources.USER]: null,
-    [Resources.USERS]: [],
+    [Resources.USER.name]: [],
   },
   getters: Getters,
   actions: Actions,

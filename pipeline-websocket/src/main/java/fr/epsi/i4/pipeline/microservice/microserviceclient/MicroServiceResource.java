@@ -7,20 +7,20 @@ import fr.epsi.i4.pipeline.model.registry.RegistryType;
  */
 public class MicroServiceResource {
 
-	private String name;
+	private Resource resource;
 
 	private RegistryType registryType;
 
 	private Method[] methods;
 
-	public MicroServiceResource(String name, RegistryType registryType, Method... methods) {
-		this.name = name;
+	public MicroServiceResource(Resource resource, RegistryType registryType, Method... methods) {
+		this.resource = resource;
 		this.registryType = registryType;
 		this.methods = methods;
 	}
 
-	public String getName() {
-		return name;
+	public Resource getResource() {
+		return resource;
 	}
 
 	public RegistryType getRegistryType() {
