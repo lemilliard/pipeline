@@ -5,6 +5,8 @@ import Ladder from './ladder/Classement';
 import Calendar from './calendar/Calendrier';
 import Settings from './settings/Settings';
 import About from './about/About';
+import Profile from './profile/Profile';
+import Tournament from './tournament/Tournament';
 import Redirection from './redirection';
 
 export default {
@@ -15,5 +17,7 @@ export default {
   Calendar,
   Settings,
   About,
+  Profile,
+  Tournament,
   Redirection,
 };

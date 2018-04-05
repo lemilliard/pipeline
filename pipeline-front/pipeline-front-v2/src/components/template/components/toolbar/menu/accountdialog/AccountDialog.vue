@@ -29,25 +29,25 @@
 </template>
 
 <script>
-  import SignInForm from './SignInForm';
-  import SignUpForm from './SignUpForm';
+import SignInForm from './SignInForm';
+import SignUpForm from './SignUpForm';
 
-  export default {
-    name: 'AccountDialog',
-    components: { SignInForm, SignUpForm },
-    data() {
-      return {};
-    },
-    computed: {
-      loginDialog: {
-        get() {
-          return this.$store.state.TemplateStore.loginDialog;
-        },
-        set() {
-        },
+export default {
+  name: 'AccountDialog',
+  components: { SignInForm, SignUpForm },
+  data() {
+    return {};
+  },
+  computed: {
+    loginDialog: {
+      get() {
+        return this.$store.state.TemplateStore.loginDialog;
+      },
+      set() {
       },
     },
-  };
+  },
+};
 </script>
 
 <style scoped>

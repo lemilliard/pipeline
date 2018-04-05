@@ -3,6 +3,7 @@ package fr.epsi.i4.pipeline.ws.user;
 import com.thomaskint.minidao.exception.MDException;
 import com.thomaskint.minidao.querybuilder.MDCondition;
 import fr.epsi.i4.pipeline.model.Connector;
+import fr.epsi.i4.pipeline.model.Registrator;
 import fr.epsi.i4.pipeline.model.bdd.user.User;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,23 @@ public class UserPostWS extends WebService {
 
 			if (users.size() > 0) {
 				user = users.get(0);
+			}
+		} catch (MDException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	@PostMapping("/user/register")
+	public User registerUser(@RequestBody Registrator registrator) {
+		Connector connector;
+		User user = null;
+		try {
+			connector = registrator.toConnector();
+			if (registrator.isValid()
+					&& connectUser(connector) == null
+					&& getMiniDAO().create().createEntity(registrator.toUser())) {
+				user = connectUser(connector);
 			}
 		} catch (MDException e) {
 			e.printStackTrace();

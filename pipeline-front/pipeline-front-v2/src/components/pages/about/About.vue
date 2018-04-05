@@ -1,17 +1,17 @@
 <template>
-  <div class="about">
-    <v-breadcrumbs>
-      <v-icon slot="divider">chevron_right</v-icon>
-      <v-breadcrumbs-item
-        v-for="item in items"
-        :key="item.text"
-        :disabled="item.disabled"
-      >
-        {{ item.text }}
-      </v-breadcrumbs-item>
-    </v-breadcrumbs>
-    <h1>{{ msg }}</h1>
-  </div>
+  <v-layout row wrap>
+    <v-flex xs12>
+      0
+      <v-layout row wrap>
+        <v-flex xs6>
+          1
+        </v-flex>
+        <v-flex xs6>
+          2
+        </v-flex>
+      </v-layout>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

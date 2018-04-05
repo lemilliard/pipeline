@@ -43,6 +43,16 @@ export default new Router({
       component: Pages.About,
     },
     {
+      path: '/profile',
+      name: Names.PROFILE,
+      component: Pages.Profile,
+    },
+    {
+      path: '/tournament',
+      name: Names.TOURNAMENT,
+      component: Pages.Tournament,
+    },
+    {
       path: '*',
       redirect: Names.ERROR_404,
     },

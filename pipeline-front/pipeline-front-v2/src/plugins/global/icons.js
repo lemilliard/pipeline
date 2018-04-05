@@ -1,6 +1,11 @@
 export default {
   HOME: 'home',
   ABOUT: 'face',
+  MATCHS: 'dashboard',
+  HEALING: 'healing',
+  TIMER: 'timer',
+  CALENDAR: 'event_note',
+  LADDER: 'trending_up',
   CONTACT: 'phone',
   PROFILE: 'person',
   LOGIN: 'person_outline',

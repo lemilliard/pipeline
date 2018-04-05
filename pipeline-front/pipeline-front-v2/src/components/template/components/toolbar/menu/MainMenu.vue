@@ -15,25 +15,30 @@
 </template>
 
 <script>
-  import AdminMenu from './AdminMenu';
-  import UserMenu from './UserMenu';
+import { mapGetters } from 'vuex';
+import DataGetterTypes from '@/store/data/getters/types';
+import AdminMenu from './AdminMenu';
+import UserMenu from './UserMenu';
 
-  export default {
-    name: 'MainMenu',
-    components: { AdminMenu, UserMenu },
-    data() {
-      return {};
-    },
-    computed: {
-      loginDialog: {
-        get() {
-          return this.$store.state.TemplateStore.loginDialog;
-        },
-        set() {
-        },
+export default {
+  name: 'MainMenu',
+  components: { AdminMenu, UserMenu },
+  data() {
+    return {};
+  },
+  computed: {
+    loginDialog: {
+      get() {
+        return this.$store.state.TemplateStore.loginDialog;
+      },
+      set() {
       },
     },
-  };
+    ...mapGetters({
+      isAdmin: DataGetterTypes.IS_ADMIN,
+    }),
+  },
+};
 </script>
 
 <style scoped>

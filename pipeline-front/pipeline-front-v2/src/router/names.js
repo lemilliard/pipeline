@@ -6,5 +6,7 @@ export default {
   LADDER: 'Ladder',
   CALENDAR: 'Calendar',
   SETTINGS: 'Settings',
+  PROFILE: 'Profile',
+  TOURNAMENT: 'Tournament',
   ERROR_404: '404',
 };

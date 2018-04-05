@@ -41,9 +41,8 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import DataActionTypes from '@/store/data/actions/types';
-import DataMutationTypes from '@/store/data/mutations/types';
 
 export default {
   name: 'SignInForm',
@@ -57,15 +56,10 @@ export default {
       },
     };
   },
-  computed: {
-    ...mapState({
-      user: state => state.DataStore.user,
-    }),
-  },
   methods: {
     signin() {
       if (this.connector && this.connector.email && this.connector.password) {
-        this.signinUser(this.connector);
+        this.connect(this.connector);
         this.errorText = null;
         this.error = false;
       } else {
@@ -74,14 +68,11 @@ export default {
       }
     },
     ...mapActions({
-      signinUser: DataActionTypes.CONNECT,
-    }),
-    ...mapMutations({
-      updateEmail: DataMutationTypes.UPDATE_USER_EMAIL,
-      updatePassword: DataMutationTypes.UPDATE_USER_PASSWORD,
+      connect: DataActionTypes.CONNECT,
     }),
   },
-};
+}
+;
 </script>
 
 <style>

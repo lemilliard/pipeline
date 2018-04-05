@@ -1,40 +1,43 @@
 <template>
   <div>
-    <v-list-tile @click="">
+    <v-list-tile @click="$global.openRoute(profile)">
       <v-list-tile-title>Profile</v-list-tile-title>
     </v-list-tile>
-    <v-list-tile @click="signout">
+    <v-list-tile @click="disconnect">
       <v-list-tile-title>Signout</v-list-tile-title>
     </v-list-tile>
   </div>
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex';
-  import UserActionTypes from '@/store/data/actions/types';
+import { mapState, mapActions } from 'vuex';
+import DataActionTypes from '@/store/data/actions/types';
+import DataResources from '@/store/data/resources';
+import RouteNames from '@/router/names';
 
-  export default {
-    name: 'UserMenu',
-    data() {
-      return {};
+export default {
+  name: 'UserMenu',
+  data() {
+    return {
+      profile: RouteNames.PROFILE,
+    };
+  },
+  computed: {
+    ...mapState({
+      currentUser: state => state.DataStore[DataResources.CURRENT_USER.name],
+    }),
+  },
+  methods: {
+    disconnect() {
+      if (this.currentUser && this.currentUser.id_user) {
+        this.disconnectUser();
+      }
     },
-    computed: {
-      ...mapState({
-        user: state => state.DataStore.user,
-      }),
-    },
-    methods: {
-      signout() {
-        if (this.user && this.user.id_user) {
-          this.$cookie.delete('id_user');
-          this.signoutUser();
-        }
-      },
-      ...mapActions({
-        signoutUser: UserActionTypes.SIGNOUT,
-      }),
-    },
-  };
+    ...mapActions({
+      disconnectUser: DataActionTypes.DISCONNECT,
+    }),
+  },
+};
 </script>
 
 <style scoped>

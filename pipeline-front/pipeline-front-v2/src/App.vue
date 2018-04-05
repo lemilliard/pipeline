@@ -10,7 +10,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import UserActionTypes from '@/store/data/actions/types';
+import DataActionTypes from '@/store/data/actions/types';
 import Template from '@/components/template';
 
 require('vuetify/dist/vuetify.min.css');
@@ -24,10 +24,16 @@ export default {
     return {};
   },
   created() {
+    this.autoConnect();
   },
   methods: {
+    autoConnect() {
+      if (this.$cookie.get('id_user')) {
+        this.connectById(this.$cookie.get('id_user'));
+      }
+    },
     ...mapActions({
-      getUserById: UserActionTypes.GET_USER_BY_ID,
+      connectById: DataActionTypes.CONNECT_BY_ID,
     }),
   },
 };

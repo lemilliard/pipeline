@@ -5,26 +5,26 @@
 </template>
 
 <script>
-  import RouteNames from '@/router/names';
-  import ToolbarNavigationItem from './ToolbarNavigationItem';
+import RouteNames from '@/router/names';
+import ToolbarNavigationItem from './ToolbarNavigationItem';
 
-  export default {
-    name: 'ToolbarNavigation',
-    components: { ToolbarNavigationItem },
-    data() {
-      return {
-        items: [
-          { icon: this.$global.icons.ABOUT, text: 'About', route: RouteNames.ABOUT },
-          { icon: this.$global.icons.MATCHS, text: 'Matchs', route: RouteNames.MATCHS },
-          { icon: this.$global.icons.LADDER, text: 'Ladder', route: RouteNames.LADDER },
-          { icon: this.$global.icons.CALENDAR, text: 'Calendar', route: RouteNames.CALENDAR },
-          { icon: this.$global.icons.SETTINGS, text: 'Settings', route: RouteNames.SETTINGS },
-        ],
-      };
-    },
-    computed: {},
-    methods: {},
-  };
+export default {
+  name: 'ToolbarNavigation',
+  components: { ToolbarNavigationItem },
+  data() {
+    return {
+      items: [
+        { icon: this.$global.icons.ABOUT, text: 'About', route: RouteNames.ABOUT },
+        { icon: this.$global.icons.MATCHS, text: 'Matchs', route: RouteNames.MATCHS },
+        { icon: this.$global.icons.LADDER, text: 'Ladder', route: RouteNames.LADDER },
+        { icon: this.$global.icons.CALENDAR, text: 'Calendar', route: RouteNames.CALENDAR },
+        { icon: this.$global.icons.SETTINGS, text: 'Settings', route: RouteNames.SETTINGS },
+      ],
+    };
+  },
+  computed: {},
+  methods: {},
+};
 </script>
 
 <style scoped>

@@ -12,21 +12,11 @@
       <v-container grid-list-md>
         <form method="get" @submit.prevent="signup">
           <v-layout wrap>
-            <v-flex xs12 sm6>
-              <v-text-field
-                label="Pseudo"
-                required
-                autofocus
-                :value="user.pseudo"
-                @input="updatePseudo"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6>
+            <v-flex xs12 sm12>
               <v-text-field
                 label="Email"
                 required
-                :value="user.email"
-                @input="updateEmail"
+                v-model="registrator.email"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6>
@@ -34,8 +24,7 @@
                 label="Password"
                 required
                 type="password"
-                :value="user.password"
-                @input="updatePassword"
+                v-model="registrator.password"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6>
@@ -43,21 +32,21 @@
                 label="Confirm password"
                 required
                 type="password"
-                v-model="passwordConfirm"
+                v-model="registrator.confirmPassword"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6>
               <v-text-field
                 label="First name"
-                :value="user.firstname"
-                @input="updateFirstname"
+                required
+                v-model="registrator.prenom"
               ></v-text-field>
             </v-flex>
             <v-flex xs12 sm6>
               <v-text-field
                 label="Last name"
-                :value="user.lastname"
-                @input="updateLastname"
+                required
+                v-model="registrator.nom"
               ></v-text-field>
             </v-flex>
           </v-layout>
@@ -73,70 +62,52 @@
 </template>
 
 <script>
-  import { mapState, mapActions, mapMutations } from 'vuex';
-  import UserActionTypes from '@/store/data/actions/types';
-  import UserMutationTypes from '@/store/data/mutations/types';
+import { mapActions } from 'vuex';
+import DataActionTypes from '@/store/data/actions/types';
 
-  export default {
-    name: 'SignUpForm',
-    data() {
-      return {
-        error: false,
-        errorText: null,
-        passwordConfirm: null,
-      };
-    },
-    computed: {
-      ...mapState({
-        user: state => state.DataStore.user,
-      }),
-    },
-    methods: {
-      async signup() {
-        if (!this.user.pseudo) {
-          this.errorText = 'Pseudo is missing';
-          this.error = true;
-          return;
-        }
-        if (!this.user.email) {
-          this.errorText = 'Email is missing';
-          this.error = true;
-          return;
-        }
-        if (!this.user.password) {
-          this.errorText = 'Password is missing';
-          this.error = true;
-          return;
-        }
-        if (!this.passwordConfirm) {
-          this.errorText = 'Password confirmation is missing';
-          this.error = true;
-          return;
-        }
-        if (this.passwordConfirm !== this.user.password) {
-          this.errorText = 'Password confirmation is not corresponding';
-        } else {
-          const newUser = await this.signupUser(this.user);
-          if (newUser && newUser.id_user) {
-            this.$cookie.set('id_user', newUser.id_user);
-          } else {
-            this.errorText = 'Something went wrong!';
-            this.error = true;
-          }
-        }
+export default {
+  name: 'SignUpForm',
+  data() {
+    return {
+      error: false,
+      errorText: null,
+      registrator: {
+        email: null,
+        password: null,
+        confirmPassword: null,
+        nom: null,
+        prenom: null,
       },
-      ...mapActions({
-        signupUser: UserActionTypes.SIGNUP,
-      }),
-      ...mapMutations({
-        updateEmail: UserMutationTypes.UPDATE_USER_EMAIL,
-        updatePassword: UserMutationTypes.UPDATE_USER_PASSWORD,
-        updatePseudo: UserMutationTypes.UPDATE_USER_PSEUDO,
-        updateFirstname: UserMutationTypes.UPDATE_USER_FIRSTNAME,
-        updateLastname: UserMutationTypes.UPDATE_USER_LASTNAME,
-      }),
+    };
+  },
+  methods: {
+    async signup() {
+      if (!this.registrator.email) {
+        this.errorText = 'Email is missing';
+        this.error = true;
+        return;
+      }
+      if (!this.registrator.password) {
+        this.errorText = 'Password is missing';
+        this.error = true;
+        return;
+      }
+      if (!this.registrator.confirmPassword) {
+        this.errorText = 'Password confirmation is missing';
+        this.error = true;
+        return;
+      }
+      if (this.registrator.confirmPassword !== this.registrator.password) {
+        this.errorText = 'Password confirmation is not corresponding';
+      } else {
+        this.register(this.registrator);
+      }
     },
-  };
+    ...mapActions({
+      register: DataActionTypes.REGISTER,
+    }),
+  },
+};
 </script>
 
 <style scoped>

@@ -42,7 +42,7 @@ const websocketPlugin = {
         console.log(event);
         if (event && event.data) {
           const data = JSON.parse(event.data);
-          Store.commit(MutationsTypes.UPDATE_DATA, data);
+          Store.commit(MutationsTypes.UPDATE_DATA, { vue: Vue, data });
         }
       };
 

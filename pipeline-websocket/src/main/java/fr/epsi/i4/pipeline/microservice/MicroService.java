@@ -27,10 +27,6 @@ import java.util.Map;
  */
 public class MicroService {
 
-	private static final String baseUrl = "http://home.thomaskint.com";
-
-	private static final String port = "8085";
-
 	private static final List<Registry> registries = new ArrayList<>();
 
 	private final List<MicroServiceClient> microServiceClients;
@@ -62,7 +58,7 @@ public class MicroService {
 				response.setError("Method not allowed for this resource");
 			} else {
 				String resourcePath = microServiceClient.getResourcePath(resource, request.getParams());
-				webTarget = client.target(baseUrl + ":" + port + resourcePath);
+				webTarget = client.target(resourcePath);
 
 				Object clientResponse = getClientResponse(request);
 				if (clientResponse == null) {

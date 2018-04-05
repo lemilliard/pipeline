@@ -7,11 +7,17 @@ import java.util.Map;
  */
 public abstract class MicroServiceClient {
 
-	private String basePath;
+	private final String baseUrl;
+
+	private final String port;
+
+	private final String basePath;
 
 	private MicroServiceResource[] microServiceResources;
 
-	public MicroServiceClient(String basePath, MicroServiceResource... microServiceResources) {
+	public MicroServiceClient(String baseUrl, String port, String basePath, MicroServiceResource... microServiceResources) {
+		this.baseUrl = baseUrl;
+		this.port = port;
 		this.basePath = basePath;
 		this.microServiceResources = microServiceResources;
 	}
@@ -21,7 +27,16 @@ public abstract class MicroServiceClient {
 	}
 
 	public String getResourcePath(MicroServiceResource resource, Map<String, Object> params) {
-		return "/" + basePath + "/" + mapResourceWithParams(resource, params);
+		StringBuilder resourceBuilder = new StringBuilder(baseUrl);
+		resourceBuilder.append(":");
+		resourceBuilder.append(port);
+		resourceBuilder.append("/");
+		if (basePath != null && !basePath.isEmpty()) {
+			resourceBuilder.append(basePath);
+			resourceBuilder.append("/");
+		}
+		resourceBuilder.append(mapResourceWithParams(resource, params));
+		return resourceBuilder.toString();
 	}
 
 	public MicroServiceResource getResourceByName(String resourceName) {

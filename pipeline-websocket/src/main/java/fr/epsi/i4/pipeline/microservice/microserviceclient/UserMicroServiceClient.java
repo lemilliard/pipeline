@@ -11,9 +11,11 @@ public class UserMicroServiceClient extends MicroServiceClient {
 			new MicroServiceResource(Resource.USERS, RegistryType.USER, Method.GET, Method.POST, Method.PUT),
 			new MicroServiceResource(Resource.USER, RegistryType.USER, Method.GET, Method.DELETE),
 			new MicroServiceResource(Resource.CONNECT, RegistryType.USER, Method.POST),
+			new MicroServiceResource(Resource.CONNECT_BY_ID, RegistryType.USER, Method.GET),
+			new MicroServiceResource(Resource.REGISTER, RegistryType.USER, Method.POST),
 	};
 
 	public UserMicroServiceClient() {
-		super("ms-dao-user", MICRO_SERVICE_RESOURCES);
+		super("http://localhost", "8082", "", MICRO_SERVICE_RESOURCES);
 	}
 }
