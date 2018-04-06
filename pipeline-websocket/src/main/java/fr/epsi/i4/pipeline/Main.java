@@ -9,7 +9,13 @@ import org.glassfish.tyrus.server.Server;
  */
 public class Main {
 
+	private static Config config = new Config("application.properties");
+
 	public static void main(String[] args) {
+		if (args.length > 0) {
+			config = new Config("application-dev.properties");
+		}
+
 		Class[] endpoints = new Class[] { ChatEndpoint.class, MainEndpoint.class };
 
 		Server server = new Server("localhost", 8080, "/", null, endpoints);
@@ -21,5 +27,9 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static Config getConfig() {
+		return config;
 	}
 }
