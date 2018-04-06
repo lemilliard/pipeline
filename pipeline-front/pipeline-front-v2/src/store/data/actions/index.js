@@ -10,6 +10,15 @@ export default {
   [Types.RETRIEVE_DATA]({ commit }, { resource, params }) {
     vue.$websocket.get(resource, params);
   },
+  [Types.CREATE_DATA]({ commit }, { resource, body }) {
+    vue.$websocket.post(resource, body);
+  },
+  [Types.UPDATE_DATA]({ commit }, { resource, body }) {
+    vue.$websocket.put(resource, body);
+  },
+  [Types.DELETE_DATA]({ commit }, { resource, params }) {
+    vue.$websocket.delete(resource, params);
+  },
   [Types.CONNECT]({ commit }, connector) {
     vue.$websocket.post(DataResourcesMap.CONNECT.ws, connector);
   },

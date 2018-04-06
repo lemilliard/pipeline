@@ -42,7 +42,7 @@ const websocketPlugin = {
         console.log(event);
         if (event && event.data) {
           const data = JSON.parse(event.data);
-          Store.commit(MutationsTypes.UPDATE_DATA, { vue: Vue, data });
+          Store.commit(MutationsTypes.COMMIT_DATA, { vue: Vue, data });
         }
       };
 
@@ -123,6 +123,31 @@ const websocketPlugin = {
           const request = constructRequest(Methods.POST, `${resource}`, null, body);
           sendToWebSocket(request);
         }
+      };
+
+      /**
+       *
+       * @param resource
+       * @param param
+       */
+      this.put = (resource, body) => {
+        if (body) {
+          const request = constructRequest(Methods.PUT, `${resource}`, null, body);
+          sendToWebSocket(request);
+        }
+      };
+
+      /**
+       *
+       * @param resource
+       * @param param
+       */
+      this.delete = (resource, params) => {
+        let request;
+        if (params) {
+          request = constructRequest(Methods.DELETE, `${resource}`, params);
+        }
+        sendToWebSocket(request);
       };
 
       /**

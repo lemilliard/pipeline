@@ -124,7 +124,7 @@ public class MicroService {
 	 */
 	private void notif(Request request, Response response, Session session, MicroServiceResource resource)
 			throws Exception {
-		// SI on fait un PUT ou un DELETE
+		// Si on fait un PUT ou un DELETE
 		if (request.getMethod().equals(Method.PUT) || request.getMethod().equals(Method.DELETE)) {
 			// On récupère le registre
 			Registry registry = getRegistryByEntity(resource.getRegistryType());

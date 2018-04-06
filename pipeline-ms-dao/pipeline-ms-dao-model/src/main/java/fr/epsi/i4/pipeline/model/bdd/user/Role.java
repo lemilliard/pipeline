@@ -7,8 +7,10 @@ import com.thomaskint.minidao.annotation.MDId;
 import com.thomaskint.minidao.annotation.MDOneToMany;
 import com.thomaskint.minidao.enumeration.MDLoadPolicy;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.thomaskint.minidao.enumeration.MDSQLAction.INSERT;
 import static com.thomaskint.minidao.enumeration.MDSQLAction.SELECT;
 
 /**
@@ -20,12 +22,12 @@ public class Role {
 	public static final String valeurFieldName = "valeur";
 
 	@MDId
-	@MDField(fieldName = valeurFieldName, allowedSQLActions = SELECT)
+	@MDField(fieldName = valeurFieldName, allowedSQLActions = {SELECT, INSERT})
 	public String value;
 
-	@MDOneToMany(fieldName = valeurFieldName, target = User.class, targetFieldName = User.roleFieldName, loadPolicy = MDLoadPolicy.HEAVY)
-	public List<User> users;
+	@MDOneToMany(fieldName = valeurFieldName, target = User.class, targetFieldName = User.roleFieldName)
+	public List<User> users = new ArrayList<User>();
 
 	@MDOneToMany(fieldName = valeurFieldName, target = RightRole.class, targetFieldName = RightRole.roleFieldName, loadPolicy = MDLoadPolicy.HEAVY)
-	public List<RightRole> droitRoles;
+	public List<RightRole> droitRoles = new ArrayList<RightRole>();
 }

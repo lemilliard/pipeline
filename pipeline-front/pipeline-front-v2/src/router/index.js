@@ -48,8 +48,8 @@ export default new Router({
       component: Pages.Profile,
     },
     {
-      path: '/tournament',
-      name: Names.TOURNAMENT,
+      path: '/tournaments',
+      name: Names.TOURNAMENTS,
       component: Pages.Tournament,
     },
     {

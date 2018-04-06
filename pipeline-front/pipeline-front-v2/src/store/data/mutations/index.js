@@ -28,8 +28,8 @@ const setItem = (vue, state, resource, item) => {
 };
 
 export default {
-  [Types.UPDATE_DATA](state, { vue, data }) {
-    if (data.request && data.request.resource) {
+  [Types.COMMIT_DATA](state, { vue, data }) {
+    if (data.request && data.request.resource && data.content) {
       const resourceMap = getResourceByWSResource(data.request.resource);
       const resource = resourceMap.res;
       const content = data.content;

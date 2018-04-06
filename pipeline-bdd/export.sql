@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  Fichier créé - jeudi-mars-15-2018   
+--  Fichier crï¿½ï¿½ - jeudi-mars-15-2018   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Type SCORE_JEU
@@ -298,7 +298,7 @@
   BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "PIPELINE" ;
 --------------------------------------------------------
---  DDL for Table ROLE
+--  DDL for Table ROLES
 --------------------------------------------------------
 
   CREATE TABLE "PIPELINE"."ROLE" 
@@ -524,7 +524,7 @@ REM INSERTING into PIPELINE.RENCONTRE_EQUIPE
 SET DEFINE OFF;
 REM INSERTING into PIPELINE.ROLE
 SET DEFINE OFF;
-Insert into PIPELINE.ROLE (VALEUR) values ('USER');
+Insert into PIPELINE.ROLE (VALEUR) values ('USERS');
 REM INSERTING into PIPELINE.SET_MATCH
 SET DEFINE OFF;
 REM INSERTING into PIPELINE.TOURNOI
@@ -535,7 +535,7 @@ REM INSERTING into PIPELINE.TYPE_EVENEMENT
 SET DEFINE OFF;
 REM INSERTING into PIPELINE.UTILISATEUR
 SET DEFINE OFF;
-Insert into PIPELINE.UTILISATEUR (ID_UTILISATEUR,EMAIL,PASSWORD,NOM,PRENOM,ROLE) values ('1','thomas.kint@epsi.fr','password','KINT','THOMAS','USER');
+Insert into PIPELINE.UTILISATEUR (ID_UTILISATEUR,EMAIL,PASSWORD,NOM,PRENOM,ROLE) values ('1','thomas.kint@epsi.fr','password','KINT','THOMAS','USERS');
 REM INSERTING into PIPELINE.VILLE
 SET DEFINE OFF;
 --------------------------------------------------------
@@ -803,7 +803,7 @@ ALTER TRIGGER "PIPELINE"."COMPLEXE_INCREMENT" ENABLE;
         
     BEGIN
         IF :new.ID_EQUIPE_UNE = :new.ID_EQUIPE_DEUX THEN
-            RAISE_APPLICATION_ERROR( -20003, 'Les deux équipes sont identiques' );
+            RAISE_APPLICATION_ERROR( -20003, 'Les deux ï¿½quipes sont identiques' );
         END IF;
     END;
 
@@ -1266,7 +1266,7 @@ set define off;
   BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
 --------------------------------------------------------
---  Constraints for Table ROLE
+--  Constraints for Table ROLES
 --------------------------------------------------------
 
   ALTER TABLE "PIPELINE"."ROLE" MODIFY ("VALEUR" NOT NULL ENABLE);

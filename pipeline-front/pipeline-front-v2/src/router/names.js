@@ -7,6 +7,6 @@ export default {
   CALENDAR: 'Calendar',
   SETTINGS: 'Settings',
   PROFILE: 'Profile',
-  TOURNAMENT: 'Tournament',
+  TOURNAMENTS: 'Tournaments',
   ERROR_404: '404',
 };

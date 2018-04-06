@@ -38,6 +38,9 @@ public class User {
 	@MDField(fieldName = "prenom")
 	public String prenom;
 
+	@MDField(fieldName = roleFieldName)
+	public String roleName;
+
 	@MDManyToOne(fieldName = roleFieldName, targetFieldName = Role.valeurFieldName, target = Role.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Role role;
 }

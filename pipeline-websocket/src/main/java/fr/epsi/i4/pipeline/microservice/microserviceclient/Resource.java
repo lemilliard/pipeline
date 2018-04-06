@@ -6,9 +6,14 @@ package fr.epsi.i4.pipeline.microservice.microserviceclient;
 public enum Resource {
 	USERS("user"),
 	USER("user/{id_user}"),
+	UPDATE_USER("user"),
+	ROLES("role"),
+	ROLE("role/{name}"),
 	CONNECT("user/connect"),
 	CONNECT_BY_ID("user/{id_user}"),
-	REGISTER("user/register");
+	REGISTER("user/register"),
+	TOURNAMENTS("tournament"),
+	MATCHS("match");
 
 	private String value;
 

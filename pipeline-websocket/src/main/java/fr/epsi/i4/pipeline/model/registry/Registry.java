@@ -52,7 +52,7 @@ public class Registry {
 	public List<RegistryEntry> getEntriesByPKalue(Object pkValue) {
 		List<RegistryEntry> entries = new ArrayList<>();
 		for (RegistryEntry registryEntry : this.entries) {
-			if (registryEntry.getPkValue().equals(pkValue)) {
+			if (registryEntry.getPkValue() != null && registryEntry.getPkValue().equals(pkValue)) {
 				entries.add(registryEntry);
 			}
 		}
