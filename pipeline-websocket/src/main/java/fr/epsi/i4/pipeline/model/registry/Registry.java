@@ -75,4 +75,15 @@ public class Registry {
 		}
 		return registryEntry;
 	}
+
+	public void removeSession(Session session) {
+		int i = 0;
+		while (i < entries.size()) {
+			if (entries.get(i).getSession().getId().equals(session.getId())) {
+				entries.remove(i);
+				i--;
+			}
+			i++;
+		}
+	}
 }

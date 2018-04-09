@@ -18,7 +18,7 @@ public class UserUpdateWS extends WebService {
 		User u = null;
 		try {
 			if (getMiniDAO().update().updateEntity(user)) {
-				u = user;
+				u = getMiniDAO().read().getEntityById(User.class, user.id_user);
 			}
 		} catch (MDException e) {
 			e.printStackTrace();

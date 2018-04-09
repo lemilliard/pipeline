@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class MicroService {
 
-	private static final List<Registry> registries = new ArrayList<>();
+	public static final List<Registry> registries = new ArrayList<>();
 
 	private final List<MicroServiceClient> microServiceClients;
 
