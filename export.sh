@@ -1,4 +1,28 @@
-#!bin/bash
+#!/bin/bash
+
+while getopts "h:u:p:r:" option
+do
+    case $option in
+        u) VM_URL=$OPTARG;;
+        p) VM_PORT=$OPTARG;;
+        r) RANCHER_PORT=$OPTARG;;
+    esac
+done
+
+if [ -z $VM_URL ]; then
+    VM_URL="home.thomaskint.com"
+fi
+
+if [ -z $VM_PORT ]; then
+    VM_PORT="2222"
+fi
+
+if [ -z $RANCHER_PORT ]; then
+    RANCHER_PORT="8086"
+fi
+
+echo "Export to ${VM_URL} using port ${VM_PORT} for SSH/SCP and port ${RANCHER_PORT} for rancher api"
+
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 DOCKER_DIR="pipeline-docker"
@@ -34,10 +58,6 @@ RUBY_PROJECTS=(
 )
 
 ERROR_MISSING_FILES="Required files does not exist"
-
-RANCHER_URL="home.thomaskint.com"
-
-RANCHER_PORT="8086"
 
 #RANCHER_ACCESS_KEY="1FD3E962C8A011454F0F"
 RANCHER_ACCESS_KEY="7C4B086FFC806F62E989"
@@ -380,12 +400,23 @@ function generate_dockerize() {
 	go_to_docker_folder
 	
 	echo "Adding header"
-	echo "#!bin/bash" > $DOCKERIZE_FILE
+	echo "#!/bin/bash" > $DOCKERIZE_FILE
+	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
+	echo "echo \"Stopping old containers\"" >> $DOCKERIZE_FILE
+	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
+	echo "docker stop \$(docker ps -a | awk '{ print \$1,\$2 }' | grep pipeline | awk '{print \$1 }')" >> $DOCKERIZE_FILE
+
+	echo "#!/bin/bash" > $DOCKERIZE_FILE
+	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
+	echo "echo \"Removing old containers\"" >> $DOCKERIZE_FILE
+	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
+	echo "docker rm -f \$(docker ps -a | awk '{ print \$1,\$2 }' | grep pipeline | awk '{print \$1 }')" >> $DOCKERIZE_FILE
+
 	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
 	echo "echo \"Removing old images\"" >> $DOCKERIZE_FILE
 	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
-	echo "docker rmi \$(docker images --format '{{.Repository}}' | grep 'pipeline')" >> $DOCKERIZE_FILE
-	
+	echo "docker rmi -f \$(docker images --format '{{.Repository}}' | grep 'pipeline')" >> $DOCKERIZE_FILE
+
 	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
 	echo "echo \"Generating new images\"" >> $DOCKERIZE_FILE
 	echo "echo \"------------------------------\"" >> $DOCKERIZE_FILE
@@ -419,16 +450,16 @@ function generate_dockerize() {
 
 function export_to_remote_host() {
 	go_to_base_folder
-	scp -P 2222 -r $DOCKER_FULL_DIR root@home.thomaskint.com:/opt/
+	scp -P $VM_PORT -r $DOCKER_FULL_DIR root@$VM_URL:/opt/
 }
 
 function execute_dockerize() {
-	ssh -p 2222 root@home.thomaskint.com "cd /opt/${DOCKER_DIR} && sh ${DOCKERIZE_FILE}"
+	ssh -p $VM_PORT root@$VM_URL "cd /opt/${DOCKER_DIR} && sh ${DOCKERIZE_FILE}"
 }
 
 function get_stack_id() {
 	req=$(curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
-		"http://${RANCHER_URL}:${RANCHER_PORT}/v2-beta/stacks?name=${RANCHER_STACK_NAME}")
+		"http://${VM_URL}:${RANCHER_PORT}/v2-beta/stacks?name=${RANCHER_STACK_NAME}")
 	data=(`echo $req| sed -e 's/[{}]/''/g'| awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | sed 's/:/ /1'| awk -F" " '{ print $2 }'`)
 	self=${data[5]}
 	url=${self:8:-1}
@@ -440,7 +471,7 @@ function get_stack_id() {
 function delete_stack() {
 	curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 		-X DELETE \
-		"http://${RANCHER_URL}:${RANCHER_PORT}/v2-beta/projects/${RANCHER_PROJECT_ID}/stacks/${1}"
+		"http://${VM_URL}:${RANCHER_PORT}/v2-beta/projects/${RANCHER_PROJECT_ID}/stacks/${1}"
 }
 
 function create_stack() {
@@ -459,7 +490,7 @@ function create_stack() {
 			\"dockerCompose\": \"${dockercompose}\",
 			\"startOnCreate\": \"true\"
 		}" \
-		"http://${RANCHER_URL}:${RANCHER_PORT}/v2-beta/projects/${RANCHER_PROJECT_ID}/stacks/"
+		"http://${VM_URL}:${RANCHER_PORT}/v2-beta/projects/${RANCHER_PROJECT_ID}/stacks/"
 }
 
 function main() {
@@ -468,23 +499,23 @@ function main() {
 	build_projects
 
 	copy_projects
-	
+
 	generate_dockerfiles
 
 	generate_docker_compose
-	
+
 	generate_rancher_compose 1
 
 	generate_dockerize
-	
+
 	export_to_remote_host
-	
+
 	delete_stack $(get_stack_id)
-	
+
 	sleep 30
-	
+
 	execute_dockerize
-	
+
 	create_stack
 }
 

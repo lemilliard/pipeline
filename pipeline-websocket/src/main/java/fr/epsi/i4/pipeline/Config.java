@@ -2,11 +2,12 @@ package fr.epsi.i4.pipeline;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
 
-	private static final String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+	private final InputStream inputStream;
 
 	private final String propertiesFileName;
 
@@ -14,10 +15,10 @@ public class Config {
 
 	public Config(String propertiesFileName) {
 		this.propertiesFileName = propertiesFileName;
-		String propertiesFilePath = rootPath + propertiesFileName;
-		properties = new Properties();
+		this.inputStream = this.getClass().getClassLoader().getResourceAsStream(propertiesFileName);
+		this.properties = new Properties();
 		try {
-			properties.load(new FileInputStream(propertiesFilePath));
+			properties.load(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
