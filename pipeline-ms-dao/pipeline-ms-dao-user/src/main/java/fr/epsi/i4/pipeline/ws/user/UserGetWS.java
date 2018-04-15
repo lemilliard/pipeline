@@ -1,6 +1,5 @@
 package fr.epsi.i4.pipeline.ws.user;
 
-import com.thomaskint.minidao.exception.MDException;
 import fr.epsi.i4.pipeline.model.bdd.user.User;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,23 +16,11 @@ public class UserGetWS extends WebService {
 
 	@GetMapping("/user")
 	public List<User> getUsers() {
-		List<User> users = null;
-		try {
-			users = getMiniDAO().read().getEntities(User.class);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return users;
+		return getEntities(User.class);
 	}
 
-	@GetMapping("/user/{id_user}")
-	public User getUser(@PathVariable("id_user") int idUser) {
-		User user = null;
-		try {
-			user = getMiniDAO().read().getEntityById(User.class, idUser);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return user;
+	@GetMapping("/user/{id}")
+	public User getUser(@PathVariable("id") int id) {
+		return getEntityById(User.class, id);
 	}
 }

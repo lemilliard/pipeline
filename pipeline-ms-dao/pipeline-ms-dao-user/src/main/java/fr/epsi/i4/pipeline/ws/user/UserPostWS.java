@@ -58,12 +58,6 @@ public class UserPostWS extends WebService {
 
 	@PostMapping("/user")
 	public boolean createUser(@RequestBody User user) {
-		boolean created = false;
-		try {
-			created = getMiniDAO().create().createEntity(user);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return created;
+		return createEntity(user);
 	}
 }

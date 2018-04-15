@@ -1,6 +1,5 @@
 package fr.epsi.i4.pipeline.ws.user;
 
-import com.thomaskint.minidao.exception.MDException;
 import fr.epsi.i4.pipeline.model.bdd.user.User;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,14 +14,10 @@ public class UserUpdateWS extends WebService {
 
 	@PutMapping("/user")
 	public User updateUser(@RequestBody User user) {
-		User u = null;
-		try {
-			if (getMiniDAO().update().updateEntity(user)) {
-				u = getMiniDAO().read().getEntityById(User.class, user.id_user);
-			}
-		} catch (MDException e) {
-			e.printStackTrace();
+		User updatedUser = null;
+		if (updateEntity(user)) {
+			updatedUser = getEntityById(User.class, user.id_user);
 		}
-		return u;
+		return updatedUser;
 	}
 }

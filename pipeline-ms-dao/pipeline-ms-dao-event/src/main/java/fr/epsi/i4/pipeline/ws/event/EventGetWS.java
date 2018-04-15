@@ -1,6 +1,5 @@
 package fr.epsi.i4.pipeline.ws.event;
 
-import com.thomaskint.minidao.exception.MDException;
 import fr.epsi.i4.pipeline.model.bdd.event.Event;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,23 +16,11 @@ public class EventGetWS extends WebService {
 
 	@GetMapping("/event")
 	public List<Event> getEvents() {
-		List<Event> events = null;
-		try {
-			events = getMiniDAO().read().getEntities(Event.class);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return events;
+		return getEntities(Event.class);
 	}
 
-	@GetMapping("/event/{id_event}")
-	public Event getEvent(@PathVariable("id_event") int idEvent) {
-		Event event = null;
-		try {
-			event = getMiniDAO().read().getEntityById(Event.class, idEvent);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return event;
+	@GetMapping("/event/{id}")
+	public Event getEvent(@PathVariable("id") int id) {
+		return getEntityById(Event.class, id);
 	}
 }

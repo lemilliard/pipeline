@@ -1,6 +1,5 @@
 package fr.epsi.i4.pipeline.ws.complexe;
 
-import com.thomaskint.minidao.exception.MDException;
 import fr.epsi.i4.pipeline.model.bdd.complexe.Complexe;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,23 +16,11 @@ public class ComplexeGetWS extends WebService {
 
 	@GetMapping("/complexe")
 	public List<Complexe> getComplexes() {
-		List<Complexe> complexes = null;
-		try {
-			complexes = getMiniDAO().read().getEntities(Complexe.class);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return complexes;
+		return getEntities(Complexe.class);
 	}
 
 	@GetMapping("/complexe/{id}")
 	public Complexe getComplexeById(@PathVariable("id") int id) {
-		Complexe complexe = null;
-		try {
-			complexe = getMiniDAO().read().getEntityById(Complexe.class, id);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return complexe;
+		return getEntityById(Complexe.class, id);
 	}
 }

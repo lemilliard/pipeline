@@ -16,12 +16,6 @@ public class PrivilegeDeleteWS extends WebService {
 
 	@DeleteMapping("/privilege/{name}")
 	public boolean deletePrivilege(@PathParam("name") String name) {
-		boolean deleted = false;
-		try {
-			deleted = getMiniDAO().delete().deleteEntityById(Privilege.class, name);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return deleted;
+		return deleteEntityById(Privilege.class, name);
 	}
 }

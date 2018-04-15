@@ -1,6 +1,5 @@
 package fr.epsi.i4.pipeline.ws.role;
 
-import com.thomaskint.minidao.exception.MDException;
 import fr.epsi.i4.pipeline.model.bdd.user.Role;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +15,6 @@ public class RoleDeleteWS extends WebService {
 
 	@DeleteMapping("/role/{name}")
 	public boolean deleteRole(@PathParam("name") String name) {
-		boolean deleted = false;
-		try {
-			deleted = getMiniDAO().delete().deleteEntityById(Role.class, name);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return deleted;
+		return deleteEntityById(Role.class, name);
 	}
 }

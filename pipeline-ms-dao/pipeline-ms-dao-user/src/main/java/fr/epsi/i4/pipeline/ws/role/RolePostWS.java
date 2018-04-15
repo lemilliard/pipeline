@@ -14,15 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RolePostWS extends WebService {
 
 	@PostMapping("/role")
-	public Role createRole(@RequestBody Role newRole) {
-		Role role = null;
-		try {
-			if (getMiniDAO().create().createEntity(newRole)) {
-				role = newRole;
-			}
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return role;
+	public Role createRole(@RequestBody Role role) {
+		return createAndReturnEntity(role);
 	}
 }

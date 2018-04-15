@@ -1,6 +1,5 @@
 package fr.epsi.i4.pipeline.ws.event;
 
-import com.thomaskint.minidao.exception.MDException;
 import fr.epsi.i4.pipeline.model.bdd.event.Event;
 import fr.epsi.i4.pipeline.ws.WebService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,14 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EventDeleteWS extends WebService {
 
-	@DeleteMapping("/event/{id_event}")
-	public boolean deleteEvent(@PathVariable("id_event") int idEvent) {
-		boolean deleted = false;
-		try {
-			deleted = getMiniDAO().delete().deleteEntityById(Event.class, idEvent);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return deleted;
+	@DeleteMapping("/event/{id}")
+	public boolean deleteEvent(@PathVariable("id") int id) {
+		return deleteEntityById(Event.class, id);
 	}
 }

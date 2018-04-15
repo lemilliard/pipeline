@@ -19,32 +19,20 @@ public class TournoiGetWS extends WebService {
 
 	@GetMapping("/tournoi")
 	public List<Tournoi> getTournois() {
-		List<Tournoi> tournois = null;
-		try {
-			tournois = getMiniDAO().read().getEntities(Tournoi.class);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return tournois;
+		return getEntities(Tournoi.class);
 	}
 
 	@GetMapping("/tournoi/{id}")
 	public Tournoi getTournoiById(@PathVariable("id") int id) {
-		Tournoi tournoi = null;
-		try {
-			tournoi = getMiniDAO().read().getEntityById(Tournoi.class, id);
-		} catch (MDException e) {
-			e.printStackTrace();
-		}
-		return tournoi;
+		return getEntityById(Tournoi.class, id);
 	}
 
-	@GetMapping("/tournois/complexe/{id}")
+	@GetMapping("/tournoi/complexe/{id}")
 	public List<Tournoi> getTournoisByComplexeId(@PathVariable("id") int id) {
 		List<Tournoi> tournois = null;
 		try {
-			MDCondition condition = new MDCondition(Tournoi.idComplexeFieldName, MDConditionOperator.EQUAL, 1);
-			tournois = getMiniDAO().read().getEntities(Tournoi.class);
+			MDCondition condition = new MDCondition(Tournoi.idComplexeFieldName, MDConditionOperator.EQUAL, id);
+			tournois = getMiniDAO().read().getEntities(Tournoi.class, condition);
 		} catch (MDException e) {
 			e.printStackTrace();
 		}
