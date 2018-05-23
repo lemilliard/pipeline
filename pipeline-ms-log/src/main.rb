@@ -6,9 +6,9 @@ require 'pp'
 set :bind, '0.0.0.0'
 set :port, 8080
 
-get '/' do
-  erb :'index.html'
-end
+# get '/' do
+#   erb :'index.html'
+# end
 
 post '/log' do
   path = 'C:/Users/ludau/GoPath/src/github.com/pipeline/pipeline-ms-log/src/log/logs.txt'
@@ -27,6 +27,6 @@ get '/log' do
     File.open('C:/Users/ludau/GoPath/src/github.com/pipeline/pipeline-ms-log/src/log/logs.txt', 'r')
 end
 
-get '/hello/:name' do
-  "Good morning #{params['name']}"
-end
+# get '/hello/:name' do
+#   "Good morning #{params['name']}"
+# end
