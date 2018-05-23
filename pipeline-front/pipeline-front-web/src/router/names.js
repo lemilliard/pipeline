@@ -4,6 +4,7 @@ export default {
   MATCH: 'Match',
   MATCHS: 'Matchs',
   LADDER: 'Ladder',
+  RANKINGS: 'Classements',
   CALENDAR: 'Calendar',
   SETTINGS: 'Settings',
   PROFILE: 'Profile',

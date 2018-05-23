@@ -1,6 +1,20 @@
 <template>
   <div class="calendrier">
-    <h1>{{ msg }}</h1>
+    <v-container>
+      <v-layout row wrap>
+        <h3>{{ msg }}</h3>
+        <v-container>
+          <v-layout row wrap>
+            <v-flex xs6>
+              <v-date-picker
+                v-model="date"
+                landscape
+              ></v-date-picker>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-layout>
+    </v-container>
   </div>
 </template>
 
@@ -34,4 +48,6 @@ export default {
   a {
     color: #42b983;
   }
+
+
 </style>

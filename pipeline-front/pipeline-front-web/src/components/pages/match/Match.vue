@@ -1,110 +1,114 @@
 <template>
   <div class="match">
-    <h1>{{ msg }}</h1>
-    <v-container fluid>
-      <v-layout row>
-        <v-flex order-md5>
-          <v-card dark tile flat color="red lighten-1">
-            <v-card-text>#1</v-card-text>
-          </v-card>
-        </v-flex>
-        <v-flex order-md7>
-          <v-card dark tile flat color="red darken-1">
-            <v-card-text>
-              <iframe width="100%" height="315" src="https://www.youtube.com/embed/CtH_iPgKzAk" frameborder="0"
-                      allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
-    <v-container grid-list-md text-xs-center>
+    <v-container>
       <v-layout row wrap>
-        <v-flex xs12>
-          <v-card dark color="warning">
-            <v-card-text class="px-0"><h2>Match simple - Score et détails</h2></v-card-text>
-          </v-card>
-        </v-flex>
-        <v-flex xs12>
-          <v-data-table
-            :headers="headers"
-            :items="items"
-            hide-actions
-            class="elevation-1"
-          >
-            <template slot="items" slot-scope="props">
-              <td>{{ props.item.name }}</td>
-              <td class="text-xs-right">{{ props.item.Set1 }}</td>
-              <td class="text-xs-right">{{ props.item.Set2 }}</td>
-              <td class="text-xs-right">{{ props.item.Set3 }}</td>
-              <td class="text-xs-right">{{ props.item.Set4 }}</td>
-              <td class="text-xs-right">{{ props.item.Set5 }}</td>
-            </template>
-          </v-data-table>
-        </v-flex>
-      </v-layout>
-    </v-container>
-    <v-container grid-list-md text-xs-center>
-      <v-layout row wrap>
-        <v-flex xs12>
-          <v-card dark color="warning">
-            <v-card-text class="px-0"><h2>Détails du match</h2></v-card-text>
-          </v-card>
-        </v-flex>
-        <v-flex xs12>
-          <v-data-iterator
-            content-tag="v-layout"
-            row
-            wrap
-            :items="items"
-            :rows-per-page-items="rowsPerPageItems"
-            :pagination.sync="pagination"
-          >
-            <v-flex
-              slot="item"
-              slot-scope="props"
-              xs12
-              sm6
-              md6
-              lg6
-            >
-              <v-card>
-                <v-card-title><h4>{{ props.item.name }}</h4></v-card-title>
-                <v-divider></v-divider>
-                <v-list dense>
-                  <v-list-tile>
-                    <v-list-tile-content>Calories:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ props.item.calories }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Fat:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ props.item.fat }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Carbs:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ props.item.carbs }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Protein:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ props.item.protein }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Sodium:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ props.item.sodium }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Calcium:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ props.item.calcium }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Iron:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ props.item.iron }}</v-list-tile-content>
-                  </v-list-tile>
-                </v-list>
+        <h3>{{ msg }}</h3>
+        <v-container fluid>
+          <v-layout row>
+            <v-flex order-md5>
+              <v-card dark tile flat color="red lighten-1">
+                <v-card-text>#1</v-card-text>
               </v-card>
             </v-flex>
-          </v-data-iterator>
-        </v-flex>
+            <v-flex order-md7>
+              <v-card dark tile flat color="red darken-1">
+                <v-card-text>
+                  <iframe width="100%" height="315" src="https://www.youtube.com/embed/CtH_iPgKzAk" frameborder="0"
+                          allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+        <v-container grid-list-md text-xs-center>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card dark color="warning">
+                <v-card-text class="px-0"><h2>Match simple - Score et détails</h2></v-card-text>
+              </v-card>
+            </v-flex>
+            <v-flex xs12>
+              <v-data-table
+                :headers="headers"
+                :items="items"
+                hide-actions
+                class="elevation-1"
+              >
+                <template slot="items" slot-scope="props">
+                  <td>{{ props.item.name }}</td>
+                  <td class="text-xs-right">{{ props.item.Set1 }}</td>
+                  <td class="text-xs-right">{{ props.item.Set2 }}</td>
+                  <td class="text-xs-right">{{ props.item.Set3 }}</td>
+                  <td class="text-xs-right">{{ props.item.Set4 }}</td>
+                  <td class="text-xs-right">{{ props.item.Set5 }}</td>
+                </template>
+              </v-data-table>
+            </v-flex>
+          </v-layout>
+        </v-container>
+        <v-container grid-list-md text-xs-center>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card dark color="warning">
+                <v-card-text class="px-0"><h2>Détails du match</h2></v-card-text>
+              </v-card>
+            </v-flex>
+            <v-flex xs12>
+              <v-data-iterator
+                content-tag="v-layout"
+                row
+                wrap
+                :items="items"
+                :rows-per-page-items="rowsPerPageItems"
+                :pagination.sync="pagination"
+              >
+                <v-flex
+                  slot="item"
+                  slot-scope="props"
+                  xs12
+                  sm6
+                  md6
+                  lg6
+                >
+                  <v-card>
+                    <v-card-title><h4>{{ props.item.name }}</h4></v-card-title>
+                    <v-divider></v-divider>
+                    <v-list dense>
+                      <v-list-tile>
+                        <v-list-tile-content>Calories:</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{ props.item.calories }}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content>Fat:</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{ props.item.fat }}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content>Carbs:</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{ props.item.carbs }}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content>Protein:</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{ props.item.protein }}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content>Sodium:</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{ props.item.sodium }}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content>Calcium:</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{ props.item.calcium }}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content>Iron:</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{ props.item.iron }}</v-list-tile-content>
+                      </v-list-tile>
+                    </v-list>
+                  </v-card>
+                </v-flex>
+              </v-data-iterator>
+            </v-flex>
+          </v-layout>
+        </v-container>
       </v-layout>
     </v-container>
   </div>

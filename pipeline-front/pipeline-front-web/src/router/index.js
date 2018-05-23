@@ -28,6 +28,11 @@ export default new Router({
       component: Pages.Ladder,
     },
     {
+      path: '/rankings',
+      name: Names.RANKINGS,
+      component: Pages.Rankings,
+    },
+    {
       path: '/calendar',
       name: Names.CALENDAR,
       component: Pages.Calendar,

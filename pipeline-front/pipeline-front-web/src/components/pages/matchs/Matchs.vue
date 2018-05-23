@@ -1,38 +1,42 @@
 <template>
   <div class="matchs">
-    <h1>{{ msg }}</h1>
-    <template v-for="(item, index) in items">
-      <v-container :key="index" grid-list-xl text-xs-center>
-        <v-layout row wrap>
-          <v-flex xs12 sm12 md12>
-            <v-card dark color="orange">
-              <v-layout row wrap>
-                <v-flex xs12 sm3 md3>
-                  <v-card dark color="primary">
-                    <v-card-text v-html="item.horaire"></v-card-text>
-                  </v-card>
-                </v-flex>
-                <v-flex xs12 sm3 md3>
-                  <v-card dark color="primary">
-                    <v-card-text v-html="item.equipe1"></v-card-text>
-                  </v-card>
-                </v-flex>
-                <v-flex xs12 sm3 md3>
-                  <v-card dark color="primary">
-                    <v-card-text v-html="item.equipe2"></v-card-text>
-                  </v-card>
-                </v-flex>
-                <v-flex xs12 sm3 md3>
-                  <v-card dark color="primary" :href="item.href" :to="{name: item.href}">
-                    <v-card-text v-html="item.link"></v-card-text>
-                  </v-card>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </template>
+    <v-container>
+      <v-layout row wrap>
+        <h3>{{ msg }}</h3>
+        <template v-for="(item, index) in items">
+          <v-container :key="index" grid-list-md text-xs-center>
+            <v-layout row wrap>
+              <v-flex xs12 sm12 md12>
+                <v-card dark color="orange">
+                  <v-layout row wrap>
+                    <v-flex xs12 sm3 md3>
+                      <v-card dark color="primary">
+                        <v-card-text v-html="item.horaire"></v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs12 sm3 md3>
+                      <v-card dark color="primary">
+                        <v-card-text v-html="item.equipe1"></v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs12 sm3 md3>
+                      <v-card dark color="primary">
+                        <v-card-text v-html="item.equipe2"></v-card-text>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs12 sm3 md3>
+                      <v-card dark color="primary" :href="item.href" :to="{name: item.href}">
+                        <v-card-text v-html="item.link"></v-card-text>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </template>
+      </v-layout>
+    </v-container>
   </div>
 </template>
 
@@ -105,16 +109,8 @@ export default {
     font-weight: normal;
   }
 
-  .matchs {
-    width: 100%;
-  }
-
   .container.grid-list-xl {
     padding: 25px 0px;
-  }
-
-  .container {
-    max-width: 100%;
   }
 
   ul {

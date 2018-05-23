@@ -1,21 +1,29 @@
 <template>
   <div class="classement">
-    <h1>{{ msg }}</h1>
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      hide-actions
-      class="elevation-1"
-    >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.actuellement }}</td>
-        <td class="text-xs-right">{{ props.item.pad }}</td>
-        <td class="text-xs-right">{{ props.item.pg }}</td>
-        <td class="text-xs-right">{{ props.item.difference }}</td>
-        <td class="text-xs-right">{{ props.item.points }}</td>
-      </template>
-    </v-data-table>
+    <v-container>
+      <v-layout row wrap>
+        <h3>{{ msg }}</h3>
+        <v-data-table
+          :headers="headers"
+          :items="items"
+          hide-actions
+          class="elevation-1"
+        >
+          <template slot="items" slot-scope="props">
+            <td>{{ props.item.ranking }}</td>
+            <td>{{ props.item.move }}</td>
+            <td>{{ props.item.country }}</td>
+            <td>{{ props.item.player }}</td>
+            <td class="">{{ props.item.age }}</td>
+            <td class="">{{ props.item.points }}</td>
+            <td class="">{{ props.item.pad }}</td>
+            <td class="">{{ props.item.pg }}</td>
+            <td class="">{{ props.item.difference }}</td>
+
+          </template>
+        </v-data-table>
+      </v-layout>
+    </v-container>
   </div>
 </template>
 
@@ -27,22 +35,29 @@ export default {
       msg: 'Classement',
       headers: [
         {
-          text: 'Dessert (100g serving)',
+          text: 'Ranking',
           align: 'left',
-          sortable: false,
-          value: 'name',
+          sortable: true,
+          value: 'ranking',
         },
-        { text: 'Actuellement', value: 'actuellement' },
-        { text: 'Point à défendre', value: 'pad' },
-        { text: 'Point gagner cette semaine', value: 'pg' },
-        { text: 'Différence', value: 'difference' },
-        { text: 'Points', value: 'points' },
+        { text: 'Move', align: 'left', sortable: true, value: 'move' },
+        { text: 'Country', align: 'left', sortable: true, value: 'country' },
+        { text: 'Player', align: 'left', sortable: true, value: 'player' },
+        { text: 'Ages', align: 'left', sortable: true, value: 'ages' },
+        { text: 'Points', align: 'left', sortable: true, value: 'points' },
+        { text: 'Point à défendre', align: 'left', sortable: true, value: 'pad' },
+        { text: 'Point gagner cette semaine', align: 'left', sortable: true, value: 'pg' },
+        { text: 'Différence', align: 'left', sortable: true, value: 'difference' },
+
       ],
       items: [
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,
@@ -50,8 +65,11 @@ export default {
         },
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,
@@ -59,8 +77,11 @@ export default {
         },
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,
@@ -68,8 +89,11 @@ export default {
         },
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,
@@ -77,8 +101,11 @@ export default {
         },
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,
@@ -86,8 +113,11 @@ export default {
         },
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,
@@ -95,8 +125,11 @@ export default {
         },
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,
@@ -104,8 +137,11 @@ export default {
         },
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,
@@ -113,8 +149,11 @@ export default {
         },
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,
@@ -122,8 +161,23 @@ export default {
         },
         {
           value: false,
-          name: 'Federer Roger',
-          actuellement: 'Demi-finale, Indian Wells',
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
+          pad: 1000,
+          pg: 360,
+          difference: -640,
+          points: 9420,
+        },
+        {
+          value: false,
+          ranking: '1',
+          move: '-',
+          country: 'Suisse',
+          player: 'Federer Roger',
+          age: '34',
           pad: 1000,
           pg: 360,
           difference: -640,

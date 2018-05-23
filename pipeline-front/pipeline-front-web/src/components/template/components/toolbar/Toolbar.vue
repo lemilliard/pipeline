@@ -2,24 +2,18 @@
   <div>
     <progress-bar v-if="progressBar"></progress-bar>
     <v-toolbar
-      dark
+      light
       app
       clipped-left
       fixed
       height="50"
     >
-      <toolbar-navigation></toolbar-navigation>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <!--<v-toolbar-side-icon @click.stop="switchDrawer"></v-toolbar-side-icon>-->
-        <v-btn
-          large
-          round
-          flat
-          @click.stop="$global.openRoute(RouteNames.HOME)"
-        >
-          PIPELINE
-        </v-btn>
+        <v-btn flat to="/">Pipeline</v-btn>
       </v-toolbar-title>
+      <toolbar-navigation></toolbar-navigation>
+
       <v-spacer></v-spacer>
       <main-menu v-if="isConnected()"></main-menu>
       <account-dialog v-else></account-dialog>
@@ -62,4 +56,7 @@ export default {
 </script>
 
 <style scoped>
+  .application .theme--dark.toolbar {
+    background: #2ECC71;
+  }
 </style>

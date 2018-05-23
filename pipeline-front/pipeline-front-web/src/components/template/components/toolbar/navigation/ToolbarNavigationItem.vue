@@ -1,10 +1,12 @@
 <template>
   <v-tooltip bottom>
     <v-btn
-      icon
+
+      flat
       slot="activator"
       @click.stop="$global.openRoute(item.route)">
       <v-icon>{{ item.icon }}</v-icon>
+      {{ item.text }}
     </v-btn>
     <span>{{ item.text }}</span>
   </v-tooltip>
