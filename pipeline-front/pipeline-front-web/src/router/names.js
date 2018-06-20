@@ -10,4 +10,5 @@ export default {
   PROFILE: 'Profile',
   TOURNAMENTS: 'Tournaments',
   ERROR_404: '404',
+  IMPORTER: 'Importer',
 };

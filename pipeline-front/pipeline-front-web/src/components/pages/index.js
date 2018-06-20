@@ -7,6 +7,7 @@ import Settings from './settings/Settings';
 import About from './about/About';
 import Profile from './profile/Profile';
 import Tournament from './tournament/Tournament';
+import Importer from './importer/Importer';
 import Redirection from './redirection';
 
 export default {
@@ -20,4 +21,5 @@ export default {
   Profile,
   Tournament,
   Redirection,
+  Importer,
 };

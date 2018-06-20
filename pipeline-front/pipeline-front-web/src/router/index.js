@@ -58,6 +58,11 @@ export default new Router({
       component: Pages.Tournament,
     },
     {
+      path: '/importer',
+      name: Names.IMPORTER,
+      component: Pages.Importer,
+    },
+    {
       path: '*',
       redirect: Names.ERROR_404,
     },
