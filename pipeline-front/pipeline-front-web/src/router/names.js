@@ -4,10 +4,11 @@ export default {
   MATCH: 'Match',
   MATCHS: 'Matchs',
   LADDER: 'Ladder',
-  RANKINGS: 'Classements',
   CALENDAR: 'Calendar',
   SETTINGS: 'Settings',
   PROFILE: 'Profile',
   TOURNAMENTS: 'Tournaments',
+  ADDTOURNAMENT: 'Add Tournament',
   ERROR_404: '404',
+  ORGANISER: 'Organiser',
 };

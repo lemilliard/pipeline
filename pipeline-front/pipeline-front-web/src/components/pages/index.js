@@ -7,7 +7,9 @@ import Settings from './settings/Settings';
 import About from './about/About';
 import Profile from './profile/Profile';
 import Tournament from './tournament/Tournament';
+import AddTournament from './tournament/add-tournament';
 import Redirection from './redirection';
+import Organiser from './organiser/Organiser';
 
 export default {
   Home,
@@ -19,5 +21,8 @@ export default {
   About,
   Profile,
   Tournament,
+  AddTournament,
   Redirection,
+  Organiser,
+
 };

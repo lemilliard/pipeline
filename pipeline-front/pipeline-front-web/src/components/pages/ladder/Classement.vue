@@ -19,6 +19,7 @@
             <td class="">{{ props.item.pad }}</td>
             <td class="">{{ props.item.pg }}</td>
             <td class="">{{ props.item.difference }}</td>
+            <td class=""><v-btn color="warning">S'abonner</v-btn></td>
 
           </template>
         </v-data-table>
@@ -45,9 +46,10 @@ export default {
         { text: 'Player', align: 'left', sortable: true, value: 'player' },
         { text: 'Ages', align: 'left', sortable: true, value: 'ages' },
         { text: 'Points', align: 'left', sortable: true, value: 'points' },
-        { text: 'Point à défendre', align: 'left', sortable: true, value: 'pad' },
-        { text: 'Point gagner cette semaine', align: 'left', sortable: true, value: 'pg' },
+        { text: 'PAD', align: 'left', sortable: true, value: 'pad' },
+        { text: 'PGS', align: 'left', sortable: true, value: 'pg' },
         { text: 'Différence', align: 'left', sortable: true, value: 'difference' },
+        { text: 'Suivre', align: 'left', sortable: false, value: 'Follow' },
 
       ],
       items: [

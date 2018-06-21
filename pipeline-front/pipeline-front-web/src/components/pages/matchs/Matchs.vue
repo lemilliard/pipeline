@@ -6,27 +6,37 @@
         <template v-for="(item, index) in items">
           <v-container :key="index" grid-list-md text-xs-center>
             <v-layout row wrap>
-              <v-flex xs12 sm12 md12>
-                <v-card dark color="orange">
+              <v-flex row-match xs12 sm12 md12>
+                <v-card  >
                   <v-layout row wrap>
-                    <v-flex xs12 sm3 md3>
-                      <v-card dark color="primary">
+                    <v-flex xs12 sm2 md2>
+                      <v-card  >
                         <v-card-text v-html="item.horaire"></v-card-text>
                       </v-card>
                     </v-flex>
                     <v-flex xs12 sm3 md3>
-                      <v-card dark color="primary">
+                      <v-card  >
                         <v-card-text v-html="item.equipe1"></v-card-text>
                       </v-card>
                     </v-flex>
                     <v-flex xs12 sm3 md3>
-                      <v-card dark color="primary">
+                      <v-card  >
                         <v-card-text v-html="item.equipe2"></v-card-text>
                       </v-card>
                     </v-flex>
-                    <v-flex xs12 sm3 md3>
-                      <v-card dark color="primary" :href="item.href" :to="{name: item.href}">
-                        <v-card-text v-html="item.link"></v-card-text>
+                    <v-flex xs12 sm2 md2>
+                      <v-card  :href="item.href" :to="{name: item.href}">
+                        <!--<v-card-text v-html="item.link"></v-card-text>-->
+                        <v-btn color="info">Voir le match</v-btn>
+                      </v-card>
+                    </v-flex>
+                    <v-flex xs12 sm2 md2>
+                      <v-card  :href="item.href" :to="{name: item.href}">
+                        <!--<v-card-text v-html="item.subscribe">
+
+
+                        </v-card-text>-->
+                        <v-btn color="warning">S'abonner</v-btn>
                       </v-card>
                     </v-flex>
                   </v-layout>
@@ -53,6 +63,7 @@ export default {
           equipe2: 'W.Tsonga',
           horaire: '16:00',
           link: 'Voir le match',
+          subscribe: 'S\'abonner',
           href: 'Match',
           router: true,
         },
@@ -61,6 +72,7 @@ export default {
           equipe2: 'E.Federer',
           horaire: '18:00',
           link: 'Voir le match',
+          subscribe: 'S\'abonner',
           href: 'Match',
           router: true,
         },
@@ -69,6 +81,7 @@ export default {
           equipe2: 'Equipe 2',
           horaire: '16:00',
           link: 'Voir le match',
+          subscribe: 'S\'abonner',
           href: 'Match',
           router: true,
         },
@@ -77,6 +90,7 @@ export default {
           equipe2: 'Equipe 2',
           horaire: '19:00',
           link: 'Voir le match',
+          subscribe: 'S\'abonner',
           href: 'Match',
           router: true,
         },
@@ -85,6 +99,7 @@ export default {
           equipe2: 'Equipe 2',
           horaire: '21:00',
           link: 'Voir le match',
+          subscribe: 'S\'abonner',
           href: 'Match',
           router: true,
         },
@@ -125,5 +140,17 @@ export default {
 
   a {
     color: #42b983;
+  }
+
+  .flex {
+    padding: 0;
+  }
+
+  .card {
+    box-shadow: none;
+  }
+
+  .row-match {
+    border: 1px solid #ccc;
   }
 </style>

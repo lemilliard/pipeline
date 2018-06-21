@@ -2,15 +2,15 @@
   <div>
     <progress-bar v-if="progressBar"></progress-bar>
     <v-toolbar
-      light
       app
       clipped-left
       fixed
       height="50"
+      color="success"
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <!--<v-toolbar-side-icon @click.stop="switchDrawer"></v-toolbar-side-icon>-->
-        <v-btn flat to="/">Pipeline</v-btn>
+        <v-btn flat color="white" to="/">Pipeline</v-btn>
       </v-toolbar-title>
       <toolbar-navigation></toolbar-navigation>
 
@@ -58,5 +58,9 @@ export default {
 <style scoped>
   .application .theme--dark.toolbar {
     background: #2ECC71;
+  }
+
+  .application .theme--light.toolbar {
+    color: #fff;
   }
 </style>

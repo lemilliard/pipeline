@@ -33,11 +33,6 @@ export default new Router({
       component: Pages.Rankings,
     },
     {
-      path: '/calendar',
-      name: Names.CALENDAR,
-      component: Pages.Calendar,
-    },
-    {
       path: '/settings',
       name: Names.SETTINGS,
       component: Pages.Settings,
@@ -56,6 +51,16 @@ export default new Router({
       path: '/tournaments',
       name: Names.TOURNAMENTS,
       component: Pages.Tournament,
+    },
+    {
+      path: '/addtournament',
+      name: Names.ADDTOURNAMENT,
+      component: Pages.AddTournament,
+    },
+    {
+      path: '/organiser',
+      name: Names.ORGANISER,
+      component: Pages.Organiser,
     },
     {
       path: '*',
