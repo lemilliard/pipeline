@@ -8,6 +8,7 @@ import About from './about/About';
 import Profile from './profile/Profile';
 import Tournament from './tournament/Tournament';
 import AddTournament from './tournament/add-tournament';
+import Importer from './importer/Importer';
 import Redirection from './redirection';
 import Organiser from './organiser/Organiser';
 
@@ -24,5 +25,5 @@ export default {
   AddTournament,
   Redirection,
   Organiser,
-
+  Importer,
 };

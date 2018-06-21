@@ -1,4 +1,5 @@
 export default {
   IS_CONNECTED: 'IS_CONNECTED',
   IS_ADMIN: 'IS_ADMIN',
+  IS_ARBITRE: 'IS_ARBITRE',
 };

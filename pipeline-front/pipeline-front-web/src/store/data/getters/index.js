@@ -7,6 +7,9 @@ export default {
     return state[Resources.CURRENT_USER.name] && state[Resources.CURRENT_USER.name].id_user !== null;
   },
   [Types.IS_ADMIN](state) {
-    return [Types.IS_CONNECTED] && state[Resources.CURRENT_USER.name].role && state[Resources.CURRENT_USER.name].role.valeur === 'Admin';
+    return [Types.IS_CONNECTED] && state[Resources.CURRENT_USER.name].role && state[Resources.CURRENT_USER.name].role.value === 'ADMIN';
+  },
+  [Types.IS_ARBITRE](state) {
+    return [Types.IS_CONNECTED] && state[Resources.CURRENT_USER.name].role && state[Resources.CURRENT_USER.name].role.value === 'ARBITRE';
   },
 };

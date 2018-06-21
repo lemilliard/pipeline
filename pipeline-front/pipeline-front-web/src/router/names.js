@@ -11,4 +11,5 @@ export default {
   ADDTOURNAMENT: 'Add Tournament',
   ERROR_404: '404',
   ORGANISER: 'Organiser',
+  IMPORTER: 'Importer',
 };

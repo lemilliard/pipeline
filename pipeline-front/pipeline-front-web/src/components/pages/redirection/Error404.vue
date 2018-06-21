@@ -36,7 +36,7 @@
 <style scoped>
   h2.error-404-text {
     font-weight: bold;
-    text-shadow: 0 0 10px #000;
+    /*text-shadow: 0 0 10px #000;*/
   }
 
   h2.error-404 {
