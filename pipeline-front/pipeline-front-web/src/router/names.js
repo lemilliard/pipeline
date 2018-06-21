@@ -12,4 +12,5 @@ export default {
   ERROR_404: '404',
   ORGANISER: 'Organiser',
   IMPORTER: 'Importer',
+  RANKINGS: 'Rankings',
 };

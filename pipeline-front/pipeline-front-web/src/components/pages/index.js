@@ -11,6 +11,7 @@ import AddTournament from './tournament/add-tournament';
 import Importer from './importer/Importer';
 import Redirection from './redirection';
 import Organiser from './organiser/Organiser';
+import Rankings from './rankings/Rankings';
 
 export default {
   Home,
@@ -26,4 +27,5 @@ export default {
   Redirection,
   Organiser,
   Importer,
+  Rankings,
 };
