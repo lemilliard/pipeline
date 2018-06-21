@@ -7,31 +7,31 @@
           <v-container :key="index" grid-list-md text-xs-center>
             <v-layout row wrap>
               <v-flex row-match xs12 sm12 md12>
-                <v-card  >
+                <v-card>
                   <v-layout row wrap>
                     <v-flex xs12 sm2 md2>
-                      <v-card  >
+                      <v-card>
                         <v-card-text v-html="item.horaire"></v-card-text>
                       </v-card>
                     </v-flex>
                     <v-flex xs12 sm3 md3>
-                      <v-card  >
+                      <v-card>
                         <v-card-text v-html="item.equipe1"></v-card-text>
                       </v-card>
                     </v-flex>
                     <v-flex xs12 sm3 md3>
-                      <v-card  >
+                      <v-card>
                         <v-card-text v-html="item.equipe2"></v-card-text>
                       </v-card>
                     </v-flex>
                     <v-flex xs12 sm2 md2>
-                      <v-card  :href="item.href" :to="{name: item.href}">
+                      <v-card :href="item.href" :to="{name: item.href, params: {id: item.id}}">
                         <!--<v-card-text v-html="item.link"></v-card-text>-->
                         <v-btn color="info">Voir le match</v-btn>
                       </v-card>
                     </v-flex>
                     <v-flex xs12 sm2 md2>
-                      <v-card  :href="item.href" :to="{name: item.href}">
+                      <v-card :href="item.href" :to="{name: item.href, params: {id: item.id}}">
                         <!--<v-card-text v-html="item.subscribe">
 
 
@@ -59,6 +59,7 @@ export default {
       msg: 'Matchs en direct',
       items: [
         {
+          id: 0,
           equipe1: 'R.Nadal',
           equipe2: 'W.Tsonga',
           horaire: '16:00',
@@ -68,6 +69,7 @@ export default {
           router: true,
         },
         {
+          id: 1,
           equipe1: 'N.Djokovic',
           equipe2: 'E.Federer',
           horaire: '18:00',
@@ -77,6 +79,7 @@ export default {
           router: true,
         },
         {
+          id: 2,
           equipe1: 'Equipe 1',
           equipe2: 'Equipe 2',
           horaire: '16:00',
@@ -86,6 +89,7 @@ export default {
           router: true,
         },
         {
+          id: 3,
           equipe1: 'Equipe 1',
           equipe2: 'Equipe 2',
           horaire: '19:00',
@@ -95,6 +99,7 @@ export default {
           router: true,
         },
         {
+          id: 4,
           equipe1: 'Equipe 1',
           equipe2: 'Equipe 2',
           horaire: '21:00',
