@@ -14,9 +14,12 @@
             <template v-for="(match, index) in matchs">
               <v-flex  justify-space-between fill-height xs12 sm2 md2>
                 <v-btn color="success">+</v-btn>
+                <v-btn color="warning">Avertissement</v-btn>
+                <v-btn color="info">Soigneur</v-btn>
               </v-flex>
               <v-flex xs6 sm2 md2>
                 <v-btn class="hide-on-desktop" color="success">+</v-btn>
+
                 <v-card>
                   <v-card-text v-html="match.equipe1"></v-card-text>
                   <v-card-media class="img-equipe" :src="match.img_equipe1" height="400px">
@@ -26,6 +29,17 @@
 
               <v-flex xs6 sm4 md4>
                 <h4>Score en direct</h4>
+                <h4>
+                  <span class="label label-primary">{{ time.heures }}</span> heures
+                  <span class="label label-primary">{{ time.minutes }}</span> minutes
+                  <span class="label label-primary">{{ time.secondes }}</span> secondes
+                </h4>
+                <br>
+                <p>
+                  <button class="btn btn-danger btn-lg" v-show="etat.backward" v-on:click="backward">Effacer</button>
+                  <button class="btn btn-danger btn-lg" v-show="etat.stop" v-on:click="stop">Pause</button>
+                  <button class="btn btn-primary btn-lg" v-show="etat.play" v-on:click="play">{{ btnPlay }}</button>
+                </p>
                 <v-layout text-xs-center text-md-center>
                   <v-flex xs6 sm6 md6 align-center="true">
                     <v-card color="blue-grey darken-2" class="white--text">
@@ -57,6 +71,8 @@
               </v-flex>
               <v-flex xs12 sm2 md2>
                 <v-btn color="success">+</v-btn>
+                <v-btn color="warning">Avertissement</v-btn>
+                <v-btn color="info">Soigneur</v-btn>
               </v-flex>
             </template>
           </v-layout>
@@ -93,51 +109,41 @@
         <v-container fluid grid-list-md>
           <v-data-iterator
             :items="stats"
-            :rows-per-page-items="rowsPerPageItems"
-            :pagination.sync="pagination"
             content-tag="v-layout"
             row
             wrap
           >
             <v-flex
-              slot="stat"
+              slot="item"
               slot-scope="props"
               xs12
               sm6
-              md4
-              lg3
+              md6
+              lg6
             >
               <v-card>
-                <v-card-title><h4>{{ props.stat.name }}</h4></v-card-title>
+                <v-card-title><h4>{{ props.item.name }}</h4></v-card-title>
                 <v-divider></v-divider>
                 <v-list dense>
                   <v-list-tile>
-                    <v-list-tile-content>Calories:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ propsstat.stat.calories }}</v-list-tile-content>
+                    <v-list-tile-content>% de service réussis :</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{ props.item.serviceswin }}</v-list-tile-content>
                   </v-list-tile>
                   <v-list-tile>
-                    <v-list-tile-content>Fat:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ propsstat.stat.fat }}</v-list-tile-content>
+                    <v-list-tile-content>Balles de break :</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{ props.item.breakballs }}</v-list-tile-content>
                   </v-list-tile>
                   <v-list-tile>
-                    <v-list-tile-content>Carbs:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ propsstat.stat.carbs }}</v-list-tile-content>
+                    <v-list-tile-content>Balles de match :</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{ props.item.matchballs }}</v-list-tile-content>
                   </v-list-tile>
                   <v-list-tile>
-                    <v-list-tile-content>Protein:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ propsstat.stat.protein }}</v-list-tile-content>
+                    <v-list-tile-content>Balles de sets gagnées :</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{ props.item.matchsetballswin }}</v-list-tile-content>
                   </v-list-tile>
                   <v-list-tile>
-                    <v-list-tile-content>Sodium:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ propsstat.stat.sodium }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Calcium:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ propsstat.stat.calcium }}</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile>
-                    <v-list-tile-content>Iron:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{ propsstat.stat.iron }}</v-list-tile-content>
+                    <v-list-tile-content>Balles de sets perdus :</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{ props.item.matchsetballsloose }}</v-list-tile-content>
                   </v-list-tile>
                 </v-list>
               </v-card>
@@ -202,123 +208,78 @@ export default {
           Set5: 3,
         },
       ],
-      rowsPerPageItems: [2, 8, 12],
-      pagination: {
-        rowsPerPage: 2,
-      },
       stats: [
         {
           value: false,
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          sodium: 87,
-          calcium: '14%',
-          iron: '1%',
+          name: 'Rafael Nadal',
+          serviceswin: 159,
+          breakballs: 6.0,
+          matchballs: 24,
+          matchsetballswin: 4.0,
+          matchsetballsloose: 87,
         },
         {
           value: false,
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          sodium: 129,
-          calcium: '8%',
-          iron: '1%',
-        },
-        {
-          value: false,
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          sodium: 337,
-          calcium: '6%',
-          iron: '7%',
-        },
-        {
-          value: false,
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          sodium: 413,
-          calcium: '3%',
-          iron: '8%',
-        },
-        {
-          value: false,
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          sodium: 327,
-          calcium: '7%',
-          iron: '16%',
-        },
-        {
-          value: false,
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          sodium: 50,
-          calcium: '0%',
-          iron: '0%',
-        },
-        {
-          value: false,
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          sodium: 38,
-          calcium: '0%',
-          iron: '2%',
-        },
-        {
-          value: false,
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          sodium: 562,
-          calcium: '0%',
-          iron: '45%',
-        },
-        {
-          value: false,
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          sodium: 326,
-          calcium: '2%',
-          iron: '22%',
-        },
-        {
-          value: false,
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          sodium: 54,
-          calcium: '12%',
-          iron: '6%',
+          name: 'Roger Federer',
+          serviceswin: 159,
+          breakballs: 6.0,
+          matchballs: 24,
+          matchsetballswin: 4.0,
+          matchsetballsloose: 87,
         },
       ],
+      time: {
+        heures: 0,
+        minutes: 0,
+        secondes: 0,
+      },
+      btnPlay: 'Démarrer',
+      etat: {
+        stop: false,
+        backward: false,
+        play: true,
+      },
+      totalSecondes: 0,
+      timer: null,
     };
+  },
+  methods: {
+    backward() {
+      this.chronoReset();
+    },
+    play() {
+      this.chronoStart();
+    },
+    stop() {
+      this.chronoStop();
+    },
+    chronoStart() {
+      this.timer = setInterval(() => {
+        this.totalSecondes += 1;
+        this.time.secondes = (this.totalSecondes) % 60;
+        this.time.minutes = Math.floor((this.totalSecondes / 60) % 60);
+        this.time.heures = Math.floor(((this.totalSecondes / 3600)) % 24);
+      }, 1000);
+      this.setEtat(false, true, false);
+      this.btnPlay = 'Continuer';
+    },
+    chronoStop() {
+      clearInterval(this.timer);
+      this.setEtat(true, false, true);
+    },
+    chronoReset() {
+      this.totalSecondes = 0;
+      this.time.heures = 0;
+      this.time.minutes = 0;
+      this.time.secondes = 0;
+      this.setEtat(true, false, false);
+      this.btnPlay = 'Démarrer';
+    },
+    setEtat(play, stop, backward) {
+      this.etat.play = play;
+      this.etat.stop = stop;
+      this.etat.backward = backward;
+    },
   },
 };
 </script>
