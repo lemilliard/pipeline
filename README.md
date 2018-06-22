@@ -70,7 +70,7 @@ Avant cette étape, voir:
 
 Les différents parties de l'application sont accessibles aux adresses suivantes:
 
-* Socket: http://home.thomaskint.com:8085/websocket (80)
+* Socket: ws://home.thomaskint.com:8085/websocket (80)
 * Micro Services: http://home.thomaskint.com:8085 (80)
   * MS DAO:
     * EVENT: /ms-dao-event

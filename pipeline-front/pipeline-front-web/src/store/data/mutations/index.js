@@ -29,10 +29,10 @@ const setItem = (vue, state, resource, item) => {
 
 export default {
   [Types.COMMIT_DATA](state, { vue, data }) {
-    if (data.request && data.request.resource && data.content) {
+    if (data.request && data.request.resource && (data.content || data.contents)) {
       const resourceMap = getResourceByWSResource(data.request.resource);
       const resource = resourceMap.res;
-      const content = data.content;
+      const content = (data.content || data.contents);
       if (Array.isArray(content)) {
         content.forEach((item) => {
           addItem(vue, state, resource, item);

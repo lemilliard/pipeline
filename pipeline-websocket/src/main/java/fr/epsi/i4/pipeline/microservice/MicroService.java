@@ -1,5 +1,6 @@
 package fr.epsi.i4.pipeline.microservice;
 
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
 import fr.epsi.i4.pipeline.microservice.microserviceclient.Method;
@@ -12,12 +13,27 @@ import fr.epsi.i4.pipeline.model.Response;
 import fr.epsi.i4.pipeline.model.registry.RegistryEntry;
 import fr.epsi.i4.pipeline.model.registry.Registry;
 import fr.epsi.i4.pipeline.model.registry.RegistryType;
+import org.apache.http.Header;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
-import javax.ws.rs.client.*;
-import javax.ws.rs.core.MediaType;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +47,10 @@ public class MicroService {
 
 	private final List<MicroServiceClient> microServiceClients;
 
-	private Client client;
-
-	private WebTarget webTarget;
+	private HttpClient client;
 
 	public MicroService() {
-		client = ClientBuilder.newClient();
+		client = HttpClientBuilder.create().build();
 		microServiceClients = new ArrayList<MicroServiceClient>() {{
 			add(new UserMicroServiceClient());
 		}};
@@ -58,9 +72,9 @@ public class MicroService {
 				response.setError("Method not allowed for this resource");
 			} else {
 				String resourcePath = microServiceClient.getResourcePath(resource, request.getParams());
-				webTarget = client.target(resourcePath);
+				System.out.println(resourcePath);
 
-				Object clientResponse = getClientResponse(request);
+				Object clientResponse = getClientResponse(request, resourcePath);
 				if (clientResponse == null) {
 					response.setError("No response from given resource");
 				} else {
@@ -78,37 +92,55 @@ public class MicroService {
 	 * Interroge une service et en récupère la réponse
 	 *
 	 * @param request
+	 * @param resourcePath
 	 * @return
 	 */
-	private Object getClientResponse(Request request) {
-		Entity object = null;
-		if (request.getBody() != null) {
-			object = Entity.entity(request.getBody(), MediaType.APPLICATION_JSON);
-		}
-		if (request.getParams() != null) {
-			for (Map.Entry<String, Object> entry : request.getParams().entrySet()) {
-				webTarget = webTarget.queryParam(entry.getKey(), entry.getValue());
-			}
-		}
-		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+	private Object getClientResponse(Request request, String resourcePath) {
 		Object clientResponse = null;
-		switch (request.getMethod()) {
-			case GET:
-				clientResponse = invocationBuilder.get(Object.class);
-				break;
-			case POST:
-				if (object != null) {
-					clientResponse = invocationBuilder.post(object, Object.class);
-				}
-				break;
-			case PUT:
-				if (object != null) {
-					clientResponse = invocationBuilder.put(object, Object.class);
-				}
-				break;
-			case DELETE:
-				clientResponse = invocationBuilder.delete(Object.class);
-				break;
+		try {
+			Gson gson = new Gson();
+			Object object = null;
+			// Ajout du body
+			if (request.getBody() != null) {
+				object = request.getBody();
+			}
+			HttpResponse httpResponse = null;
+			switch (request.getMethod()) {
+				case GET:
+					HttpGet httpGet = new HttpGet(resourcePath);
+					httpResponse = client.execute(httpGet);
+					break;
+				case POST:
+					if (object != null) {
+						StringEntity stringEntity = new StringEntity(gson.toJson(object));
+						HttpPost httpPost = new HttpPost(resourcePath);
+						httpPost.setEntity(stringEntity);
+						httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+						httpResponse = client.execute(httpPost);
+					}
+					break;
+				case PUT:
+					if (object != null) {
+						StringEntity stringEntity = new StringEntity(gson.toJson(object));
+						HttpPut httpPut = new HttpPut(resourcePath);
+						httpPut.setEntity(stringEntity);
+						httpPut.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+						httpResponse = client.execute(httpPut);
+					}
+					break;
+				case DELETE:
+					HttpDelete httpDelete = new HttpDelete(resourcePath);
+					httpResponse = client.execute(httpDelete);
+					break;
+			}
+
+			if (httpResponse != null) {
+				InputStreamReader inputStreamReader = new InputStreamReader(httpResponse.getEntity().getContent());
+				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+				clientResponse = gson.fromJson(bufferedReader, Object.class);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return clientResponse;
 	}

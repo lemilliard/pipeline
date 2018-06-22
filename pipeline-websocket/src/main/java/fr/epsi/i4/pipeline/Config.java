@@ -1,5 +1,7 @@
 package fr.epsi.i4.pipeline;
 
+import com.google.gson.Gson;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,10 +20,12 @@ public class Config {
 		this.inputStream = this.getClass().getClassLoader().getResourceAsStream(propertiesFileName);
 		this.properties = new Properties();
 		try {
-			properties.load(inputStream);
+			this.properties.load(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Gson gson = new Gson();
+		System.out.println(gson.toJson(this.properties));
 	}
 
 	public String getPropertiesFileName() {
