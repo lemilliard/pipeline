@@ -1,11 +1,12 @@
 <template>
   <v-menu bottom left>
     <v-btn
+      color="white"
       icon
       large
       slot="activator"
     >
-      <v-icon>{{ $global.icons.PROFILE }}</v-icon>
+      <v-icon >{{ $global.icons.PROFILE }}</v-icon>
     </v-btn>
     <v-list>
       <admin-menu v-if="isAdmin"></admin-menu>

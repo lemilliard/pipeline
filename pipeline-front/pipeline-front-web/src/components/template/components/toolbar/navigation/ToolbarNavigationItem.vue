@@ -1,7 +1,8 @@
 <template>
   <v-tooltip bottom>
     <v-btn
-
+      small
+      color="white"
       flat
       slot="activator"
       @click.stop="$global.openRoute(item.route)">
