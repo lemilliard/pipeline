@@ -157,7 +157,7 @@ public class MicroService {
 	private void notif(Request request, Response response, Session session, MicroServiceResource resource)
 			throws Exception {
 		// Si on fait un PUT ou un DELETE
-		if (request.getMethod().equals(Method.PUT) || request.getMethod().equals(Method.DELETE)) {
+		if (request.getMethod().equals(Method.POST) || request.getMethod().equals(Method.PUT) || request.getMethod().equals(Method.DELETE)) {
 			// On récupère le registre
 			Registry registry = getRegistryByEntity(resource.getRegistryType());
 			// On génère la notification
@@ -182,6 +182,7 @@ public class MicroService {
 			else {
 				entries = registry.getEntries();
 			}
+			System.out.println("Notification du registre " + registry.getRegistryType().name());
 			// On notifie toutes les entrées du registre
 			for (RegistryEntry registryEntry : entries) {
 				if (!registryEntry.getSession().getId().equals(session.getId())) {

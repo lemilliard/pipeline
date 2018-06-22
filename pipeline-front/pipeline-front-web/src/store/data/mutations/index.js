@@ -29,8 +29,23 @@ const setItem = (vue, state, resource, item) => {
 
 export default {
   [Types.COMMIT_DATA](state, { vue, data }) {
+    // Si c'est une réponse
     if (data.request && data.request.resource && (data.content || data.contents)) {
       const resourceMap = getResourceByWSResource(data.request.resource);
+      const resource = resourceMap.res;
+      const content = (data.content || data.contents);
+      if (Array.isArray(content)) {
+        content.forEach((item) => {
+          addItem(vue, state, resource, item);
+        });
+      } else if (Array.isArray(state[resource.name])) {
+        addItem(vue, state, resource, content);
+      } else {
+        setItem(vue, state, resource, content);
+      }
+      // Si c'est une notification
+    } else if (data.registryType) {
+      const resourceMap = getResourceByWSResource(data.registryType);
       const resource = resourceMap.res;
       const content = (data.content || data.contents);
       if (Array.isArray(content)) {
