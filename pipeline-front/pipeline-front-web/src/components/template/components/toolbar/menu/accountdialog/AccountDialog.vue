@@ -9,20 +9,15 @@
       <v-icon>{{ $global.icons.LOGIN }}</v-icon>
     </v-btn>
     <v-card>
-      <v-tabs dark grow>
-        <v-tabs-bar>
-          <v-tabs-item href="#signin">Sign in</v-tabs-item>
-          <v-tabs-item href="#signup">Sign up</v-tabs-item>
-          <v-tabs-slider></v-tabs-slider>
-        </v-tabs-bar>
-        <v-tabs-items>
-          <v-tabs-content id="signin">
-            <sign-in-form></sign-in-form>
-          </v-tabs-content>
-          <v-tabs-content id="signup">
-            <sign-up-form></sign-up-form>
-          </v-tabs-content>
-        </v-tabs-items>
+      <v-tabs grow v-model="active">
+        <v-tab>Sign in</v-tab>
+        <v-tab>Sign up</v-tab>
+        <v-tab-item>
+          <sign-in-form></sign-in-form>
+        </v-tab-item>
+        <v-tab-item>
+          <sign-up-form></sign-up-form>
+        </v-tab-item>
       </v-tabs>
     </v-card>
   </v-dialog>
@@ -36,7 +31,9 @@ export default {
   name: 'AccountDialog',
   components: { SignInForm, SignUpForm },
   data() {
-    return {};
+    return {
+      active: null,
+    };
   },
   computed: {
     loginDialog: {

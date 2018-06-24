@@ -34,7 +34,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="blue darken-3" @click.stop="signin">Sign in</v-btn>
+      <v-btn color="blue" dark @click.stop="signin">Sign in</v-btn>
       <v-spacer></v-spacer>
     </v-card-actions>
   </v-card>
