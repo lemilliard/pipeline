@@ -83,6 +83,13 @@ Les différents parties de l'application sont accessibles aux adresses suivantes
 * Rancher: http://home.thomaskint.com:8086 (8080)
 * Traefik: http://home.thomaskint.com:8087 (8081)
 * BDD: http://home.thomaskint.com:1521 (1521)
+  * Login: pipeline
+  * Password: password
+  * SID: orcl
+* BDD Site: https://home.thomaskint.com:5500/em (5500)
+  * Login: sys
+  * Password: password
+  * As SYSDBA
 
 ### Mise à jour des images
 
