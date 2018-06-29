@@ -14,15 +14,16 @@ import router from './router';
 Vue.use(Vuetify);
 Vue.use(VueCookie);
 Vue.use(GlobalPlugin, { router });
-// Vue.use(WebSocketPlugin, 'ws://localhost:8080', store);
-Vue.use(WebSocketPlugin, 'ws://home.thomaskint.com:8085/websocket', store);
+Vue.use(WebSocketPlugin, 'ws://localhost:8080', store);
+// Vue.use(WebSocketPlugin, 'ws://ae3ab787.ngrok.io', store);
+// Vue.use(WebSocketPlugin, 'ws://home.thomaskint.com:8085/websocket', store);
 
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
-  store,
   el: '#app',
+  store,
   router,
   template: '<App/>',
   components: { App },

@@ -3,10 +3,7 @@ package fr.epsi.i4.pipeline.microservice;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
-import fr.epsi.i4.pipeline.microservice.microserviceclient.Method;
-import fr.epsi.i4.pipeline.microservice.microserviceclient.MicroServiceClient;
-import fr.epsi.i4.pipeline.microservice.microserviceclient.MicroServiceResource;
-import fr.epsi.i4.pipeline.microservice.microserviceclient.UserMicroServiceClient;
+import fr.epsi.i4.pipeline.microservice.microserviceclient.*;
 import fr.epsi.i4.pipeline.model.Notification;
 import fr.epsi.i4.pipeline.model.Request;
 import fr.epsi.i4.pipeline.model.Response;
@@ -53,6 +50,7 @@ public class MicroService {
 		client = HttpClientBuilder.create().build();
 		microServiceClients = new ArrayList<MicroServiceClient>() {{
 			add(new UserMicroServiceClient());
+			add(new TournamentMicroServiceClient());
 		}};
 	}
 
@@ -174,14 +172,20 @@ public class MicroService {
 					.containsKey(registry.getEntityPK())) {
 				pkValue = ((LinkedTreeMap) request.getBody()).get(registry.getEntityPK());
 			}
+			if (request.getParams() != null && !request.getParams().isEmpty()) {
+				Map.Entry<String, Object> entry = request.getParams().entrySet().iterator().next();
+				if (request.getMethod().equals(Method.DELETE)) {
+					notification.setPkValue(entry.getValue());
+				}
+			}
 			// Si on a une clef primaire, on récupère toutes les entrées liées à celle-ci
-			if (pkValue != null) {
-				entries = registry.getEntriesByPKalue(pkValue);
-			}
-			// Sinon, on prend toutes les entrées du registre
-			else {
-				entries = registry.getEntries();
-			}
+//			if (pkValue != null) {
+//				entries = registry.getEntriesByPKalue(pkValue);
+//			}
+//			// Sinon, on prend toutes les entrées du registre
+//			else {
+			entries = registry.getEntries();
+//			}
 			System.out.println("Notification du registre " + registry.getRegistryType().name());
 			// On notifie toutes les entrées du registre
 			for (RegistryEntry registryEntry : entries) {

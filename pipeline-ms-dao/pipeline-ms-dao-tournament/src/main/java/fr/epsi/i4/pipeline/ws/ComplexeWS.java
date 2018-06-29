@@ -1,4 +1,4 @@
-package fr.epsi.i4.pipeline.ws.complexe;
+package fr.epsi.i4.pipeline.ws;
 
 import fr.epsi.i4.pipeline.model.bdd.complexe.Complexe;
 import fr.epsi.i4.pipeline.ws.WebService;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author Thomas Kint
  */
 @RestController
-public class ComplexeGetWS extends WebService {
+public class ComplexeWS extends WebService {
 
 	@GetMapping("/complexe")
 	public List<Complexe> getComplexes() {

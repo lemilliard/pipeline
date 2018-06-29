@@ -21,7 +21,7 @@ public class Right {
 
 	@MDId
 	@MDField(fieldName = idFieldName, allowedSQLActions = SELECT)
-	public BigDecimal id_right;
+	public BigDecimal idRight;
 
 	@MDField(fieldName = "table_droit")
 	public String tableRight;

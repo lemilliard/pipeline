@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     disconnect() {
-      if (this.currentUser && this.currentUser.id_user) {
+      if (this.currentUser && this.currentUser[DataResources.CURRENT_USER.id]) {
         this.disconnectUser();
       }
     },

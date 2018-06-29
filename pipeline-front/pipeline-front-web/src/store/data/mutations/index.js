@@ -6,11 +6,11 @@ import Types from './types';
 const getResourceByWSResource = wsResource => Object.values(ResourcesMap).find(resourceMap => resourceMap.ws === wsResource);
 
 const addItem = (vue, state, resource, item) => {
-  if (item[resource.id]) {
+  if (item && item[resource.id]) {
     const index = state[resource.name].findIndex(o => o[resource.id] === item[resource.id]);
     if (index > -1) {
       console.log(`Updating ${item[resource.id]} into ${resource.name}`);
-      state[resource.name][index] = item;
+      vue.set(state[resource.name], index, item);
     } else {
       console.log(`Pushing ${item[resource.id]} into ${resource.name}`);
       state[resource.name].push(item);
@@ -23,23 +23,34 @@ const setItem = (vue, state, resource, item) => {
   state[resource.name] = item;
   console.log(`Setting ${item[resource.id]} into ${resource.name}`);
   if (resource.name === Resources.CURRENT_USER.name && item[Resources.CURRENT_USER.id]) {
-    cookie.set('id_user', item[Resources.CURRENT_USER.id]);
+    cookie.set('idUser', item[Resources.CURRENT_USER.id]);
+  }
+};
+
+const removeItem = (vue, state, resource, id) => {
+  const index = state[resource.name].findIndex(o => o[resource.id] === id);
+  if (index > -1) {
+    vue.delete(state[resource.name], index);
   }
 };
 
 export default {
   [Types.COMMIT_DATA](state, { vue, data }) {
     // Si c'est une réponse
-    if (data.request && data.request.resource && (data.content || data.contents)) {
+    if (data.request && data.request.resource && data.content) {
       const resourceMap = getResourceByWSResource(data.request.resource);
       const resource = resourceMap.res;
-      const content = (data.content || data.contents);
+      const content = data.content;
       if (Array.isArray(content)) {
         content.forEach((item) => {
           addItem(vue, state, resource, item);
         });
       } else if (Array.isArray(state[resource.name])) {
-        addItem(vue, state, resource, content);
+        if (data.request.method === 'DELETE' && data.request.params && data.request.params[resource.id]) {
+          removeItem(vue, state, resource, data.request.params[resource.id]);
+        } else {
+          addItem(vue, state, resource, content);
+        }
       } else {
         setItem(vue, state, resource, content);
       }
@@ -53,7 +64,11 @@ export default {
           addItem(vue, state, resource, item);
         });
       } else if (Array.isArray(state[resource.name])) {
-        addItem(vue, state, resource, content);
+        if (data.pkValue) {
+          removeItem(vue, state, resource, data.pkValue);
+        } else {
+          addItem(vue, state, resource, content);
+        }
       } else {
         setItem(vue, state, resource, content);
       }

@@ -33,7 +33,7 @@ public class Registrator {
 
 	public User toUser() {
 		User user = new User();
-		user.id_user = null;
+		user.idUser = null;
 		user.email = email;
 		user.password = password;
 		user.nom = nom;

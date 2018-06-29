@@ -6,6 +6,7 @@ import Calendar from './calendar/Calendrier';
 import Settings from './settings/Settings';
 import About from './about/About';
 import Profile from './profile/Profile';
+import Tournaments from './tournament/Tournaments';
 import Tournament from './tournament/Tournament';
 import AddTournament from './tournament/add-tournament';
 import Importer from './importer/Importer';
@@ -22,6 +23,7 @@ export default {
   Settings,
   About,
   Profile,
+  Tournaments,
   Tournament,
   AddTournament,
   Redirection,

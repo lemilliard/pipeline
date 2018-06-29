@@ -16,6 +16,8 @@ import static com.thomaskint.minidao.enumeration.MDSQLAction.SELECT;
 @MDEntity(tableName = "utilisateur")
 public class User {
 
+	public static final String idUserFieldName = "id_utilisateur";
+
 	public static final String emailFieldName = "email";
 
 	public static final String passwordFieldName = "password";
@@ -23,8 +25,8 @@ public class User {
 	public static final String roleFieldName = "role";
 
 	@MDId
-	@MDField(fieldName = "id_utilisateur", allowedSQLActions = SELECT)
-	public BigDecimal id_user;
+	@MDField(fieldName = idUserFieldName, allowedSQLActions = SELECT)
+	public BigDecimal idUser;
 
 	@MDField(fieldName = emailFieldName)
 	public String email;

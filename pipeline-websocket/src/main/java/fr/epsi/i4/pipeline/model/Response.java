@@ -10,9 +10,7 @@ public class Response {
 
 	private int httpCode;
 
-	private ArrayList contents;
-
-	private LinkedTreeMap content;
+	private Object content;
 
 	private String error;
 
@@ -33,11 +31,7 @@ public class Response {
 	}
 
 	public void setContent(Object object) {
-		if (object instanceof ArrayList) {
-			this.contents = (ArrayList) object;
-		} else if (object instanceof LinkedTreeMap) {
-			this.content = (LinkedTreeMap) object;
-		}
+		this.content = object;
 	}
 
 	public String getError() {

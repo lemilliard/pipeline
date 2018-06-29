@@ -1,4 +1,4 @@
-package fr.epsi.i4.pipeline.model.bdd;
+package fr.epsi.i4.pipeline.model.bdd.tournoi;
 
 import com.thomaskint.minidao.annotation.MDEntity;
 import com.thomaskint.minidao.annotation.MDField;
@@ -33,9 +33,6 @@ public class Tournoi {
 
 	@MDManyToOne(fieldName = Tournoi.niveauFieldName, targetFieldName = Niveau.valueFieldName, target = Niveau.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Niveau niveau;
-
-	@MDField(fieldName = Tournoi.idComplexeFieldName)
-	public BigDecimal idComplexe;
 
 	@MDManyToOne(fieldName = Tournoi.idComplexeFieldName, targetFieldName = Complexe.idComplexeFieldName, target = Complexe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Complexe complexe;

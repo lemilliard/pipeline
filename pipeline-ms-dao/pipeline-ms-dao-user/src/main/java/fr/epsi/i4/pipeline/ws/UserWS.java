@@ -1,4 +1,4 @@
-package fr.epsi.i4.pipeline.ws.user;
+package fr.epsi.i4.pipeline.ws;
 
 import com.thomaskint.minidao.exception.MDException;
 import com.thomaskint.minidao.querybuilder.MDCondition;
@@ -6,9 +6,7 @@ import fr.epsi.i4.pipeline.model.Connector;
 import fr.epsi.i4.pipeline.model.Registrator;
 import fr.epsi.i4.pipeline.model.bdd.user.User;
 import fr.epsi.i4.pipeline.ws.WebService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +17,17 @@ import static com.thomaskint.minidao.enumeration.MDConditionOperator.EQUAL;
  * Created by tkint on 26/01/2018.
  */
 @RestController
-public class UserPostWS extends WebService {
+public class UserWS extends WebService {
+
+	@GetMapping("/user")
+	public List<User> getUsers() {
+		return getEntities(User.class);
+	}
+
+	@GetMapping("/user/{id}")
+	public User getUser(@PathVariable("id") int id) {
+		return getEntityById(User.class, id);
+	}
 
 	@PostMapping("/user/connect")
 	public User connectUser(@RequestBody Connector connector) {
@@ -59,5 +67,19 @@ public class UserPostWS extends WebService {
 	@PostMapping("/user")
 	public boolean createUser(@RequestBody User user) {
 		return createEntity(user);
+	}
+
+	@PutMapping("/user")
+	public User updateUser(@RequestBody User user) {
+		User updatedUser = null;
+		if (updateEntity(user)) {
+			updatedUser = getEntityById(User.class, user.idUser);
+		}
+		return updatedUser;
+	}
+
+	@DeleteMapping("/user/{id}")
+	public boolean deleteUser(@PathVariable("id") int id) {
+		return deleteEntityById(User.class, id);
 	}
 }

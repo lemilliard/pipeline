@@ -1,4 +1,4 @@
-package fr.epsi.i4.pipeline.ws.niveau;
+package fr.epsi.i4.pipeline.ws;
 
 import fr.epsi.i4.pipeline.model.bdd.tournoi.Niveau;
 import fr.epsi.i4.pipeline.ws.WebService;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author Thomas Kint
  */
 @RestController
-public class NiveauGetWS extends WebService {
+public class NiveauWS extends WebService {
 
 	@GetMapping("/niveau")
 	public List<Niveau> getNiveaux() {

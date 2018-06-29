@@ -25,7 +25,7 @@ public class Role {
 	@MDField(fieldName = valeurFieldName, allowedSQLActions = {SELECT, INSERT})
 	public String value;
 
-	@MDOneToMany(fieldName = valeurFieldName, target = User.class, targetFieldName = User.roleFieldName)
+	@MDOneToMany(fieldName = valeurFieldName, target = User.class, targetFieldName = User.roleFieldName, loadPolicy = MDLoadPolicy.HEAVY)
 	public List<User> users = new ArrayList<User>();
 
 	@MDOneToMany(fieldName = valeurFieldName, target = RightRole.class, targetFieldName = RightRole.roleFieldName, loadPolicy = MDLoadPolicy.HEAVY)

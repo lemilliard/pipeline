@@ -50,6 +50,11 @@ export default new Router({
     {
       path: '/tournaments',
       name: Names.TOURNAMENTS,
+      component: Pages.Tournaments,
+    },
+    {
+      path: '/tournament/:id',
+      name: Names.TOURNAMENT,
       component: Pages.Tournament,
     },
     {

@@ -15,7 +15,7 @@ public class UserMicroServiceClient extends MicroServiceClient {
 	private static final String basePath = Main.getConfig().getProperty("ms-dao-user.basePath");
 
 	private static final MicroServiceResource[] MICRO_SERVICE_RESOURCES = new MicroServiceResource[]{
-			new MicroServiceResource(Resource.USERS, RegistryType.USER, Method.GET, Method.POST),
+			new MicroServiceResource(Resource.USERS, RegistryType.USER, Method.GET, Method.POST, Method.PUT, Method.DELETE),
 			new MicroServiceResource(Resource.USER, RegistryType.USER, Method.GET, Method.DELETE),
 			new MicroServiceResource(Resource.UPDATE_USER, RegistryType.USER, Method.PUT),
 			new MicroServiceResource(Resource.ROLES, RegistryType.ROLE, Method.GET, Method.POST, Method.PUT),

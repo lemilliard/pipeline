@@ -8,6 +8,7 @@ export default {
   SETTINGS: 'Settings',
   PROFILE: 'Profile',
   TOURNAMENTS: 'Tournaments',
+  TOURNAMENT: 'Tournament',
   ADDTOURNAMENT: 'Add Tournament',
   ERROR_404: '404',
   ORGANISER: 'Organiser',

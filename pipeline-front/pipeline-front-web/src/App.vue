@@ -28,8 +28,8 @@ export default {
   },
   methods: {
     autoConnect() {
-      if (this.$cookie.get('id_user')) {
-        this.connectById(this.$cookie.get('id_user'));
+      if (this.$cookie.get('idUser')) {
+        this.connectById(this.$cookie.get('idUser'));
       }
     },
     ...mapActions({

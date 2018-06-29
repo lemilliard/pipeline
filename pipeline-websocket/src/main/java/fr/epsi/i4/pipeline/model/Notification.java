@@ -1,9 +1,6 @@
 package fr.epsi.i4.pipeline.model;
 
-import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.pipeline.model.registry.RegistryType;
-
-import java.util.ArrayList;
 
 public class Notification {
 
@@ -11,9 +8,9 @@ public class Notification {
 
 	private String entityPk;
 
-	private ArrayList contents;
+	private Object content;
 
-	private LinkedTreeMap content;
+	private Object pkValue;
 
 	public Notification(RegistryType registryType, String entityPk, Object content) {
 		this.registryType = registryType;
@@ -22,10 +19,10 @@ public class Notification {
 	}
 
 	public void setContent(Object object) {
-		if (object instanceof ArrayList) {
-			this.contents = (ArrayList) object;
-		} else if (object instanceof LinkedTreeMap) {
-			this.content = (LinkedTreeMap) object;
-		}
+		this.content = object;
+	}
+
+	public void setPkValue(Object pkValue) {
+		this.pkValue = pkValue;
 	}
 }

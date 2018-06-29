@@ -1,57 +1,18 @@
 <template>
   <div class="tournament">
-    <v-container>
-      <v-layout row wrap>
-        <h3>{{ msg }}</h3>
-        <template v-for="(item, index) in items">
-          <v-container :key="index" grid-list-md text-xs-center>
-            <v-layout row wrap>
-              <v-flex row-tournament xs12 sm12 md12>
-                <v-card>
-                  <v-layout row wrap>
-                    <v-flex xs12 sm2 md2>
-                      <v-card>
-                        <v-card-text v-html="item.date"></v-card-text>
-                      </v-card>
-                    </v-flex>
-                    <v-flex xs12 sm6 md6>
-                      <v-card>
-                        <v-card-text v-html="item.nom"></v-card-text>
-                      </v-card>
-                    </v-flex>
-                    <v-flex xs12 sm2 md2>
-                      <v-card :href="item.href" :to="{name: item.href, params: {id: item.id}}">
-                        <!--<v-card-text v-html="item.link"></v-card-text>-->
-                        <v-btn color="info">Voir les match</v-btn>
-                      </v-card>
-                    </v-flex>
-                    <v-flex xs12 sm2 md2>
-                      <v-card :href="item.href" :to="{name: item.href, params: {id: item.id}}">
-                        <!--<v-card-text v-html="item.subscribe">
-
-
-                        </v-card-text>-->
-                        <v-btn color="warning">S'abonner</v-btn>
-                      </v-card>
-                    </v-flex>
-                  </v-layout>
-                </v-card>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </template>
-      </v-layout>
+    {{ tournament }}
+    <v-container fluid>
+      <phase-dialog></phase-dialog>
+      <phase :depth="depth" :parent="this"></phase>
     </v-container>
   </div>
-  <!--
-  <v-container fluid>
-    <phase-dialog></phase-dialog>
-    <phase :depth="depth" :parent="this"></phase>
-  </v-container>
-  -->
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+import DataActionsTypes from '@/store/data/actions/types';
+import DataResources from '@/store/data/resources';
+import DataResourcesMap from '@/store/data/resources-map';
 import PhaseDialog from './components/PhaseDialog';
 import Phase from './components/Phase';
 
@@ -65,37 +26,39 @@ export default {
       idMatch: -1,
       depth: 3,
       dialog: false,
-      msg: 'Liste des tournois',
-      items: [
-        {
-          id: 0,
-          nom: 'Roland Garros',
-          date: '16/07/2018',
-          link: 'Voir les matchs',
-          subscribe: 'S\'abonner',
-          href: 'Match',
-          router: true,
-        },
-        {
-          id: 1,
-          nom: 'Wimbledon',
-          date: '16/07/2018',
-          link: 'Voir les matchs',
-          subscribe: 'S\'abonner',
-          href: 'Match',
-          router: true,
-        },
-        {
-          id: 2,
-          nom: 'ATP Live',
-          date: '16/07/2018',
-          link: 'Voir les matchs',
-          subscribe: 'S\'abonner',
-          href: 'Match',
-          router: true,
-        },
-      ],
     };
+  },
+  created() {
+    this.retrieveTournament();
+  },
+  computed: {
+    ...mapState({
+      tournaments: state => state.DataStore[DataResources.TOURNAMENTS.name],
+    }),
+    tournament() {
+      const id = parseInt(this.$route.params.id, 10);
+      return this.tournaments.find((t) => {
+        if (t[DataResources.TOURNAMENTS.id] === id) {
+          return t;
+        }
+        return null;
+      });
+    },
+  },
+  methods: {
+    retrieveTournament() {
+      const id = parseInt(this.$route.params.id, 10);
+      this.retrieveData({
+        resource: DataResourcesMap.TOURNAMENT.ws,
+        params: { [DataResources.TOURNAMENTS.id]: id },
+      });
+    },
+    getVille() {
+      return this.$global.getTournamentVille(this.tournament);
+    },
+    ...mapActions({
+      retrieveData: DataActionsTypes.RETRIEVE_DATA,
+    }),
   },
 };
 </script>

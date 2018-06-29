@@ -5,7 +5,6 @@ import com.thomaskint.minidao.annotation.MDField;
 import com.thomaskint.minidao.annotation.MDId;
 import com.thomaskint.minidao.annotation.MDOneToMany;
 import com.thomaskint.minidao.enumeration.MDLoadPolicy;
-import fr.epsi.i4.pipeline.model.bdd.Tournoi;
 
 import java.util.List;
 

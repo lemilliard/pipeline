@@ -1,10 +1,10 @@
-package fr.epsi.i4.pipeline.model.bdd.equipe;
+package fr.epsi.i4.pipeline.model.bdd.rencontre;
 
 import com.thomaskint.minidao.annotation.MDEntity;
 import com.thomaskint.minidao.annotation.MDField;
 import com.thomaskint.minidao.annotation.MDManyToOne;
 import com.thomaskint.minidao.enumeration.MDLoadPolicy;
-import fr.epsi.i4.pipeline.model.bdd.tournoi.Rencontre;
+import fr.epsi.i4.pipeline.model.bdd.equipe.Equipe;
 
 import java.math.BigDecimal;
 
@@ -23,7 +23,7 @@ public class RencontreEquipe {
 	@MDField(fieldName = idRencontreFieldName)
 	public BigDecimal idRencontre;
 
-	@MDManyToOne(fieldName = idRencontreFieldName, targetFieldName = Rencontre.idFieldName,target = Rencontre.class, loadPolicy = MDLoadPolicy.HEAVY)
+	@MDManyToOne(fieldName = idRencontreFieldName, targetFieldName = Rencontre.idRencontreFieldName,target = Rencontre.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Rencontre rencontre;
 
 	@MDField(fieldName = idEquipeFieldName)

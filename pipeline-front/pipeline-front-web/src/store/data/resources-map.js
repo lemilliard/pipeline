@@ -9,6 +9,7 @@ export default {
   REGISTER: { ws: 'REGISTER', res: Resources.CURRENT_USER },
   ROLE: { ws: 'ROLE', res: Resources.ROLES },
   ROLES: { ws: 'ROLES', res: Resources.ROLES },
+  TOURNAMENT: { ws: 'TOURNAMENT', res: Resources.TOURNAMENTS },
   TOURNAMENTS: { ws: 'TOURNAMENTS', res: Resources.TOURNAMENTS },
   MATCHS: { ws: 'MATCHS', res: Resources.MATCHS },
 };

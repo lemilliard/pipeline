@@ -1,13 +1,11 @@
-package fr.epsi.i4.pipeline.ws.tournoi;
+package fr.epsi.i4.pipeline.ws;
 
 import com.thomaskint.minidao.enumeration.MDConditionOperator;
 import com.thomaskint.minidao.exception.MDException;
 import com.thomaskint.minidao.querybuilder.MDCondition;
-import fr.epsi.i4.pipeline.model.bdd.Tournoi;
+import fr.epsi.i4.pipeline.model.bdd.tournoi.Tournoi;
 import fr.epsi.i4.pipeline.ws.WebService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
  * @author Thomas Kint
  */
 @RestController
-public class TournoiGetWS extends WebService {
+public class TournoiWS extends WebService {
 
 	@GetMapping("/tournoi")
 	public List<Tournoi> getTournois() {
@@ -37,5 +35,15 @@ public class TournoiGetWS extends WebService {
 			e.printStackTrace();
 		}
 		return tournois;
+	}
+
+	@PostMapping("/tournoi")
+	public boolean createTournoi(@RequestBody Tournoi tournoi) {
+		return createEntity(tournoi);
+	}
+
+	@PutMapping("/tournoi")
+	public boolean updateTournoi(@RequestBody Tournoi tournoi) {
+		return updateEntity(tournoi);
 	}
 }

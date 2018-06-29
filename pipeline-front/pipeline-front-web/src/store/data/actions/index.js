@@ -29,7 +29,7 @@ export default {
     vue.$websocket.post(DataResourcesMap.REGISTER.ws, registrator);
   },
   [Types.DISCONNECT]({ commit }) {
-    vue.$cookie.delete('id_user');
+    vue.$cookie.delete('idUser');
     commit(MutationsTypes.RESET_CURRENT_USER);
   },
 };

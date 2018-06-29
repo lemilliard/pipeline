@@ -23,7 +23,7 @@ public class UserMicroService extends MicroService {
 
 	private static final Resource[] microServiceResources = new Resource[]{
 			new Resource("user", ResourceType.GET, ResourceType.POST, ResourceType.PUT),
-			new Resource("user/{id_user}", ResourceType.GET, ResourceType.DELETE),
+			new Resource(idUser, ResourceType.GET, ResourceType.DELETE),
 			new Resource("connect", ResourceType.POST),
 			new Resource("role", ResourceType.GET, ResourceType.POST, ResourceType.PUT),
 			new Resource("role/{id_role}", ResourceType.GET, ResourceType.DELETE)

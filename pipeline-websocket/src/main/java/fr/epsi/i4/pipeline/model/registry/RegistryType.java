@@ -5,5 +5,6 @@ public enum RegistryType {
 	ROLE,
 	RIGHT_ROLE,
 	RIGHT,
-	PRIVILEGE
+	PRIVILEGE,
+	TOURNAMENT,
 }
