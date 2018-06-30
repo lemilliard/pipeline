@@ -1,29 +1,38 @@
 package fr.epsi.i4.pipeline.model;
 
-import fr.epsi.i4.pipeline.model.bdd.equipe.Equipe;
 import fr.epsi.i4.pipeline.model.bdd.rencontre.Rencontre;
+import fr.epsi.i4.pipeline.model.bdd.score.Point;
 import fr.epsi.i4.pipeline.model.bdd.score.SetMatch;
 
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
 
 public class Score {
 
-	public Stack<Set> sets;
+	public HashMap<Integer, Set> sets;
+
+	public Point pointActuelEquipeUne;
+
+	public Point pointActuelEquipeDeux;
 
 	public static Score fromRencontre(Rencontre rencontre) {
 		Score score = new Score();
-		score.sets = new Stack<>();
+		score.sets = new HashMap<>();
 
-		Equipe equipeUne = rencontre.equipeUne;
-		Equipe equipeDeux = rencontre.equipeDeux;
-		List<SetMatch> setsEquipeUne = rencontre.getSetsByEquipe(equipeUne);
-		List<SetMatch> setsEquipeDeux = rencontre.getSetsByEquipe(equipeDeux);
-
-		for (int i = 0; i < setsEquipeUne.size() && i < setsEquipeDeux.size(); i++) {
-			score.sets.add(Set.fromSetMatchs(setsEquipeUne.get(i), setsEquipeDeux.get(i)));
+		List<SetMatch> setMatches = rencontre.getOrderedSets();
+		for (int i = 0; i < setMatches.size(); i++) {
+			score.sets.put(i, Set.fromSetMatch(rencontre, setMatches.get(i)));
 		}
 
+		SetMatch lastSetMatch = rencontre.getLastSet();
+		score.pointActuelEquipeUne = lastSetMatch.getPointDernierJeu(rencontre.equipeUne);
+		score.pointActuelEquipeDeux = lastSetMatch.getPointDernierJeu(rencontre.equipeDeux);
+
 		return score;
+	}
+
+	public Set getDernierSet() {
+		return sets.get(sets.keySet().stream().max(Comparator.comparing(Integer::intValue)).get());
 	}
 }

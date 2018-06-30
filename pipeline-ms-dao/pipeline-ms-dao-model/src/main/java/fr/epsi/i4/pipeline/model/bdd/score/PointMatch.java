@@ -20,11 +20,21 @@ public class PointMatch {
 
 	@MDId
 	@MDField(fieldName = "id_point")
-	public BigDecimal idPoint;
+	public BigDecimal idPointMatch;
+
+	@MDField(fieldName = idJeuFieldName)
+	public BigDecimal idJeuMatch;
 
 	@MDManyToOne(fieldName = PointMatch.idJeuFieldName, targetFieldName = JeuMatch.idJeuFieldName, target = JeuMatch.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public JeuMatch jeuMatch;
 
 	@MDManyToOne(fieldName = PointMatch.idPointEnumFieldName, targetFieldName = Point.idPointEnumFieldName, target = Point.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Point point;
+
+	@MDField(fieldName = idPointEnumFieldName)
+	public BigDecimal idPointEnum;
+
+	public BigDecimal getIdPointEnum() {
+		return idPointEnum;
+	}
 }

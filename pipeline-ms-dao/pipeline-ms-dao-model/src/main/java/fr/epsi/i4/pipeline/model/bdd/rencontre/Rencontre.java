@@ -10,8 +10,10 @@ import fr.epsi.i4.pipeline.model.bdd.tournoi.Phase;
 import fr.epsi.i4.pipeline.model.bdd.user.User;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -57,9 +59,16 @@ public class Rencontre {
 	@MDOneToMany(fieldName = Rencontre.idRencontreFieldName, targetFieldName = SetMatch.idRencontreFieldName, target = SetMatch.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public List<SetMatch> sets;
 
-	public List<SetMatch> getSetsByEquipe(Equipe equipe) {
-		return sets.stream()
-				.filter(setMatch -> setMatch.equipe.idEquipe.equals(equipe.idEquipe))
-				.collect(Collectors.toList());
+	public List<SetMatch> getOrderedSets() {
+		return sets.stream().sorted(Comparator.comparing(SetMatch::getIdSet)).collect(Collectors.toList());
+	}
+
+	public SetMatch getLastSet() {
+		SetMatch setMatch = null;
+		List<SetMatch> orderedSets = getOrderedSets();
+		if (orderedSets.size() > 0) {
+			setMatch = orderedSets.get(orderedSets.size() - 1);
+		}
+		return setMatch;
 	}
 }
