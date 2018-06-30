@@ -54,8 +54,8 @@ public class JoueurWS extends WebService {
 	public Joueur getJoueurByFinder(@RequestBody JoueurFinder finder) {
 		MDSelectBuilder selectBuilder = new MDSelectBuilder().from(Joueur.class);
 
-		MDCondition conditionNom = new MDCondition("nom", MDConditionOperator.EQUAL, finder.nom);
-		MDCondition condition = new MDCondition("prenom", MDConditionOperator.EQUAL, finder.prenom, MDConditionLink.AND, conditionNom);
+		MDCondition conditionNom = new MDCondition("nom", MDConditionOperator.LIKE, finder.nom);
+		MDCondition condition = new MDCondition("prenom", MDConditionOperator.LIKE, finder.prenom, MDConditionLink.AND, conditionNom);
 		selectBuilder.where(condition);
 
 		Joueur joueur = null;

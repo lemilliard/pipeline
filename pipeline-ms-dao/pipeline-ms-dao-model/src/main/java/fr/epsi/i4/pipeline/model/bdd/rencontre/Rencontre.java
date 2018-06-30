@@ -5,20 +5,24 @@ import com.thomaskint.minidao.enumeration.MDLoadPolicy;
 import com.thomaskint.minidao.enumeration.MDSQLAction;
 import fr.epsi.i4.pipeline.model.bdd.court.Court;
 import fr.epsi.i4.pipeline.model.bdd.equipe.Equipe;
+import fr.epsi.i4.pipeline.model.bdd.score.SetMatch;
 import fr.epsi.i4.pipeline.model.bdd.tournoi.Phase;
 import fr.epsi.i4.pipeline.model.bdd.user.User;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Thomas Kint
  */
 @MDEntity(tableName = "rencontre")
 public class Rencontre {
+
 	public static final String idRencontreFieldName = "id_rencontre";
 
-	public static final String idEquipeUneFieldName = "id_rencontre";
+	public static final String idEquipeUneFieldName = "id_equipe_une";
 
 	public static final String idEquipeDeuxFieldName = "id_equipe_deux";
 
@@ -33,7 +37,7 @@ public class Rencontre {
 	public BigDecimal idRencontre;
 
 	@MDField(fieldName = "date_debut")
-	public Date date;
+	public Date dateDebut;
 
 	@MDManyToOne(fieldName = Rencontre.idEquipeUneFieldName, targetFieldName = Equipe.idEquipeFieldName, target = Equipe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Equipe equipeUne;
@@ -49,4 +53,13 @@ public class Rencontre {
 
 	@MDManyToOne(fieldName = Rencontre.idPhaseFieldName, targetFieldName = Phase.idPhaseFieldName, target = Phase.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Phase phase;
+
+	@MDOneToMany(fieldName = Rencontre.idRencontreFieldName, targetFieldName = SetMatch.idRencontreFieldName, target = SetMatch.class, loadPolicy = MDLoadPolicy.HEAVY)
+	public List<SetMatch> sets;
+
+	public List<SetMatch> getSetsByEquipe(Equipe equipe) {
+		return sets.stream()
+				.filter(setMatch -> setMatch.equipe.idEquipe.equals(equipe.idEquipe))
+				.collect(Collectors.toList());
+	}
 }

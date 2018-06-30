@@ -27,8 +27,8 @@ public class Phase {
 	@MDField(fieldName = "nom")
 	public String nom;
 
-	@MDField(fieldName = "nombre_max_rencontres")
-	public Integer nombreMaxRencontres;
+	@MDField(fieldName = "nombre_max_rencontre")
+	public BigDecimal nombreMaxRencontres;
 
 	@MDOneToMany(fieldName = idPhaseFieldName, targetFieldName = Rencontre.idPhaseFieldName, target = Rencontre.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public List<Rencontre> rencontres;

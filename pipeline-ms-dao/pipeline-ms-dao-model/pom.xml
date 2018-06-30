@@ -7,6 +7,18 @@
     <groupId>fr.epsi.i4.pipeline</groupId>
     <artifactId>pipeline-ms-dao-model</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <packaging>jar</packaging>
 
     <name>pipeline-ms-dao-model</name>
@@ -16,7 +28,7 @@
         <dependency>
             <groupId>com.thomaskint</groupId>
             <artifactId>minidao</artifactId>
-            <version>1.1.8</version>
+            <version>1.1.9</version>
         </dependency>
     </dependencies>
 </project>
