@@ -94,7 +94,6 @@ const websocketPlugin = {
           params,
           body,
         };
-        console.log(request);
         return JSON.stringify(request);
       };
 

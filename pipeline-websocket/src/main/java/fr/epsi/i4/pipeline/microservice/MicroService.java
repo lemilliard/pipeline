@@ -51,6 +51,7 @@ public class MicroService {
 		microServiceClients = new ArrayList<MicroServiceClient>() {{
 			add(new UserMicroServiceClient());
 			add(new TournamentMicroServiceClient());
+			add(new MatchMicroServiceClient());
 		}};
 	}
 

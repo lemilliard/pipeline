@@ -1,6 +1,7 @@
 package fr.epsi.i4.pipeline.model;
 
 import fr.epsi.i4.pipeline.model.bdd.rencontre.Rencontre;
+import fr.epsi.i4.pipeline.model.bdd.rencontre.RencontreDetail;
 import fr.epsi.i4.pipeline.model.bdd.score.SetMatch;
 
 public class Set {
@@ -9,7 +10,7 @@ public class Set {
 
 	public int jeuxEquipeDeux;
 
-	public static Set fromSetMatch(Rencontre rencontre, SetMatch setMatch) {
+	public static Set fromSetMatch(RencontreDetail rencontre, SetMatch setMatch) {
 		Set set = new Set();
 		set.jeuxEquipeUne = setMatch.getJeuxGagnantsEquipe(rencontre.equipeUne).size();
 		set.jeuxEquipeDeux = setMatch.getJeuxGagnantsEquipe(rencontre.equipeDeux).size();

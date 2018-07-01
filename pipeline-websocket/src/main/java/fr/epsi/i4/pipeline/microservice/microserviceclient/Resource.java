@@ -14,7 +14,10 @@ public enum Resource {
 	REGISTER("user/register"),
 	TOURNAMENTS("tournoi"),
 	TOURNAMENT("tournoi/{idTournoi}"),
-	MATCHS("match");
+	MATCHS("rencontre"),
+	MATCH("rencontre/{idRencontre}"),
+	SCORE("score/{idRencontre}"),
+	SCORE_ADD("score/addPoint");
 
 	private String value;
 

@@ -12,5 +12,8 @@ export default {
   TOURNAMENT: { ws: 'TOURNAMENT', res: Resources.TOURNAMENTS },
   TOURNAMENTS: { ws: 'TOURNAMENTS', res: Resources.TOURNAMENTS },
   MATCHS: { ws: 'MATCHS', res: Resources.MATCHS },
+  MATCH: { ws: 'MATCH', res: Resources.MATCHS },
+  SCORE: { ws: 'SCORE', res: Resources.SCORES },
+  SCORE_ADD: { ws: 'SCORE_ADD', res: Resources.SCORES },
 };
 

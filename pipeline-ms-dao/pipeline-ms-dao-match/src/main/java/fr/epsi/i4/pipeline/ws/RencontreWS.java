@@ -4,6 +4,7 @@ import com.thomaskint.minidao.enumeration.MDConditionOperator;
 import com.thomaskint.minidao.exception.MDException;
 import com.thomaskint.minidao.querybuilder.MDCondition;
 import fr.epsi.i4.pipeline.model.bdd.rencontre.Rencontre;
+import fr.epsi.i4.pipeline.model.bdd.rencontre.RencontreDetail;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,21 +16,21 @@ import java.util.List;
 public class RencontreWS extends WebService {
 
 	@GetMapping("/rencontre")
-	public List<Rencontre> getRencontres() {
-		return getEntities(Rencontre.class);
+	public List<RencontreDetail> getRencontres() {
+		return getEntities(RencontreDetail.class);
 	}
 
 	@GetMapping("/rencontre/{id}")
-	public Rencontre getRencontreById(@PathVariable("id") int id) {
-		return getEntityById(Rencontre.class, id);
+	public RencontreDetail getRencontreById(@PathVariable("id") int id) {
+		return getEntityById(RencontreDetail.class, id);
 	}
 
 	@GetMapping("/rencontre/court/{id}")
-	public List<Rencontre> getRencontresByCourtId(@PathVariable("id") int id) {
-		List<Rencontre> rencontres = null;
+	public List<RencontreDetail> getRencontresByCourtId(@PathVariable("id") int id) {
+		List<RencontreDetail> rencontres = null;
 		try {
 			MDCondition condition = new MDCondition(Rencontre.idCourtFieldName, MDConditionOperator.EQUAL, id);
-			rencontres = getMiniDAO().read().getEntities(Rencontre.class, condition);
+			rencontres = getMiniDAO().read().getEntities(RencontreDetail.class, condition);
 		} catch (MDException e) {
 			e.printStackTrace();
 		}
@@ -37,22 +38,22 @@ public class RencontreWS extends WebService {
 	}
 
 	@PostMapping("/rencontre")
-	public boolean createRencontre(@RequestBody Rencontre rencontre) {
+	public boolean createRencontre(@RequestBody RencontreDetail rencontre) {
 		return createEntity(rencontre);
 	}
 
 	@PutMapping("/rencontre")
-	public boolean updateRencontre(@RequestBody Rencontre rencontre) {
+	public boolean updateRencontre(@RequestBody RencontreDetail rencontre) {
 		return updateEntity(rencontre);
 	}
 
 	@DeleteMapping("/rencontre")
-	public boolean deleteRencontre(@RequestBody Rencontre rencontre) {
+	public boolean deleteRencontre(@RequestBody RencontreDetail rencontre) {
 		return deleteEntity(rencontre);
 	}
 
 	@DeleteMapping("/rencontre/{id}")
 	public boolean deleteRencontreById(@PathVariable("id") int id) {
-		return deleteEntityById(Rencontre.class, id);
+		return deleteEntityById(RencontreDetail.class, id);
 	}
 }

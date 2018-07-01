@@ -41,34 +41,9 @@ public class Rencontre {
 	@MDField(fieldName = "date_debut")
 	public Date dateDebut;
 
-	@MDManyToOne(fieldName = Rencontre.idEquipeUneFieldName, targetFieldName = Equipe.idEquipeFieldName, target = Equipe.class, loadPolicy = MDLoadPolicy.HEAVY)
+	@MDManyToOne(fieldName = RencontreDetail.idEquipeUneFieldName, targetFieldName = Equipe.idEquipeFieldName, target = Equipe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Equipe equipeUne;
 
-	@MDManyToOne(fieldName = Rencontre.idEquipeDeuxFieldName, targetFieldName = Equipe.idEquipeFieldName, target = Equipe.class, loadPolicy = MDLoadPolicy.HEAVY)
+	@MDManyToOne(fieldName = RencontreDetail.idEquipeDeuxFieldName, targetFieldName = Equipe.idEquipeFieldName, target = Equipe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Equipe equipeDeux;
-
-	@MDManyToOne(fieldName = Rencontre.idArbitreFieldName, targetFieldName = User.idUserFieldName, target = User.class, loadPolicy = MDLoadPolicy.HEAVY)
-	public User arbitre;
-
-	@MDManyToOne(fieldName = Rencontre.idCourtFieldName, targetFieldName = Court.idCourtFieldName, target = Court.class, loadPolicy = MDLoadPolicy.HEAVY)
-	public Court court;
-
-	@MDManyToOne(fieldName = Rencontre.idPhaseFieldName, targetFieldName = Phase.idPhaseFieldName, target = Phase.class, loadPolicy = MDLoadPolicy.HEAVY)
-	public Phase phase;
-
-	@MDOneToMany(fieldName = Rencontre.idRencontreFieldName, targetFieldName = SetMatch.idRencontreFieldName, target = SetMatch.class, loadPolicy = MDLoadPolicy.HEAVY)
-	public List<SetMatch> sets;
-
-	public List<SetMatch> getOrderedSets() {
-		return sets.stream().sorted(Comparator.comparing(SetMatch::getIdSet)).collect(Collectors.toList());
-	}
-
-	public SetMatch getLastSet() {
-		SetMatch setMatch = null;
-		List<SetMatch> orderedSets = getOrderedSets();
-		if (orderedSets.size() > 0) {
-			setMatch = orderedSets.get(orderedSets.size() - 1);
-		}
-		return setMatch;
-	}
 }

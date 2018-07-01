@@ -1,9 +1,14 @@
 <template>
   <div class="tournament">
     {{ tournament }}
-    <v-container fluid>
-      <phase-dialog></phase-dialog>
-      <phase :depth="depth" :parent="this"></phase>
+    <v-container>
+      <v-layout row wrap>
+        <match-item
+          v-for="(match, index) in matchs"
+          :key="index"
+          :match="match">
+        </match-item>
+      </v-layout>
     </v-container>
   </div>
 </template>
@@ -13,13 +18,11 @@ import { mapState, mapActions } from 'vuex';
 import DataActionsTypes from '@/store/data/actions/types';
 import DataResources from '@/store/data/resources';
 import DataResourcesMap from '@/store/data/resources-map';
-import PhaseDialog from './components/PhaseDialog';
-import Phase from './components/Phase';
-
+import MatchItem from './components/MatchItem';
 
 export default {
   name: 'Tournament',
-  components: { Phase, PhaseDialog },
+  components: { MatchItem },
   data() {
     return {
       nextIdMatch: 0,
@@ -44,6 +47,15 @@ export default {
         return null;
       });
     },
+    matchs() {
+      const matchs = [];
+      if (this.tournament && this.tournament.complexe && this.tournament.complexe.courts) {
+        this.tournament.complexe.courts.forEach((court) => {
+          court.rencontres.forEach(match => matchs.push(match));
+        });
+      }
+      return matchs;
+    },
   },
   methods: {
     retrieveTournament() {
@@ -64,17 +76,4 @@ export default {
 </script>
 
 <style scoped>
-
-  .flex {
-    padding: 0;
-  }
-
-  .card {
-    box-shadow: none;
-  }
-
-  .row-tournament {
-    border: 1px solid #ccc;
-  }
-
 </style>
