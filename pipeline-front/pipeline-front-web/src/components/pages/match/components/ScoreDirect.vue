@@ -8,22 +8,37 @@
     </h4>
     <br>
     <p>
-      <button class="btn btn-danger btn-lg" v-show="etat.backward" v-on:click="backward">Effacer</button>
-      <button class="btn btn-danger btn-lg" v-show="etat.stop" v-on:click="stop">Pause</button>
-      <button class="btn btn-primary btn-lg" v-show="etat.play" v-on:click="play">{{ btnPlay }}</button>
+      <span v-if="isFinished()">
+        <v-alert danger :value="true">
+          Match terminé
+        </v-alert>
+      </span>
+      <span v-else>
+        <button class="btn btn-primary btn-lg" v-show="!isStarted() || isPaused()" v-on:click="play(false)">
+          Démarrer
+        </button>
+        <button class="btn btn-danger btn-lg" v-show="isStarted() && !isPaused()" v-on:click="stop">
+          Pause
+        </button>
+        <button class="btn btn-danger btn-lg" v-show="isStarted() && isPaused()" v-on:click="end">
+          Terminer
+        </button>
+      </span>
     </p>
     <v-layout text-xs-center text-md-center>
       <v-flex xs6 sm6 md6 align-center="true">
         <v-card color="blue-grey darken-2" class="white--text">
           <v-card-title primary-title>
-            <div class="headline">{{ jeuxEquipeUne }} [{{ pointsEquipeUne }}]</div>
+            <div class="headline" v-if="isFinished()">{{ setsGagnantsEquipeUne }}</div>
+            <div class="headline" v-else>{{ jeuxEquipeUne }} [{{ pointsEquipeUne }}]</div>
           </v-card-title>
         </v-card>
       </v-flex>
       <v-flex xs6 sm6 md6>
         <v-card color="blue-grey darken-2" class="white--text">
           <v-card-title primary-title>
-            <div class="headline">{{ jeuxEquipeDeux }} [{{ pointsEquipeDeux }}]</div>
+            <div class="headline" v-if="isFinished()">{{ setsGagnantsEquipeDeux }}</div>
+            <div class="headline" v-else>{{ jeuxEquipeDeux }} [{{ pointsEquipeDeux }}]</div>
           </v-card-title>
         </v-card>
       </v-flex>
@@ -32,22 +47,23 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import DataActionsTypes from '@/store/data/actions/types';
+import DataResources from '@/store/data/resources';
+import DataResourcesMap from '@/store/data/resources-map';
+
 export default {
-  name: 'Match',
-  props: ['score'],
+  name: 'ScoreDirect',
+  props: ['match', 'score'],
   data() {
     return {
+      idMatchField: DataResources.MATCHS.id,
       time: {
         heures: 0,
         minutes: 0,
         secondes: 0,
       },
       btnPlay: 'Démarrer',
-      etat: {
-        stop: false,
-        backward: false,
-        play: true,
-      },
       totalSecondes: 0,
       timer: null,
     };
@@ -89,43 +105,101 @@ export default {
       }
       return jeux;
     },
+    setsGagnantsEquipeUne() {
+      if (this.score) {
+        return this.score.setsGagnantsEquipeUne;
+      }
+      return 0;
+    },
+    setsGagnantsEquipeDeux() {
+      if (this.score) {
+        return this.score.setsGagnantsEquipeDeux;
+      }
+      return 0;
+    },
+  },
+  watch: {
+    match() {
+      this.autoPlay();
+    },
+  },
+  created() {
+    this.autoPlay();
   },
   methods: {
-    backward() {
-      this.chronoReset();
+    ...mapActions({
+      createData: DataActionsTypes.CREATE_DATA,
+    }),
+    resetTime() {
+      if (this.match) {
+        if (this.match.dureeJeu) {
+          const dureeJeu = Math.floor(this.match.dureeJeu / 1000);
+          if (!this.isPaused()) {
+            const dateActuelle = Math.floor(Date.now() / 1000);
+            const dateDerniereReprise = Math.floor(this.match.dateDerniereReprise / 1000);
+            this.totalSecondes = (dateActuelle - dateDerniereReprise) + dureeJeu;
+          } else {
+            this.totalSecondes = dureeJeu;
+          }
+        } else {
+          this.totalSecondes = 0;
+        }
+        this.updateTime();
+      }
     },
-    play() {
+    autoPlay() {
+      if (this.match) {
+        this.resetTime();
+        this.play(true);
+      }
+    },
+    isStarted() {
+      return this.match && this.match.started;
+    },
+    isFinished() {
+      return this.match && this.match.finished === true;
+    },
+    isPaused() {
+      return this.match && this.match.paused === true;
+    },
+    play(autoplay) {
+      if (!autoplay) {
+        this.createData({
+          resource: DataResourcesMap.MATCH_PLAY.ws,
+          params: { [this.idMatchField]: this.match[this.idMatchField] },
+        });
+      }
+      this.chronoStop();
       this.chronoStart();
     },
     stop() {
+      this.createData({
+        resource: DataResourcesMap.MATCH_PAUSE.ws,
+        params: { [this.idMatchField]: this.match[this.idMatchField] },
+      });
       this.chronoStop();
     },
+    end() {
+      this.createData({
+        resource: DataResourcesMap.MATCH_END.ws,
+        params: { [this.idMatchField]: this.match[this.idMatchField] },
+      });
+    },
     chronoStart() {
-      this.timer = setInterval(() => {
-        this.totalSecondes += 1;
-        this.time.secondes = (this.totalSecondes) % 60;
-        this.time.minutes = Math.floor((this.totalSecondes / 60) % 60);
-        this.time.heures = Math.floor(((this.totalSecondes / 3600)) % 24);
-      }, 1000);
-      this.setEtat(false, true, false);
-      this.btnPlay = 'Continuer';
+      if (this.isStarted() && !this.isPaused() && !this.isFinished()) {
+        this.timer = setInterval(() => {
+          this.totalSecondes += 1;
+          this.updateTime();
+        }, 1000);
+      }
     },
     chronoStop() {
       clearInterval(this.timer);
-      this.setEtat(true, false, true);
     },
-    chronoReset() {
-      this.totalSecondes = 0;
-      this.time.heures = 0;
-      this.time.minutes = 0;
-      this.time.secondes = 0;
-      this.setEtat(true, false, false);
-      this.btnPlay = 'Démarrer';
-    },
-    setEtat(play, stop, backward) {
-      this.etat.play = play;
-      this.etat.stop = stop;
-      this.etat.backward = backward;
+    updateTime() {
+      this.time.secondes = (this.totalSecondes) % 60;
+      this.time.minutes = Math.floor((this.totalSecondes / 60) % 60);
+      this.time.heures = Math.floor(((this.totalSecondes / 3600)) % 24);
     },
   },
 };

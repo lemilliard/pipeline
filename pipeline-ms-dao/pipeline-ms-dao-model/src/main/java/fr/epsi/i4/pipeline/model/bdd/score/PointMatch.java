@@ -34,6 +34,10 @@ public class PointMatch {
 	@MDField(fieldName = idPointEnumFieldName)
 	public BigDecimal idPointEnum;
 
+	public BigDecimal getIdPointMatch() {
+		return idPointMatch;
+	}
+
 	public BigDecimal getIdPointEnum() {
 		return idPointEnum;
 	}

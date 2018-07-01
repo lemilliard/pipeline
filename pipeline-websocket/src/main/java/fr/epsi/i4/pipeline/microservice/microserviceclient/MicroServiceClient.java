@@ -1,5 +1,6 @@
 package fr.epsi.i4.pipeline.microservice.microserviceclient;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -62,7 +63,14 @@ public abstract class MicroServiceClient {
 			for (int i = 1; i < resourceArray.length; i++) {
 				param = resourceArray[i].replaceAll("[{}]", "");
 				if (params.containsKey(param)) {
-					resourcePath.append("/").append(params.get(param));
+					resourcePath.append("/");
+					if (params.get(param) instanceof Double) {
+						resourcePath.append(((Double) params.get(param)).intValue());
+					} else {
+						resourcePath.append(params.get(param));
+					}
+				} else {
+					resourcePath.append("/").append(param);
 				}
 			}
 		}

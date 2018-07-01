@@ -9,7 +9,6 @@ import fr.epsi.i4.pipeline.model.AjoutPoint;
 import fr.epsi.i4.pipeline.model.Score;
 import fr.epsi.i4.pipeline.model.Set;
 import fr.epsi.i4.pipeline.model.bdd.equipe.Equipe;
-import fr.epsi.i4.pipeline.model.bdd.rencontre.Rencontre;
 import fr.epsi.i4.pipeline.model.bdd.rencontre.RencontreDetail;
 import fr.epsi.i4.pipeline.model.bdd.score.JeuMatch;
 import fr.epsi.i4.pipeline.model.bdd.score.PointMatch;
@@ -46,6 +45,7 @@ public class ScoreWS extends WebService {
 	@PostMapping("/score/addPoint")
 	public Score addPointRencontreEquipe(@RequestBody AjoutPoint ajoutPoint) {
 		RencontreDetail rencontre = getEntityById(RencontreDetail.class, ajoutPoint.idRencontre);
+		SetMatch dernierSet = rencontre.getLastSet();
 		Score score = Score.fromRencontre(rencontre);
 		try {
 			boolean isEquipeUne = rencontre.equipeUne.idEquipe.compareTo(ajoutPoint.idEquipe) == 0;
@@ -57,16 +57,28 @@ public class ScoreWS extends WebService {
 			if (isEquipeUne) {
 				equipe = rencontre.equipeUne;
 				equipeDistante = rencontre.equipeDeux;
-				pointEquipe = score.pointActuelEquipeUne.idPoint;
-				pointEquipeDistante = score.pointActuelEquipeDeux.idPoint;
 			} else {
 				equipe = rencontre.equipeDeux;
 				equipeDistante = rencontre.equipeUne;
+			}
+
+			// S'il n'y a pas encore de sets
+			if (rencontre.sets.size() == 0) {
+				rencontre.sets.add(createSet(rencontre.idRencontre));
+				dernierSet = rencontre.getLastSet();
+				dernierSet.jeux.add(createJeuEquipe(dernierSet.idSet, equipe.idEquipe));
+				dernierSet.jeux.add(createJeuEquipe(dernierSet.idSet, equipeDistante.idEquipe));
+				score = Score.fromRencontre(rencontre);
+			}
+
+			if (isEquipeUne) {
+				pointEquipe = score.pointActuelEquipeUne.idPoint;
+				pointEquipeDistante = score.pointActuelEquipeDeux.idPoint;
+			} else {
 				pointEquipe = score.pointActuelEquipeDeux.idPoint;
 				pointEquipeDistante = score.pointActuelEquipeUne.idPoint;
 			}
 
-			SetMatch dernierSet = rencontre.getLastSet();
 			JeuMatch dernierJeu;
 
 			// Si l'équipe distante a l'avantage
@@ -138,14 +150,22 @@ public class ScoreWS extends WebService {
 		getMiniDAO().delete().deleteEntity(avantagePointMatch);
 	}
 
-	private void createPoint(BigDecimal idJeu, BigDecimal point) throws MDException {
+	private PointMatch createPoint(BigDecimal idJeu, BigDecimal point) throws MDException {
 		PointMatch pointMatch = new PointMatch();
 		pointMatch.idJeuMatch = idJeu;
 		pointMatch.idPointEnum = point;
-		getMiniDAO().create().createEntity(pointMatch);
+		if (getMiniDAO().create().createEntity(pointMatch)) {
+			MDCondition conditionIdJeu = new MDCondition(PointMatch.idJeuFieldName, MDConditionOperator.EQUAL, idJeu);
+			MDCondition condition = new MDCondition(PointMatch.idPointEnumFieldName, MDConditionOperator.EQUAL, point, MDConditionLink.AND, conditionIdJeu);
+			List<PointMatch> pointMatches = getMiniDAO().read().getEntities(PointMatch.class, condition);
+			if (pointMatches.size() > 0) {
+				pointMatch = pointMatches.stream().max(Comparator.comparing(PointMatch::getIdPointMatch)).get();
+			}
+		}
+		return pointMatch;
 	}
 
-	private void createJeuEquipe(BigDecimal idSet, BigDecimal idEquipe) throws MDException {
+	private JeuMatch createJeuEquipe(BigDecimal idSet, BigDecimal idEquipe) throws MDException {
 		JeuMatch nouveauJeu = new JeuMatch();
 		nouveauJeu.idSet = idSet;
 		nouveauJeu.idEquipe = idEquipe;
@@ -157,9 +177,10 @@ public class ScoreWS extends WebService {
 			List<JeuMatch> jeuMatches = getMiniDAO().read().getEntities(JeuMatch.class, condition);
 			if (jeuMatches.size() > 0) {
 				nouveauJeu = jeuMatches.stream().max(Comparator.comparing(JeuMatch::getIdJeu)).get();
-				createPoint(nouveauJeu.idJeu, minPoint);
+				nouveauJeu.points.add(createPoint(nouveauJeu.idJeu, minPoint));
 			}
 		}
+		return nouveauJeu;
 	}
 
 	private SetMatch createSet(BigDecimal idRencontre) throws MDException {

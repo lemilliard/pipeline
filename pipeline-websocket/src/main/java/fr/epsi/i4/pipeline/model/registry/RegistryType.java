@@ -7,5 +7,6 @@ public enum RegistryType {
 	RIGHT,
 	PRIVILEGE,
 	TOURNAMENT,
+	MATCH,
 	SCORE,
 }

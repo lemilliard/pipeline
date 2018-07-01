@@ -16,6 +16,9 @@ public enum Resource {
 	TOURNAMENT("tournoi/{idTournoi}"),
 	MATCHS("rencontre"),
 	MATCH("rencontre/{idRencontre}"),
+	MATCH_PLAY("rencontre/{idRencontre}/play"),
+	MATCH_PAUSE("rencontre/{idRencontre}/pause"),
+	MATCH_END("rencontre/{idRencontre}/end"),
 	SCORE("score/{idRencontre}"),
 	SCORE_ADD("score/addPoint");
 

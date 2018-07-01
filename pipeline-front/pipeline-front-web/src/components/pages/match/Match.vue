@@ -31,7 +31,7 @@
               </v-card>
             </v-flex>
 
-            <score-direct :score="score"></score-direct>
+            <score-direct v-if="match" :match="match" :score="score"></score-direct>
 
             <v-flex xs6 sm2 md2 v-if="match && match.equipeDeux">
               <v-btn color="success" class="hide-on-desktop" @click="addPoint(match.equipeDeux)">+</v-btn>
@@ -82,8 +82,6 @@ export default {
   components: { ScoreDirect, ScoreDetails, Stats },
   data() {
     return {
-      msg: 'Match',
-      lorem: 'test lorem ipsum',
       idMatchField: DataResources.MATCHS.id,
     };
   },

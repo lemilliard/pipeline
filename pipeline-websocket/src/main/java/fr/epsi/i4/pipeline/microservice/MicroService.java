@@ -110,22 +110,22 @@ public class MicroService {
 					httpResponse = client.execute(httpGet);
 					break;
 				case POST:
+					HttpPost httpPost = new HttpPost(resourcePath);
 					if (object != null) {
 						StringEntity stringEntity = new StringEntity(gson.toJson(object));
-						HttpPost httpPost = new HttpPost(resourcePath);
 						httpPost.setEntity(stringEntity);
-						httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
-						httpResponse = client.execute(httpPost);
 					}
+					httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+					httpResponse = client.execute(httpPost);
 					break;
 				case PUT:
+					HttpPut httpPut = new HttpPut(resourcePath);
 					if (object != null) {
 						StringEntity stringEntity = new StringEntity(gson.toJson(object));
-						HttpPut httpPut = new HttpPut(resourcePath);
 						httpPut.setEntity(stringEntity);
-						httpPut.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
-						httpResponse = client.execute(httpPut);
 					}
+					httpPut.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+					httpResponse = client.execute(httpPut);
 					break;
 				case DELETE:
 					HttpDelete httpDelete = new HttpDelete(resourcePath);
@@ -138,7 +138,10 @@ public class MicroService {
 				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 				clientResponse = gson.fromJson(bufferedReader, Object.class);
 			}
-		} catch (Exception e) {
+		} catch (
+				Exception e)
+
+		{
 			e.printStackTrace();
 		}
 		return clientResponse;

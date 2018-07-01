@@ -118,9 +118,9 @@ const websocketPlugin = {
        * @param resource
        * @param param
        */
-      this.post = (resource, body) => {
-        if (body) {
-          const request = constructRequest(Methods.POST, `${resource}`, null, body);
+      this.post = (resource, params, body) => {
+        if (params || body) {
+          const request = constructRequest(Methods.POST, `${resource}`, params, body);
           sendToWebSocket(request);
         }
       };

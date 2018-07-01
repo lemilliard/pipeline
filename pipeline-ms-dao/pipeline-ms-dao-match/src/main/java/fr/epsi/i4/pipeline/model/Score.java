@@ -20,24 +20,44 @@ public class Score {
 
 	public Point pointActuelEquipeDeux;
 
+	public int setsGagnantsEquipeUne;
+
+	public int setsGagnantsEquipeDeux;
+
 	public static Score fromRencontre(RencontreDetail rencontre) {
 		Score score = new Score();
 		score.idRencontre = rencontre.idRencontre;
 		score.sets = new HashMap<>();
+		score.setsGagnantsEquipeUne = 0;
+		score.setsGagnantsEquipeDeux = 0;
 
+		Set set;
 		List<SetMatch> setMatches = rencontre.getOrderedSets();
 		for (int i = 0; i < setMatches.size(); i++) {
-			score.sets.put(i, Set.fromSetMatch(rencontre, setMatches.get(i)));
+			set = Set.fromSetMatch(rencontre, setMatches.get(i));
+			score.sets.put(i, set);
+
+			if (set.idEquipeGagnante.equals(rencontre.equipeUne.idEquipe)) {
+				score.setsGagnantsEquipeUne++;
+			} else {
+				score.setsGagnantsEquipeDeux++;
+			}
 		}
 
 		SetMatch lastSetMatch = rencontre.getLastSet();
-		score.pointActuelEquipeUne = lastSetMatch.getPointDernierJeu(rencontre.equipeUne);
-		score.pointActuelEquipeDeux = lastSetMatch.getPointDernierJeu(rencontre.equipeDeux);
+		if (lastSetMatch != null) {
+			score.pointActuelEquipeUne = lastSetMatch.getPointDernierJeu(rencontre.equipeUne);
+			score.pointActuelEquipeDeux = lastSetMatch.getPointDernierJeu(rencontre.equipeDeux);
+		}
 
 		return score;
 	}
 
 	public Set getDernierSet() {
-		return sets.get(sets.keySet().stream().max(Comparator.comparing(Integer::intValue)).get());
+		Set set = null;
+		if (sets.size() > 0) {
+			set = sets.get(sets.keySet().stream().max(Comparator.comparing(Integer::intValue)).get());
+		}
+		return set;
 	}
 }

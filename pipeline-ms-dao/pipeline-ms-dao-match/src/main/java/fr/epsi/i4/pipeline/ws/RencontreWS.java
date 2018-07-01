@@ -7,6 +7,9 @@ import fr.epsi.i4.pipeline.model.bdd.rencontre.Rencontre;
 import fr.epsi.i4.pipeline.model.bdd.rencontre.RencontreDetail;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,13 +19,13 @@ import java.util.List;
 public class RencontreWS extends WebService {
 
 	@GetMapping("/rencontre")
-	public List<RencontreDetail> getRencontres() {
-		return getEntities(RencontreDetail.class);
+	public List<Rencontre> getRencontres() {
+		return getEntities(Rencontre.class);
 	}
 
 	@GetMapping("/rencontre/{id}")
-	public RencontreDetail getRencontreById(@PathVariable("id") int id) {
-		return getEntityById(RencontreDetail.class, id);
+	public Rencontre getRencontreById(@PathVariable("id") int id) {
+		return getEntityById(Rencontre.class, id);
 	}
 
 	@GetMapping("/rencontre/court/{id}")
@@ -35,6 +38,48 @@ public class RencontreWS extends WebService {
 			e.printStackTrace();
 		}
 		return rencontres;
+	}
+
+	@PostMapping("/rencontre/{id}/play")
+	public Rencontre playRencontre(@PathVariable("id") int id) {
+		Rencontre rencontre = getEntityById(Rencontre.class, id);
+		Timestamp currentTimestamp = getCurrentTimestamp();
+		if (rencontre.isStarted() && rencontre.isPaused()) {
+			rencontre.enPause = new BigDecimal(0);
+			rencontre.dateDerniereReprise = currentTimestamp;
+			updateEntity(rencontre);
+		} else if (!rencontre.isStarted()) {
+			rencontre.dateDebut = currentTimestamp;
+			rencontre.dateDerniereReprise = currentTimestamp;
+			updateEntity(rencontre);
+		}
+		return rencontre;
+	}
+
+	@PostMapping("/rencontre/{id}/pause")
+	public Rencontre pauseRencontre(@PathVariable("id") int id) {
+		Rencontre rencontre = getEntityById(Rencontre.class, id);
+
+		Timestamp currentTimestamp = getCurrentTimestamp();
+		long dureeJeu = currentTimestamp.getTime();
+		dureeJeu -= rencontre.dateDerniereReprise.getTime();
+		if (rencontre.dureeJeu == null) {
+			rencontre.dureeJeu = BigDecimal.valueOf(dureeJeu);
+		} else {
+			rencontre.dureeJeu = rencontre.dureeJeu.add(BigDecimal.valueOf(dureeJeu));
+		}
+
+		rencontre.enPause = new BigDecimal(1);
+		updateEntity(rencontre);
+		return rencontre;
+	}
+
+	@PostMapping("/rencontre/{id}/end")
+	public Rencontre endRencontre(@PathVariable("id") int id) {
+		Rencontre rencontre = getEntityById(Rencontre.class, id);
+		rencontre.dateFin = new Timestamp(new Date().getTime());
+		updateEntity(rencontre);
+		return rencontre;
 	}
 
 	@PostMapping("/rencontre")
@@ -55,5 +100,9 @@ public class RencontreWS extends WebService {
 	@DeleteMapping("/rencontre/{id}")
 	public boolean deleteRencontreById(@PathVariable("id") int id) {
 		return deleteEntityById(RencontreDetail.class, id);
+	}
+
+	private Timestamp getCurrentTimestamp() {
+		return new Timestamp(new Date().getTime());
 	}
 }
