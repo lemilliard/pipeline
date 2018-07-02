@@ -1,6 +1,5 @@
 <template>
   <div class="tournament">
-    {{ tournament }}
     <v-container>
       <v-layout row wrap>
         <match-item
@@ -33,9 +32,11 @@ export default {
   },
   created() {
     this.retrieveTournament();
+    this.retrieveAbonnements();
   },
   computed: {
     ...mapState({
+      currentUser: state => state.DataStore[DataResources.CURRENT_USER.name],
       tournaments: state => state.DataStore[DataResources.TOURNAMENTS.name],
     }),
     tournament() {
@@ -64,6 +65,15 @@ export default {
         resource: DataResourcesMap.TOURNAMENT.ws,
         params: { [DataResources.TOURNAMENTS.id]: id },
       });
+    },
+    retrieveAbonnements() {
+      if (this.currentUser && this.currentUser[DataResources.CURRENT_USER.id]) {
+        const idUser = this.currentUser[DataResources.CURRENT_USER.id];
+        this.retrieveData({
+          resource: DataResourcesMap.ABONNEMENTS.ws,
+          params: { [DataResources.CURRENT_USER.id]: idUser },
+        });
+      }
     },
     getVille() {
       return this.$global.getTournamentVille(this.tournament);

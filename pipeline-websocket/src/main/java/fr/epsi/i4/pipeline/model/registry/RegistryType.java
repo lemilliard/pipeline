@@ -9,4 +9,5 @@ public enum RegistryType {
 	TOURNAMENT,
 	MATCH,
 	SCORE,
+	ABONNEMENT,
 }

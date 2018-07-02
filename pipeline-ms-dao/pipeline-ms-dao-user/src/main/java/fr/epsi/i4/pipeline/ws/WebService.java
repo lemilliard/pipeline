@@ -3,7 +3,7 @@ package fr.epsi.i4.pipeline.ws;
 import com.thomaskint.minidao.MiniDAO;
 import com.thomaskint.minidao.connection.MDConnectionConfig;
 import com.thomaskint.minidao.exception.MDException;
-import com.thomaskint.minidao.model.MDEntityInfo;
+import com.thomaskint.minidao.querybuilder.MDCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -33,6 +33,16 @@ public abstract class WebService {
 		List<T> entities = null;
 		try {
 			entities = miniDAO.read().getEntities(entityClass);
+		} catch (MDException e) {
+			e.printStackTrace();
+		}
+		return entities;
+	}
+
+	public <T> List<T> getEntities(Class<T> entityClass, MDCondition condition) {
+		List<T> entities = null;
+		try {
+			entities = miniDAO.read().getEntities(entityClass, condition);
 		} catch (MDException e) {
 			e.printStackTrace();
 		}

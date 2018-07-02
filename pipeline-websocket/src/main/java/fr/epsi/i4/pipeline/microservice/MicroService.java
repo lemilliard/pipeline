@@ -1,11 +1,14 @@
 package fr.epsi.i4.pipeline.microservice;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.pipeline.Main;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
 import fr.epsi.i4.pipeline.microservice.microserviceclient.*;
 import fr.epsi.i4.pipeline.model.*;
+import fr.epsi.i4.pipeline.model.bdd.abonnement.Abonnement;
+import fr.epsi.i4.pipeline.model.bdd.rencontre.Rencontre;
 import fr.epsi.i4.pipeline.model.registry.Registry;
 import fr.epsi.i4.pipeline.model.registry.RegistryEntry;
 import fr.epsi.i4.pipeline.model.registry.RegistryType;
@@ -19,6 +22,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
@@ -26,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,9 +85,8 @@ public class MicroService {
 					response.setContent(clientResponse);
 					synchronizeRequest(request, session, resource);
 					notif(request, response, session, resource);
-					if (resource.getResource().equals(Resource.MATCH_PLAY)) {
-						sendToMail();
-					}
+
+					sendToMail(resource.getResource(), response);
 				}
 				sendToLog(response);
 			}
@@ -90,12 +94,18 @@ public class MicroService {
 		return response;
 	}
 
-	private void sendToLog(Response response) {
+	private void sendToLog(Object response) {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost httpPost = new HttpPost(baseUrlLog + ":" + portLog + "/log");
 		Gson gson = new Gson();
 		try {
-			StringEntity stringEntity = new StringEntity(gson.toJson(Log.fromResponse(response)));
+			StringEntity stringEntity;
+			if (response instanceof Response) {
+				stringEntity = new StringEntity(gson.toJson(Log.fromResponse((Response) response)));
+			}
+			else {
+				stringEntity = new StringEntity(gson.toJson(response));
+			}
 			httpPost.setEntity(stringEntity);
 			httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
 			client.execute(httpPost);
@@ -104,17 +114,60 @@ public class MicroService {
 		}
 	}
 
-	private void sendToMail() {
+	private void sendToMail (Resource resource , Response response) {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost httpPost = new HttpPost(baseUrlMail + ":" + portMail + "/mail");
-		Mail mail = new Mail("ludovic.bouvier3@epsi.fr", "Hello World!", "Test body");
+		String to;
+		String subject;
+		String body;
+		switch (resource) {
+			case MATCH_PLAY:
+				subject = "Match démarré";
+				body = "Le match a démarré.";
+				break;
+			case MATCH_END:
+				subject = "Match terminé";
+				body = "Le match vient de se terminer.";
+				break;
+			case MATCH_PAUSE:
+				subject = "Match en pause";
+				body = "Le match est en pause.";
+				break;
+			default:
+				subject = "";
+				body = "";
+		}
 		Gson gson = new Gson();
 		try {
-			StringEntity stringEntity = new StringEntity(gson.toJson(mail));
-			httpPost.setEntity(stringEntity);
-			httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
-			HttpResponse response = client.execute(httpPost);
-			//sendToLog(response);
+			if (response.getContent() instanceof Rencontre) {
+				Rencontre rencontre = (Rencontre) response.getContent();
+				String resourceAbonnementName = Resource.ABONNEMENTS_RENCONTRE.name();
+				MicroServiceClient microServiceClient = getMicroServiceByResourceName(resourceAbonnementName);
+				MicroServiceResource resourceAbonnements = microServiceClient.getResourceByName(resourceAbonnementName);
+
+				Map<String, Object> params = new HashMap<String, Object>() {{
+					put("idRencontre", rencontre.idRencontre);
+				}};
+				String resourcePath = microServiceClient.getResourcePath(resourceAbonnements, params);
+				
+				HttpGet getRencontre = new HttpGet(resourcePath);
+				HttpResponse abonnementsResponse = client.execute(getRencontre);
+				
+				String abonnementsString = EntityUtils.toString(abonnementsResponse.getEntity());
+
+				Abonnement[] abonnements = gson.fromJson(abonnementsString, Abonnement[].class);
+
+				Mail mail;
+				StringEntity stringEntity;
+				httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+				for (Abonnement abonnement : abonnements) {
+					mail = new Mail("ludovic.bouvier3@epsi.fr", subject, body);
+					stringEntity = new StringEntity(gson.toJson(mail));
+					httpPost.setEntity(stringEntity);
+
+					client.execute(httpPost);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
