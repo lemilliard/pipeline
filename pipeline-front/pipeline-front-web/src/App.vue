@@ -9,8 +9,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import DataActionTypes from '@/store/data/actions/types';
+import { mapActions, mapState } from 'vuex';
+import DataActionsTypes from '@/store/data/actions/types';
+import DataResources from '@/store/data/resources';
+import DataResourcesMap from '@/store/data/resources-map';
 import Template from '@/components/template';
 
 require('vuetify/dist/vuetify.min.css');
@@ -26,15 +28,34 @@ export default {
   created() {
     this.autoConnect();
   },
+  watch: {
+    currentUser(newCurrentUser) {
+      if (newCurrentUser && newCurrentUser[DataResources.CURRENT_USER.id]) {
+        this.retrieveAbonnements(newCurrentUser[DataResources.CURRENT_USER.id]);
+      }
+    },
+  },
+  computed: {
+    ...mapState({
+      currentUser: state => state.DataStore[DataResources.CURRENT_USER.name],
+    }),
+  },
   methods: {
+    ...mapActions({
+      retrieveData: DataActionsTypes.RETRIEVE_DATA,
+      connectById: DataActionsTypes.CONNECT_BY_ID,
+    }),
     autoConnect() {
       if (this.$cookie.get('idUser')) {
         this.connectById(this.$cookie.get('idUser'));
       }
     },
-    ...mapActions({
-      connectById: DataActionTypes.CONNECT_BY_ID,
-    }),
+    retrieveAbonnements(idUser) {
+      this.retrieveData({
+        resource: DataResourcesMap.ABONNEMENTS.ws,
+        params: { [DataResources.CURRENT_USER.id]: idUser },
+      });
+    },
   },
 };
 </script>

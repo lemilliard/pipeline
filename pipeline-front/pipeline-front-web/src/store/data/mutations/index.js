@@ -41,7 +41,11 @@ export default {
       const resourceMap = getResourceByWSResource(data.request.resource);
       const resource = resourceMap.res;
       const content = data.content;
-      if (Array.isArray(content)) {
+      // S'il n'y a pas d'id
+      if (resource.id === null && state[resource.name]) {
+        console.log(`Setting ${resource.name}`);
+        state[resource.name] = content;
+      } else if (Array.isArray(content)) {
         content.forEach((item) => {
           addItem(vue, state, resource, item);
         });

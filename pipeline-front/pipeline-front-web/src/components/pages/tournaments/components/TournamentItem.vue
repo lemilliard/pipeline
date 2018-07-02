@@ -16,18 +16,11 @@
                 </v-card-text>
               </v-card>
             </v-flex>
-            <v-flex xs12 sm2 md2>
+            <v-flex xs12 sm4 md4>
               <v-btn
                 color="info"
                 :to="{name: tournamentRoute, params: {id: tournament[idField]}}">
                 Voir les match
-              </v-btn>
-            </v-flex>
-            <v-flex xs12 sm2 md2>
-              <v-btn
-                color="warning"
-                :to="{name: tournamentRoute, params: {id: tournament[idField]}}">
-                S'abonner
               </v-btn>
             </v-flex>
           </v-layout>

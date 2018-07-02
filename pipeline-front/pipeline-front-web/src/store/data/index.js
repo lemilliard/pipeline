@@ -19,6 +19,7 @@ const DataStore = {
     [Resources.TOURNAMENTS.name]: [],
     [Resources.MATCHS.name]: [],
     [Resources.SCORES.name]: [],
+    [Resources.ABONNEMENTS.name]: [],
   },
   getters: Getters,
   actions: Actions,
