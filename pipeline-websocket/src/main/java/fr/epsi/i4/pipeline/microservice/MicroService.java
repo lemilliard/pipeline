@@ -2,6 +2,8 @@ package fr.epsi.i4.pipeline.microservice;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+
+import fr.epsi.i4.pipeline.Main;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
 import fr.epsi.i4.pipeline.microservice.microserviceclient.*;
 import fr.epsi.i4.pipeline.model.Notification;
@@ -40,6 +42,12 @@ import java.util.Map;
  */
 public class MicroService {
 
+	private static final String baseUrl = Main.getConfig().getProperty("ms-log.baseUrl");
+
+	private static final String port = Main.getConfig().getProperty("ms-log.port");
+
+	private static final String basePath = Main.getConfig().getProperty("ms-log.basePath");
+
 	public static final List<Registry> registries = new ArrayList<>();
 
 	private final List<MicroServiceClient> microServiceClients;
@@ -72,7 +80,7 @@ public class MicroService {
 			} else {
 				String resourcePath = microServiceClient.getResourcePath(resource, request.getParams());
 				System.out.println(resourcePath);
-
+				
 				Object clientResponse = getClientResponse(request, resourcePath);
 				if (clientResponse == null) {
 					response.setError("No response from given resource");
@@ -82,9 +90,24 @@ public class MicroService {
 					synchronizeRequest(request, session, resource);
 					notif(request, response, session, resource);
 				}
+				sendToLog(response);
 			}
 		}
 		return response;
+	}
+
+	private void sendToLog(Response response) {
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpPost httpPost = new HttpPost(baseUrl + ":" + port);
+		Gson gson = new Gson();
+		try {
+			StringEntity stringEntity = new StringEntity(gson.toJson(response));
+			httpPost.setEntity(stringEntity);
+			httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+			client.execute(httpPost);
+		} catch (Exception e) {
+			//TODO: handle exception
+		}
 	}
 
 	/**
