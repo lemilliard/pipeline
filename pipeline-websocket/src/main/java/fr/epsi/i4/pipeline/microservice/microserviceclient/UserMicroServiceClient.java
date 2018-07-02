@@ -25,6 +25,7 @@ public class UserMicroServiceClient extends MicroServiceClient {
 			new MicroServiceResource(Resource.REGISTER, RegistryType.USER, Method.POST),
 			new MicroServiceResource(Resource.ABONNEMENTS, RegistryType.ABONNEMENT, Method.GET),
 			new MicroServiceResource(Resource.ABONNEMENT, RegistryType.ABONNEMENT, Method.POST),
+			new MicroServiceResource(Resource.ABONNEMENTS_RENCONTRE, RegistryType.ABONNEMENT, Method.GET),
 			new MicroServiceResource(Resource.DELETE_ABONNEMENT, RegistryType.ABONNEMENT, Method.DELETE),
 	};
 
