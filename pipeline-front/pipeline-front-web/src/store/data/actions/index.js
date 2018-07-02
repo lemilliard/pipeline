@@ -20,13 +20,13 @@ export default {
     vue.$websocket.delete(resource, params);
   },
   [Types.CONNECT]({ commit }, connector) {
-    vue.$websocket.post(DataResourcesMap.CONNECT.ws, connector);
+    vue.$websocket.post(DataResourcesMap.CONNECT.ws, null, connector);
   },
   [Types.CONNECT_BY_ID]({ commit }, id) {
     vue.$websocket.get(DataResourcesMap.CONNECT_BY_ID.ws, { [DataResourcesMap.CONNECT_BY_ID.res.id]: id });
   },
   [Types.REGISTER]({ commit }, registrator) {
-    vue.$websocket.post(DataResourcesMap.REGISTER.ws, registrator);
+    vue.$websocket.post(DataResourcesMap.REGISTER.ws, null, registrator);
   },
   [Types.DISCONNECT]({ commit }) {
     vue.$cookie.delete('idUser');
