@@ -1,16 +1,11 @@
 package fr.epsi.i4.pipeline.microservice;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.pipeline.Main;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
 import fr.epsi.i4.pipeline.microservice.microserviceclient.*;
-import fr.epsi.i4.pipeline.model.Log;
-import fr.epsi.i4.pipeline.model.Mail;
-import fr.epsi.i4.pipeline.model.Notification;
-import fr.epsi.i4.pipeline.model.Request;
-import fr.epsi.i4.pipeline.model.Response;
+import fr.epsi.i4.pipeline.model.*;
 import fr.epsi.i4.pipeline.model.registry.Registry;
 import fr.epsi.i4.pipeline.model.registry.RegistryEntry;
 import fr.epsi.i4.pipeline.model.registry.RegistryType;
@@ -85,7 +80,7 @@ public class MicroService {
 					response.setContent(clientResponse);
 					synchronizeRequest(request, session, resource);
 					notif(request, response, session, resource);
-					if (resource.getResource().getValue() == "MATCH_PLAY") {
+					if (resource.getResource().equals(Resource.MATCH_PLAY)) {
 						sendToMail();
 					}
 				}
@@ -109,7 +104,7 @@ public class MicroService {
 		}
 	}
 
-	private void sendToMail () {
+	private void sendToMail() {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost httpPost = new HttpPost(baseUrlMail + ":" + portMail + "/mail");
 		Mail mail = new Mail("ludovic.bouvier3@epsi.fr", "Hello World!", "Test body");
@@ -124,6 +119,7 @@ public class MicroService {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Interroge une service et en récupère la réponse
 	 *
