@@ -17,8 +17,7 @@ public class EquiJou {
 	public static final String idJoueurFieldName = "id_joueur";
 
 	public static final String idEquipeFieldName = "id_equipe";
-
-	@MDId
+        
 	@MDField(fieldName = idJoueurFieldName)
 	public BigDecimal idJoueur;
 

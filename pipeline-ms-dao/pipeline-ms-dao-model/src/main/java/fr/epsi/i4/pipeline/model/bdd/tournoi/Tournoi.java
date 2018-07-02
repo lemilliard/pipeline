@@ -9,6 +9,7 @@ import fr.epsi.i4.pipeline.model.bdd.complexe.Complexe;
 import fr.epsi.i4.pipeline.model.bdd.tournoi.Niveau;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -29,11 +30,17 @@ public class Tournoi {
 	public String nom;
 
 	@MDField(fieldName = "date_tournoi")
-	public Date date;
+	public Timestamp date;
 
 	@MDManyToOne(fieldName = Tournoi.niveauFieldName, targetFieldName = Niveau.valueFieldName, target = Niveau.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Niveau niveau;
+        
+        @MDField(fieldName = Tournoi.niveauFieldName)
+        public String idNiveau;
 
 	@MDManyToOne(fieldName = Tournoi.idComplexeFieldName, targetFieldName = Complexe.idComplexeFieldName, target = Complexe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Complexe complexe;
+        
+        @MDField(fieldName = Tournoi.idComplexeFieldName)
+        public BigDecimal idComplexe;
 }
