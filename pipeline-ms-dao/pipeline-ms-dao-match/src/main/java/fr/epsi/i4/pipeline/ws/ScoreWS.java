@@ -98,9 +98,14 @@ public class ScoreWS extends WebService {
 				// Si on ne va pas dépasser les points max
 				if (!(nouveauPointEquipe.compareTo(maxPoint) > 0)) {
 					// On incrémente les points du jeu
+					// Si l'équipe arrive à l'avantage et qu'il n'y a pas égalité
+					if (nouveauPointEquipe.equals(avantage) && pointEquipe.compareTo(pointEquipeDistante) != 0) {
+						// On fait gagner le set
+						nouveauPointEquipe = maxPoint;
+					}
 					createPoint(dernierJeu.idJeu, nouveauPointEquipe);
 
-					// Si les points arrivent au max
+					// Si les points arrivent au max ou à l'avantage et qu'il n'y a pas égalité
 					if (nouveauPointEquipe.compareTo(maxPoint) == 0) {
 						// Si le set arrive à terme
 						if (isSetGagnant(score.getDernierSet(), isEquipeUne)) {
