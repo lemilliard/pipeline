@@ -21,8 +21,9 @@ public enum Resource {
 	MATCH_END("rencontre/{idRencontre}/end"),
 	SCORE("score/{idRencontre}"),
 	SCORE_ADD("score/addPoint"),
-	ABONNEMENTS("abonnement/user/{idUser}"),
 	ABONNEMENT("abonnement"),
+	ABONNEMENTS("abonnement/user/{idUser}"),
+	ABONNEMENTS_RENCONTRE("abonnement/rencontre/{idRencontre}"),
 	DELETE_ABONNEMENT("abonnement/{idUser}/{idRencontre}");
 
 	private String value;
