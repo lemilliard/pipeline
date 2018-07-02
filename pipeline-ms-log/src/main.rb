@@ -4,18 +4,20 @@ require 'json'
 require 'pp'
 
 set :bind, '0.0.0.0'
-set :port, 8080
+set :port, 8090
 
 # get '/' do
 #   erb :'index.html'
 # end
 
+basePath = File.dirname(__FILE__)
+
 post '/log' do
-  path = 'C:/Users/ludau/GoPath/src/github.com/pipeline/pipeline-ms-log/src/log/logs.txt'
+  path = basePath + '/log/logs.txt'
   values = JSON.parse(request.env["rack.input"].read)
   begin
     file = File.open(path, 'a')
-    file.puts(values.to_json) 
+    file.puts(values.to_json)
   rescue IOError => e
     #some error occur, dir not writable etc.
   ensure
@@ -23,8 +25,8 @@ post '/log' do
   end
 end
 
-get '/log' do 
-    File.open('C:/Users/ludau/GoPath/src/github.com/pipeline/pipeline-ms-log/src/log/logs.txt', 'r')
+get '/log' do
+  File.open(basePath + '/log/logs.txt', 'r')
 end
 
 # get '/hello/:name' do

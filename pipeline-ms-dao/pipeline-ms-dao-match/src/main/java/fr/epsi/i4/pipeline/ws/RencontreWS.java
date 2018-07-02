@@ -77,7 +77,7 @@ public class RencontreWS extends WebService {
 	@PostMapping("/rencontre/{id}/end")
 	public Rencontre endRencontre(@PathVariable("id") int id) {
 		Rencontre rencontre = getEntityById(Rencontre.class, id);
-		rencontre.dateFin = new Timestamp(new Date().getTime());
+		rencontre.dateFin = getCurrentTimestamp();
 		updateEntity(rencontre);
 		return rencontre;
 	}

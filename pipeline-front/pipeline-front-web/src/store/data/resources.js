@@ -5,4 +5,5 @@ export default {
   TOURNAMENTS: { name: 'TOURNAMENTS', id: 'idTournoi' },
   MATCHS: { name: 'MATCHS', id: 'idRencontre' },
   SCORES: { name: 'SCORES', id: 'idRencontre' },
+  ABONNEMENTS: { name: 'ABONNEMENTS', id: null },
 };

@@ -8,11 +8,11 @@ import fr.epsi.i4.pipeline.model.registry.RegistryType;
  */
 public class UserMicroServiceClient extends MicroServiceClient {
 
-	private static final String baseUrl = Main.getConfig().getProperty("ms-dao-user.baseUrl");
+	public static final String baseUrl = Main.getConfig().getProperty("ms-dao-user.baseUrl");
 
-	private static final String port = Main.getConfig().getProperty("ms-dao-user.port");
+	public static final String port = Main.getConfig().getProperty("ms-dao-user.port");
 
-	private static final String basePath = Main.getConfig().getProperty("ms-dao-user.basePath");
+	public static final String basePath = Main.getConfig().getProperty("ms-dao-user.basePath");
 
 	private static final MicroServiceResource[] MICRO_SERVICE_RESOURCES = new MicroServiceResource[]{
 			new MicroServiceResource(Resource.USERS, RegistryType.USER, Method.GET, Method.POST, Method.PUT, Method.DELETE),
@@ -23,6 +23,9 @@ public class UserMicroServiceClient extends MicroServiceClient {
 			new MicroServiceResource(Resource.CONNECT, RegistryType.USER, Method.POST),
 			new MicroServiceResource(Resource.CONNECT_BY_ID, RegistryType.USER, Method.GET),
 			new MicroServiceResource(Resource.REGISTER, RegistryType.USER, Method.POST),
+			new MicroServiceResource(Resource.ABONNEMENTS, RegistryType.ABONNEMENT, Method.GET),
+			new MicroServiceResource(Resource.ABONNEMENT, RegistryType.ABONNEMENT, Method.POST),
+			new MicroServiceResource(Resource.DELETE_ABONNEMENT, RegistryType.ABONNEMENT, Method.DELETE),
 	};
 
 	public UserMicroServiceClient() {

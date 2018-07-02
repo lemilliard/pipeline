@@ -18,5 +18,8 @@ export default {
   MATCH_END: { ws: 'MATCH_END', res: Resources.MATCHS },
   SCORE: { ws: 'SCORE', res: Resources.SCORES },
   SCORE_ADD: { ws: 'SCORE_ADD', res: Resources.SCORES },
+  ABONNEMENTS: { ws: 'ABONNEMENTS', res: Resources.ABONNEMENTS },
+  ABONNEMENT: { ws: 'ABONNEMENT', res: Resources.ABONNEMENTS },
+  DELETE_ABONNEMENT: { ws: 'DELETE_ABONNEMENT', res: Resources.ABONNEMENTS },
 };
 

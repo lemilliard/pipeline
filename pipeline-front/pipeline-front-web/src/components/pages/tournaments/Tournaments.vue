@@ -36,12 +36,12 @@ export default {
     }),
   },
   methods: {
-    retrieveTournaments() {
-      this.retrieveData({ resource: DataResourcesMap.TOURNAMENTS.ws });
-    },
     ...mapActions({
       retrieveData: DataActionsTypes.RETRIEVE_DATA,
     }),
+    retrieveTournaments() {
+      this.retrieveData({ resource: DataResourcesMap.TOURNAMENTS.ws });
+    },
   },
 };
 </script>

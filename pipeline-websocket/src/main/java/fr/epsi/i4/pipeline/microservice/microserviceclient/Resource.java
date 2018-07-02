@@ -20,7 +20,11 @@ public enum Resource {
 	MATCH_PAUSE("rencontre/{idRencontre}/pause"),
 	MATCH_END("rencontre/{idRencontre}/end"),
 	SCORE("score/{idRencontre}"),
-	SCORE_ADD("score/addPoint");
+	SCORE_ADD("score/addPoint"),
+	ABONNEMENT("abonnement"),
+	ABONNEMENTS("abonnement/user/{idUser}"),
+	ABONNEMENTS_RENCONTRE("abonnement/rencontre/{idRencontre}"),
+	DELETE_ABONNEMENT("abonnement/{idUser}/{idRencontre}");
 
 	private String value;
 
