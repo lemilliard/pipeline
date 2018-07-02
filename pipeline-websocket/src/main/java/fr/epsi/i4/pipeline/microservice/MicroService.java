@@ -1,11 +1,13 @@
 package fr.epsi.i4.pipeline.microservice;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.pipeline.Main;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
 import fr.epsi.i4.pipeline.microservice.microserviceclient.*;
 import fr.epsi.i4.pipeline.model.Log;
+import fr.epsi.i4.pipeline.model.Mail;
 import fr.epsi.i4.pipeline.model.Notification;
 import fr.epsi.i4.pipeline.model.Request;
 import fr.epsi.i4.pipeline.model.Response;
@@ -38,9 +40,12 @@ import java.util.Map;
 public class MicroService {
 
 	public static final List<Registry> registries = new ArrayList<>();
-	private static final String baseUrl = Main.getConfig().getProperty("ms-log.baseUrl");
-	private static final String port = Main.getConfig().getProperty("ms-log.port");
-	private static final String basePath = Main.getConfig().getProperty("ms-log.basePath");
+	private static final String baseUrlLog = Main.getConfig().getProperty("ms-log.baseUrl");
+	private static final String portLog = Main.getConfig().getProperty("ms-log.port");
+	private static final String basePathLog = Main.getConfig().getProperty("ms-log.basePath");
+	private static final String baseUrlMail = Main.getConfig().getProperty("ms-notification.baseUrl");
+	private static final String portMail = Main.getConfig().getProperty("ms-notification.port");
+	private static final String basePathMail = Main.getConfig().getProperty("ms-notification.basePath");
 	private final List<MicroServiceClient> microServiceClients;
 
 	private HttpClient client;
@@ -80,6 +85,9 @@ public class MicroService {
 					response.setContent(clientResponse);
 					synchronizeRequest(request, session, resource);
 					notif(request, response, session, resource);
+					if (resource.getResource().getValue() == "MATCH_PLAY") {
+						sendToMail();
+					}
 				}
 				sendToLog(response);
 			}
@@ -89,7 +97,7 @@ public class MicroService {
 
 	private void sendToLog(Response response) {
 		HttpClient client = HttpClientBuilder.create().build();
-		HttpPost httpPost = new HttpPost(baseUrl + ":" + port + "/log");
+		HttpPost httpPost = new HttpPost(baseUrlLog + ":" + portLog + "/log");
 		Gson gson = new Gson();
 		try {
 			StringEntity stringEntity = new StringEntity(gson.toJson(Log.fromResponse(response)));
@@ -101,6 +109,21 @@ public class MicroService {
 		}
 	}
 
+	private void sendToMail () {
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpPost httpPost = new HttpPost(baseUrlMail + ":" + portMail + "/mail");
+		Mail mail = new Mail("ludovic.bouvier3@epsi.fr", "Hello World!", "Test body");
+		Gson gson = new Gson();
+		try {
+			StringEntity stringEntity = new StringEntity(gson.toJson(mail));
+			httpPost.setEntity(stringEntity);
+			httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+			HttpResponse response = client.execute(httpPost);
+			//sendToLog(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * Interroge une service et en récupère la réponse
 	 *
