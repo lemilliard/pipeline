@@ -3,3 +3,6 @@
 target/
 *.jar
 pipeline-docker/**
+.project
+.classpath
+.settings
