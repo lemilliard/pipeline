@@ -1,6 +1,7 @@
 package fr.epsi.i4.pipeline.microservice;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.pipeline.Main;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
@@ -80,9 +81,7 @@ public class MicroService {
 					response.setContent(clientResponse);
 					synchronizeRequest(request, session, resource);
 					notif(request, response, session, resource);
-					if (resource.getResource().equals(Resource.MATCH_PLAY)) {
-						sendToMail();
-					}
+					sendToMail(resource.getResource().getValue());
 				}
 				sendToLog(response);
 			}
@@ -90,12 +89,18 @@ public class MicroService {
 		return response;
 	}
 
-	private void sendToLog(Response response) {
+	private void sendToLog(Object response) {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost httpPost = new HttpPost(baseUrlLog + ":" + portLog + "/log");
 		Gson gson = new Gson();
 		try {
-			StringEntity stringEntity = new StringEntity(gson.toJson(Log.fromResponse(response)));
+			StringEntity stringEntity;
+			if (response instanceof Response) {
+				stringEntity = new StringEntity(gson.toJson(Log.fromResponse((Response) response)));
+			}
+			else {
+				stringEntity = new StringEntity(gson.toJson(response));
+			}
 			httpPost.setEntity(stringEntity);
 			httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
 			client.execute(httpPost);
@@ -104,19 +109,41 @@ public class MicroService {
 		}
 	}
 
-	private void sendToMail() {
+	private void sendToMail (Object resourceValue) {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost httpPost = new HttpPost(baseUrlMail + ":" + portMail + "/mail");
-		Mail mail = new Mail("ludovic.bouvier3@epsi.fr", "Hello World!", "Test body");
-		Gson gson = new Gson();
-		try {
-			StringEntity stringEntity = new StringEntity(gson.toJson(mail));
-			httpPost.setEntity(stringEntity);
-			httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
-			HttpResponse response = client.execute(httpPost);
-			//sendToLog(response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		List<String> to;
+		String subject;
+		String body;
+		for (int i = 0; i < to.size(); i++) {
+			switch ((String) resourceValue) {
+				case "MATCH_PLAY":
+					subject = "Match démarré";
+					body = "Le match a démarré.";
+					break;
+				case "MATCH_END":
+					subject = "Match terminé";
+					body = "Le match vient de se terminer.";
+					break;
+				case "MATCH_PAUSE":
+					subject = "Match en pause";
+					body = "Le match est en pause.";
+					break;
+				default:
+					subject = "";
+					body = "";
+			}
+			Mail mail = new Mail(to.get(i), subject, body);
+			Gson gson = new Gson();
+			try {
+				StringEntity stringEntity = new StringEntity(gson.toJson(mail));
+				httpPost.setEntity(stringEntity);
+				httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+				HttpResponse response = client.execute(httpPost);
+				sendToLog(response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
