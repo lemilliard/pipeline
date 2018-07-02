@@ -59,9 +59,21 @@ public class Rencontre {
 
 	@MDManyToOne(fieldName = RencontreDetail.idEquipeUneFieldName, targetFieldName = Equipe.idEquipeFieldName, target = Equipe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Equipe equipeUne;
+        
+        @MDField(fieldName = idEquipeUneFieldName)
+	public BigDecimal idEquipeUne;
 
 	@MDManyToOne(fieldName = RencontreDetail.idEquipeDeuxFieldName, targetFieldName = Equipe.idEquipeFieldName, target = Equipe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Equipe equipeDeux;
+        
+        @MDField(fieldName = idEquipeDeuxFieldName)
+	public BigDecimal idEquipeDeux;
+        
+        @MDField(fieldName = idArbitreFieldName)
+	public BigDecimal idArbitre;
+        
+        @MDField(fieldName = idCourtFieldName)
+	public BigDecimal idCourt;
 
 	public boolean isPaused() {
 		return enPause.equals(new BigDecimal(1));

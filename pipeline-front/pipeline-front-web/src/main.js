@@ -4,6 +4,9 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import VueCookie from 'vue-cookie';
 
+import Axios from 'axios';
+import VueAxios from 'vue-axios';
+
 import store from './store';
 import GlobalPlugin from './plugins/global';
 import WebSocketPlugin from './plugins/websocket';
@@ -18,6 +21,7 @@ Vue.use(GlobalPlugin, { router });
 Vue.use(WebSocketPlugin, 'ws://192.168.137.235:8080', store);
 // Vue.use(WebSocketPlugin, 'ws://ae3ab787.ngrok.io', store);
 // Vue.use(WebSocketPlugin, 'ws://home.thomaskint.com:8085/websocket', store);
+Vue.use(VueAxios, Axios);
 
 Vue.config.productionTip = false;
 
