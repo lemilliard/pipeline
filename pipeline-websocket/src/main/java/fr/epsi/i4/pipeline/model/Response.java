@@ -18,6 +18,10 @@ public class Response {
 		this.request = request;
 	}
 
+	public Request getRequest() {
+		return request;
+	}
+
 	public int getHttpCode() {
 		return httpCode;
 	}

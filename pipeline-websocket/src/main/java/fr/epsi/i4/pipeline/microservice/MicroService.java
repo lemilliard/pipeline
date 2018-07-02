@@ -2,30 +2,25 @@ package fr.epsi.i4.pipeline.microservice;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-
 import fr.epsi.i4.pipeline.Main;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
 import fr.epsi.i4.pipeline.microservice.microserviceclient.*;
+import fr.epsi.i4.pipeline.model.Log;
 import fr.epsi.i4.pipeline.model.Notification;
 import fr.epsi.i4.pipeline.model.Request;
 import fr.epsi.i4.pipeline.model.Response;
-import fr.epsi.i4.pipeline.model.registry.RegistryEntry;
 import fr.epsi.i4.pipeline.model.registry.Registry;
+import fr.epsi.i4.pipeline.model.registry.RegistryEntry;
 import fr.epsi.i4.pipeline.model.registry.RegistryType;
-import org.apache.http.Header;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 
 import javax.websocket.EncodeException;
@@ -42,14 +37,10 @@ import java.util.Map;
  */
 public class MicroService {
 
-	private static final String baseUrl = Main.getConfig().getProperty("ms-log.baseUrl");
-
-	private static final String port = Main.getConfig().getProperty("ms-log.port");
-
-	private static final String basePath = Main.getConfig().getProperty("ms-log.basePath");
-
 	public static final List<Registry> registries = new ArrayList<>();
-
+	private static final String baseUrl = Main.getConfig().getProperty("ms-log.baseUrl");
+	private static final String port = Main.getConfig().getProperty("ms-log.port");
+	private static final String basePath = Main.getConfig().getProperty("ms-log.basePath");
 	private final List<MicroServiceClient> microServiceClients;
 
 	private HttpClient client;
@@ -80,7 +71,7 @@ public class MicroService {
 			} else {
 				String resourcePath = microServiceClient.getResourcePath(resource, request.getParams());
 				System.out.println(resourcePath);
-				
+
 				Object clientResponse = getClientResponse(request, resourcePath);
 				if (clientResponse == null) {
 					response.setError("No response from given resource");
@@ -98,15 +89,15 @@ public class MicroService {
 
 	private void sendToLog(Response response) {
 		HttpClient client = HttpClientBuilder.create().build();
-		HttpPost httpPost = new HttpPost(baseUrl + ":" + port);
+		HttpPost httpPost = new HttpPost(baseUrl + ":" + port + "/log");
 		Gson gson = new Gson();
 		try {
-			StringEntity stringEntity = new StringEntity(gson.toJson(response));
+			StringEntity stringEntity = new StringEntity(gson.toJson(Log.fromResponse(response)));
 			httpPost.setEntity(stringEntity);
 			httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
 			client.execute(httpPost);
 		} catch (Exception e) {
-			//TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 
