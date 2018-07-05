@@ -3,6 +3,7 @@ package fr.epsi.i4.pipeline.microservice;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.pipeline.Main;
+import fr.epsi.i4.pipeline.common.ThreadMail;
 import fr.epsi.i4.pipeline.encoder.NotificationEncoder;
 import fr.epsi.i4.pipeline.microservice.microserviceclient.*;
 import fr.epsi.i4.pipeline.model.*;
@@ -161,16 +162,20 @@ public class MicroService {
 
 						Abonnement[] abonnements = gson.fromJson(abonnementsString, Abonnement[].class);
 
-						Mail mail;
-						StringEntity stringEntity;
-						httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
-						for (Abonnement abonnement : abonnements) {
-							mail = new Mail(abonnement.user.email, subject, body);
-							stringEntity = new StringEntity(gson.toJson(mail));
-							httpPost.setEntity(stringEntity);
-
-							client.execute(httpPost);
-						}
+                                                ThreadMail threadMail = new ThreadMail(abonnements, subject, body, httpPost, gson, client);
+                                                
+                                                threadMail.run();
+                                                
+//						Mail mail;
+//						StringEntity stringEntity;
+//						httpPost.setHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
+//						for (Abonnement abonnement : abonnements) {
+//							mail = new Mail(abonnement.user.email, subject, body);
+//							stringEntity = new StringEntity(gson.toJson(mail));
+//							httpPost.setEntity(stringEntity);
+//
+//							client.execute(httpPost);
+//						}
 					}
 				}
 			} catch (Exception e) {
