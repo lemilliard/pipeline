@@ -15,6 +15,9 @@ import fr.epsi.i4.pipeline.model.bdd.equipe.EquiJou;
 import fr.epsi.i4.pipeline.model.bdd.equipe.Equipe;
 import fr.epsi.i4.pipeline.model.bdd.equipe.Joueur;
 import fr.epsi.i4.pipeline.model.bdd.rencontre.Rencontre;
+import fr.epsi.i4.pipeline.model.bdd.score.JeuMatch;
+import fr.epsi.i4.pipeline.model.bdd.score.PointMatch;
+import fr.epsi.i4.pipeline.model.bdd.score.SetMatch;
 import fr.epsi.i4.pipeline.model.bdd.tournoi.Tournoi;
 import fr.epsi.i4.pipeline.model.bdd.tournoi.Organisation;
 import fr.epsi.i4.pipeline.model.bdd.user.User;
@@ -28,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -119,6 +123,34 @@ public class TournoiWS extends WebService {
                         rencontre.idCourt = court.idCourt;
                         rencontre.enPause = new BigDecimal(1);
                         createEntity(rencontre);
+                        
+                        SetMatch set = new SetMatch();
+                        set.idRencontre = rencontre.idRencontre;
+                        
+                        createEntity(set);
+                        
+                        JeuMatch jeuEquipeUne = new JeuMatch();
+                        JeuMatch jeuEquipeDeux = new JeuMatch();
+                        
+                        jeuEquipeUne.idSet = set.idSet;
+                        jeuEquipeUne.idEquipe = equipes.get(0).idEquipe;
+                        jeuEquipeDeux.idEquipe = equipes.get(1).idEquipe;
+                        jeuEquipeDeux.idSet = set.idSet;
+                        
+                        createEntity(jeuEquipeUne);
+                        createEntity(jeuEquipeDeux);
+                        
+                        PointMatch pointEquipeUne = new PointMatch();
+                        PointMatch pointEquipeDeux = new PointMatch();
+                        
+                        pointEquipeUne.idJeuMatch = jeuEquipeUne.idJeu;
+                        pointEquipeUne.idPointEnum = new BigDecimal(0);
+                        
+                        pointEquipeDeux.idJeuMatch = jeuEquipeDeux.idJeu;
+                        pointEquipeDeux.idPointEnum = new BigDecimal(0);
+                        
+                        createEntity(pointEquipeUne);
+                        createEntity(pointEquipeDeux);
                         
                         ResultSet resultSet = getMiniDAO().executeQuery("SELECT MAX(ID_RENCONTRE) FROM RENCONTRE");
                         resultSet.next();
