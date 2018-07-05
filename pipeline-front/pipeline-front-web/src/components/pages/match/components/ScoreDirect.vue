@@ -13,7 +13,7 @@
           Match terminé
         </v-alert>
       </span>
-      <span v-else>
+      <span v-if="!isFinished() && isArbitre">
         <button class="btn btn-primary btn-lg" v-show="!isStarted() || isPaused()" v-on:click="play(false)">
           Démarrer
         </button>
@@ -47,8 +47,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import DataActionsTypes from '@/store/data/actions/types';
+import DataGetterTypes from '@/store/data/getters/types';
 import DataResources from '@/store/data/resources';
 import DataResourcesMap from '@/store/data/resources-map';
 
@@ -69,6 +70,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      isArbitre: DataGetterTypes.IS_ARBITRE,
+    }),
     pointsEquipeUne() {
       let points = 0;
       if (this.score

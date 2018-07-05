@@ -3,19 +3,11 @@ package fr.epsi.i4.pipeline.model.bdd.rencontre;
 import com.thomaskint.minidao.annotation.*;
 import com.thomaskint.minidao.enumeration.MDLoadPolicy;
 import com.thomaskint.minidao.enumeration.MDSQLAction;
-import fr.epsi.i4.pipeline.model.bdd.court.Court;
 import fr.epsi.i4.pipeline.model.bdd.equipe.Equipe;
-import fr.epsi.i4.pipeline.model.bdd.score.SetMatch;
-import fr.epsi.i4.pipeline.model.bdd.tournoi.Phase;
-import fr.epsi.i4.pipeline.model.bdd.user.User;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Thomas Kint
@@ -59,21 +51,24 @@ public class Rencontre {
 
 	@MDManyToOne(fieldName = RencontreDetail.idEquipeUneFieldName, targetFieldName = Equipe.idEquipeFieldName, target = Equipe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Equipe equipeUne;
-        
-        @MDField(fieldName = idEquipeUneFieldName)
+
+	@MDField(fieldName = idEquipeUneFieldName)
 	public BigDecimal idEquipeUne;
 
 	@MDManyToOne(fieldName = RencontreDetail.idEquipeDeuxFieldName, targetFieldName = Equipe.idEquipeFieldName, target = Equipe.class, loadPolicy = MDLoadPolicy.HEAVY)
 	public Equipe equipeDeux;
-        
-        @MDField(fieldName = idEquipeDeuxFieldName)
+
+	@MDField(fieldName = idEquipeDeuxFieldName)
 	public BigDecimal idEquipeDeux;
-        
-        @MDField(fieldName = idArbitreFieldName)
+
+	@MDField(fieldName = idArbitreFieldName)
 	public BigDecimal idArbitre;
-        
-        @MDField(fieldName = idCourtFieldName)
+
+	@MDField(fieldName = idCourtFieldName)
 	public BigDecimal idCourt;
+
+	@MDOneToMany(fieldName = Rencontre.idRencontreFieldName, targetFieldName = Organisation.idRencontreFieldName, target = Organisation.class, loadPolicy = MDLoadPolicy.HEAVY)
+	public List<Organisation> organisations;
 
 	public boolean isPaused() {
 		return enPause.equals(new BigDecimal(1));

@@ -2,6 +2,7 @@
   <div class="tournament">
     <v-container>
       <v-layout row wrap>
+        <h3 v-if="tournament">{{ tournament.nom }}</h3>
         <match-item
           v-for="(match, index) in matchs"
           :key="index"
@@ -13,7 +14,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import DataActionsTypes from '@/store/data/actions/types';
 import DataResources from '@/store/data/resources';
 import DataResourcesMap from '@/store/data/resources-map';
@@ -50,9 +51,18 @@ export default {
     },
     matchs() {
       const matchs = [];
-      if (this.tournament && this.tournament.complexe && this.tournament.complexe.courts) {
+      if (this.tournament
+        && this.tournament.complexe
+        && this.tournament.complexe.courts) {
         this.tournament.complexe.courts.forEach((court) => {
-          court.rencontres.forEach(match => matchs.push(match));
+          court.rencontres.forEach((match) => {
+            if (match.organisations
+              && match.organisations[0]
+              && match.organisations[0].idTournoi === this.tournament.idTournoi) {
+              console.log(match.organisations[0].idTournoi, this.tournament.idTournoi);
+              matchs.push(match);
+            }
+          });
         });
       }
       return matchs;

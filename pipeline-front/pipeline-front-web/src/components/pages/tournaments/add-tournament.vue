@@ -30,7 +30,7 @@ export default {
 
       formData.append('file', this.file);
 
-      this.axios.post('http://localhost:8080/tournoi/import', formData).then((response) => {
+      this.axios.post('http://localhost:8083/tournoi/import', formData).then((response) => {
         console.log('Result: ', response);
         if (response && response.data && response.data) {
           console.log(response);

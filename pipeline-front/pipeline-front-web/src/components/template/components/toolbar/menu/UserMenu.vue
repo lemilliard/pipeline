@@ -1,8 +1,5 @@
 <template>
   <div>
-    <v-list-tile @click="$global.openRoute(profile)">
-      <v-list-tile-title>Profile</v-list-tile-title>
-    </v-list-tile>
     <v-list-tile @click="disconnect">
       <v-list-tile-title>Signout</v-list-tile-title>
     </v-list-tile>

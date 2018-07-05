@@ -51,7 +51,7 @@ export default {
     },
     items() {
       const items = [];
-      if (this.score) {
+      if (this.score && this.joueursEquipeUne[0] && this.joueursEquipeUne[1]) {
         let pointKey;
         items.push({
           equipe: `${this.joueursEquipeUne[0].nom} - ${this.joueursEquipeUne[1].nom}`,

@@ -18,9 +18,6 @@
           { icon: this.$global.icons.TOURNAMENTS, text: 'Tournaments', route: RouteNames.TOURNAMENTS },
           { icon: this.$global.icons.MATCHS, text: 'Matchs', route: RouteNames.MATCHS },
           { icon: this.$global.icons.LADDER, text: 'Ladder', route: RouteNames.LADDER },
-          { icon: this.$global.icons.CALENDAR, text: 'Calendar', route: RouteNames.CALENDAR },
-          { icon: this.$global.icons.ORGANISER, text: 'Organiser', route: RouteNames.ORGANISER },
-          { icon: this.$global.icons.ADDTOURNAMENT, text: 'Ajouter tournoi', route: RouteNames.ADDTOURNAMENT },
         ],
       };
     },

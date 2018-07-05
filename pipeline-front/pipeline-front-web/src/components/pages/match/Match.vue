@@ -1,21 +1,26 @@
 <template>
   <div class="match">
-    {{ score }}
     <v-container>
       <v-layout row wrap>
         <v-flex xs12 sm3 md3>
           <h3>Match</h3>
         </v-flex>
-        <v-flex xs3 sm3 md3 offset-md6 follow-match>
-          <v-btn color="primary" dark>Suivre le match</v-btn>
-        </v-flex>
+        <!--<v-flex xs3 sm3 md3 offset-md6 follow-match>-->
+        <!--<v-btn color="primary" dark>Suivre le match</v-btn>-->
+        <!--</v-flex>-->
 
         <v-container grid-list-md text-xs-center>
           <v-layout row wrap>
-            <v-flex justify-space-between fill-height xs12 sm2 md2 v-if="match && match.equipeUne">
-              <v-btn color="success" @click="addPoint(match.equipeUne)">+</v-btn>
-              <v-btn color="warning">Avertissement</v-btn>
-              <v-btn color="info">Soigneur</v-btn>
+            <v-flex
+              justify-space-between
+              fill-height
+              xs12 sm2 md2
+              v-if="match && match.equipeUne">
+              <span v-if="isArbitre">
+                <v-btn color="success" @click="addPoint(match.equipeUne)">+</v-btn>
+                <v-btn color="warning">Avertissement</v-btn>
+                <v-btn color="info">Soigneur</v-btn>
+              </span>
             </v-flex>
             <v-flex xs6 sm2 md2 v-if="match && match.equipeDeux">
               <v-btn class="hide-on-desktop" color="success" @click="addPoint(match.equipeUne)">+</v-btn>
@@ -47,9 +52,11 @@
               </v-card>
             </v-flex>
             <v-flex xs12 sm2 md2 v-if="match && match.equipeDeux">
-              <v-btn color="success" @click="addPoint(match.equipeDeux)">+</v-btn>
-              <v-btn color="warning">Avertissement</v-btn>
-              <v-btn color="info">Soigneur</v-btn>
+              <span v-if="isArbitre">
+                <v-btn color="success" @click="addPoint(match.equipeDeux)">+</v-btn>
+                <v-btn color="warning">Avertissement</v-btn>
+                <v-btn color="info">Soigneur</v-btn>
+              </span>
             </v-flex>
           </v-layout>
         </v-container>
@@ -68,8 +75,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import DataActionsTypes from '@/store/data/actions/types';
+import DataGetterTypes from '@/store/data/getters/types';
 import DataResources from '@/store/data/resources';
 import DataResourcesMap from '@/store/data/resources-map';
 
@@ -92,6 +100,9 @@ export default {
     ...mapState({
       matchs: state => state.DataStore[DataResources.MATCHS.name],
       scores: state => state.DataStore[DataResources.SCORES.name],
+    }),
+    ...mapGetters({
+      isArbitre: DataGetterTypes.IS_ARBITRE,
     }),
     match() {
       const id = parseInt(this.$route.params.id, 10);

@@ -36,7 +36,7 @@
                 Voir le match
               </v-btn>
             </v-flex>
-            <v-flex xs12 sm2 md2>
+            <v-flex xs12 sm2 md2 v-if="isConnected">
               <v-btn
                 color="warning"
                 @click="deleteAbonnement()"
@@ -58,8 +58,9 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import DataActionsTypes from '@/store/data/actions/types';
+import DataGetterTypes from '@/store/data/getters/types';
 import DataResources from '@/store/data/resources';
 import DataResourcesMap from '@/store/data/resources-map';
 import RouteNames from '@/router/names';
@@ -77,6 +78,9 @@ export default {
     ...mapState({
       currentUser: state => state.DataStore[DataResources.CURRENT_USER.name],
       abonnements: state => state.DataStore[DataResources.ABONNEMENTS.name],
+    }),
+    ...mapGetters({
+      isConnected: DataGetterTypes.IS_CONNECTED,
     }),
     isAbonneRencontre() {
       return this.abonnements &&

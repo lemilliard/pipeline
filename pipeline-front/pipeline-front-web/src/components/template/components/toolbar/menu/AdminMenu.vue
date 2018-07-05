@@ -19,6 +19,7 @@
         items: [
           { text: 'Importer', to: RouteNames.IMPORTER },
           { text: 'Paramètres', to: RouteNames.SETTINGS },
+          { text: 'Ajouter tournoi', to: RouteNames.ADDTOURNAMENT },
         ],
       };
     },
