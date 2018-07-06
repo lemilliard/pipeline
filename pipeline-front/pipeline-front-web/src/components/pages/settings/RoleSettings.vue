@@ -1,7 +1,5 @@
 <template>
   <v-flex xs12>
-    Role Settings
-    {{ roles }}
     <v-data-table
       :headers="headers"
       :items="roles"

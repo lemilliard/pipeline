@@ -25,8 +25,6 @@ public class Rencontre {
 
 	public static final String idCourtFieldName = "id_court";
 
-	public static final String idPhaseFieldName = "id_phase";
-
 	@MDId
 	@MDField(fieldName = Rencontre.idRencontreFieldName, allowedSQLActions = MDSQLAction.SELECT)
 	public BigDecimal idRencontre;
