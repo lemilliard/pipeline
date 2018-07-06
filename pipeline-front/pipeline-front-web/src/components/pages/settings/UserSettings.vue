@@ -1,7 +1,5 @@
 <template>
   <v-flex xs12>
-    User Settings
-    {{ users }}
     <v-data-table
       :headers="headers"
       :items="users"

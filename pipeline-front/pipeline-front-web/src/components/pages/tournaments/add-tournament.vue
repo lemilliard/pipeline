@@ -3,7 +3,7 @@
     <v-container>
 
         <v-form v-model="valid">
-          <input type="file" :accept="accept" :multiple="false"
+          <input type="file" :multiple="false"
                  ref="file" @change="onFileChange">
           <br>
           <br>

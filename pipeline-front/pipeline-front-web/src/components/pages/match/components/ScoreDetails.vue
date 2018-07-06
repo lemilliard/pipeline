@@ -51,14 +51,20 @@ export default {
     },
     items() {
       const items = [];
-      if (this.score && this.joueursEquipeUne[0] && this.joueursEquipeUne[1]) {
+      if (this.score) {
         let pointKey;
         items.push({
-          equipe: `${this.joueursEquipeUne[0].nom} - ${this.joueursEquipeUne[1].nom}`,
+          equipe: `${this.joueursEquipeUne[0].nom}`,
         });
+        if (this.joueursEquipeUne[1]) {
+          items[0].equipe += ` - ${this.joueursEquipeUne[1].nom}`;
+        }
         items.push({
-          equipe: `${this.joueursEquipeDeux[0].nom} - ${this.joueursEquipeDeux[1].nom}`,
+          equipe: `${this.joueursEquipeDeux[0].nom}`,
         });
+        if (this.joueursEquipeDeux[1]) {
+          items[1].equipe += ` - ${this.joueursEquipeDeux[1].nom}`;
+        }
         Object.keys(this.score.sets).forEach((set) => {
           pointKey = `Set${parseInt(set, 10) + 1}`;
           items[0][pointKey] = this.score.sets[set].jeuxEquipeUne;
